@@ -3,11 +3,12 @@
 
 int main(void)
 {
-	// Initialization
-	//--------------------------------------------------------------------------------------
 	const int screenWidth = 800;
 	const int screenHeight = 450;
 	const int radius = 100;
+
+	SetConfigFlags(FLAG_MSAA_4X_HINT);
+
 
 	int score = 0;
 
@@ -16,32 +17,41 @@ int main(void)
 	float rotationAngle = 90.0f;
 	bool moveSkillCheck = true;
 
-	InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+	InitWindow(screenWidth, screenHeight, "Skillcheck Simulator");
 
-	SetTargetFPS(60);
+	//SetTargetFPS(60);
 
 	double timer;
 	double spawnSkillcheckTimer;
 
 	timer = GetTime();
 	spawnSkillcheckTimer = timer + 2;
+	int bruh = GetRandomValue(90, 90 + 180);
+	skillCheckZone = { (float)bruh, (float)bruh + 15.0f };
 
 	while (!WindowShouldClose())
 	{
 		timer = GetTime();
 
-		middle = { GetScreenWidth()/2, GetScreenHeight()/2 };
+		middle = { (float)GetScreenWidth()/2, (float)GetScreenHeight()/2 };
 
 		if (timer > spawnSkillcheckTimer)
 		{
 			rotationAngle = -90.0f;
 			moveSkillCheck = true;
 			spawnSkillcheckTimer = timer + 2;
+			int rand = GetRandomValue(90, 90 + 180);
+			skillCheckZone = { (float)rand, (float)rand + 15.0f };
 		}
 
 		DrawText(TextFormat("score: %d", score), 10, 10, 20, BLACK);
 
-		if (rotationAngle > 270.0f || IsKeyPressed(KEY_SPACE))
+		if (rotationAngle > 270.0f)
+		{
+			moveSkillCheck = false;
+			rotationAngle = 270.0f;
+		}
+		else if (IsKeyPressed(KEY_SPACE))
 		{
 			moveSkillCheck = false;
 		}
@@ -56,6 +66,11 @@ int main(void)
 
 			ClearBackground(RAYWHITE);
 
+			DrawCircleLines(middle.x, middle.y, 100, BLACK);
+
+			DrawRing(middle, radius-5, radius+5, skillCheckZone.x, skillCheckZone.y, 15, GREEN);
+
+
 			DrawLineEx
 			(
 				middle, 
@@ -64,12 +79,9 @@ int main(void)
 					middle.x + cosf(rotationAngle * DEG2RAD)*radius,
 					middle.y + sinf(rotationAngle * DEG2RAD)*radius
 				}, 
-				10,
+				6.0f,
 				RED
 			);
-
-			DrawCircleLines(middle.x, middle.y, 100, BLACK);
-
 		EndDrawing();
 	}
 
