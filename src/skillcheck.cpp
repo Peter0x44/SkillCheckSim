@@ -62,8 +62,8 @@ int main(void)
 		}
 		else if (IsKeyPressed(KEY_SPACE)) {
 			moveSkillCheck = false;
-			//if (rotationAngle == (int)currentskillcheck)
-				//DrawText("Skill Check Success", 20, 20, 20, GREEN);
+			if (rotationAngle > skillCheckZone.x && rotationAngle < skillCheckZone.y)
+			++score;
 
 		}
 			
@@ -84,6 +84,7 @@ int main(void)
 			//DrawText(TextFormat("score: %d", score), 10, 10, 20, BLACK);
 			DrawText(TextFormat("rotationAngle: %.0f", rotationAngle), 10, 10, 20, BLACK);
 			DrawText(TextFormat("skillCheckZone: %.0f", skillCheckZone.x), 10, 40, 20, BLACK);
+			DrawText(TextFormat("Score: %d", score), 10, 70, 20, BLACK);
 
 			DrawSkillCheck(rotationAngle, skillCheckZone);
 
