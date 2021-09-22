@@ -1,31 +1,46 @@
 #include <raylib.h>
 #include <cmath>
 #include <iostream>
+#define RAYGUI_IMPLEMENTATION
+#include <extras/raygui.h>
 
 #include "skillcheck.h"
 
+Sound goodSkillCheck;
+Sound greatSkillCheck;
+Sound skillCheckWarning;
+Sound failedSkillCheck;
 
-Vector2 middle;
+Vector2 middle = { screenWidth / 2, screenHeight / 2 };
 
 const float spawnLocation = 90.0f;
-const int spawnZone1 = 0;
+const int spawnZone1 = -30;
 const int spawnZone2 = -270;
+const Rectangle startbutton = { middle.x, 340, 100, 50 };
+const Rectangle stopbutton = { middle.x - 100, 340, 100, 50 };
+bool startbuttonpressed = false;
+bool stopbuttonpressed = false;
+bool skillcheckactive = false;
 
 int main(void)
 {
-	std::cout << "pls don't delete" << std::endl;
 
 	SetConfigFlags(FLAG_MSAA_4X_HINT);
 
 
 	int score = 0;
+	int combo = 0;
+	int missed = 0;
 
-	Vector2 skillCheckZone;
+	Vector2 greatSkillCheckZone;
+	Vector2 goodSkillCheckZone;
 	float rotationAngle = spawnLocation;
 	bool moveSkillCheck = true;
-	int currentskillcheck;
+	bool buttonclicked = false;
 
 	InitWindow(screenWidth, screenHeight, "Skillcheck Simulator");
+
+	LoadAssets();
 
 	//SetTargetFPS(60);
 
@@ -34,12 +49,21 @@ int main(void)
 
 	timer = GetTime();
 	spawnSkillcheckTimer = timer + 2;
-	int bruh = GetRandomValue(spawnZone1, spawnZone2);
-	skillCheckZone = { (float)bruh, (float)bruh + 15.0f };
+
+	{
+		int rand = GetRandomValue(spawnZone1, spawnZone2);
+		greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };
+		goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+	}
+
 	//skillCheckZone = currentskillcheck;
 
 	while (!WindowShouldClose())
 	{
+		if (startbuttonpressed) skillcheckactive = true;
+		if (stopbuttonpressed) skillcheckactive = false;
+			
+
 		timer = GetTime();
 
 		middle = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
@@ -51,20 +75,51 @@ int main(void)
 			spawnSkillcheckTimer = timer + 2;
 			//int rand = GetRandomValue(0, 90 + 180);
 			int rand = GetRandomValue(spawnZone1, spawnZone2);
-			skillCheckZone = { (float)rand, (float)rand + 15.0f };
+			greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };
+			goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+			PlaySound(skillCheckWarning);
 		}
 
 
 		if (rotationAngle < -270.0f)
 		{
+			if (moveSkillCheck)
+				++missed;
 			moveSkillCheck = false;
 			rotationAngle = spawnLocation;
+			PlaySound(failedSkillCheck);
+			combo = 0;
+			
 		}
-		else if (IsKeyPressed(KEY_SPACE)) {
-			moveSkillCheck = false;
-			if (rotationAngle > skillCheckZone.x && rotationAngle < skillCheckZone.y)
-			++score;
-
+		else if (IsKeyPressed(KEY_SPACE))
+		{
+			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
+			{
+				++score;
+				score += combo;
+				++combo;
+				PlaySound(greatSkillCheck);
+				moveSkillCheck = false;
+			}
+			else if (rotationAngle > goodSkillCheckZone.x && rotationAngle < goodSkillCheckZone.y)
+			{
+				++score;
+				score += combo;
+				++combo;
+				PlaySound(goodSkillCheck);
+				moveSkillCheck = false;
+			}
+			else
+			{
+				if (moveSkillCheck)
+				{
+					++missed;
+					PlaySound(failedSkillCheck);
+				}
+				moveSkillCheck = false;
+				combo = 0;
+		
+			}
 		}
 			
 			
@@ -73,32 +128,48 @@ int main(void)
 			rotationAngle -= GetFrameTime() * 60 * 6;
 		}
 
-
+		if (buttonclicked)
+		{
+			PlaySound(greatSkillCheck);
+			buttonclicked = false;
+		}
 
 
 
 		BeginDrawing();
 
 			ClearBackground(GRAY);
+			//LoadTexture()
+			//DrawTexture()
 
 			//DrawText(TextFormat("score: %d", score), 10, 10, 20, BLACK);
+			DrawText("Skill Check Simulator", screenWidth-10-MeasureText("Skill Check Simulator", 14), 10, 14, BLACK);
+			DrawText(TextFormat("X: %d", GetMouseX()), 10, 160, 20, BLACK);
+			DrawText(TextFormat("y: %d", GetMouseY()), 10, 190, 20, BLACK);
 			DrawText(TextFormat("rotationAngle: %.0f", rotationAngle), 10, 10, 20, BLACK);
-			DrawText(TextFormat("skillCheckZone: %.0f", skillCheckZone.x), 10, 40, 20, BLACK);
+			DrawText(TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), 10, 40, 20, BLACK);
 			DrawText(TextFormat("Score: %d", score), 10, 70, 20, BLACK);
+			DrawText(TextFormat("Combo: %d", combo), 10, 100, 20, BLACK);
+			DrawText(TextFormat("Missed: %d", missed), 10, 130, 20, BLACK);
+			
 
-			DrawSkillCheck(rotationAngle, skillCheckZone);
+			DrawSkillCheck(rotationAngle, greatSkillCheckZone, goodSkillCheckZone);
+			startbuttonpressed = GuiButton(startbutton, "Start");
+			stopbuttonpressed = GuiButton(stopbutton, "Stop");
 
 		EndDrawing();
 	}
 
+	UnloadAssets();
 	CloseWindow();		// Close window and OpenGL context
 	return 0;
 }
 
-void DrawSkillCheck(float angle, Vector2 skillCheckZone) 
+void DrawSkillCheck(float angle, Vector2 greatSkillCheckZone, Vector2 goodSkillCheckZone) 
 {
 	DrawCircleLines(middle.x, middle.y, 100, BLACK);
-	DrawRing(middle, radius - 5, radius + 5, skillCheckZone.x - 270.0f, skillCheckZone.y - 270.0f, 15, GREEN);
+	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, WHITE);
+	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, BLACK);
 	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
 	DrawLineEx(
 		middle,
@@ -110,14 +181,23 @@ void DrawSkillCheck(float angle, Vector2 skillCheckZone)
 		5.0f,
 		RED
 	);
-	//DrawLineEx(
-	//	middle,
-	//	Vector2
-	//	{
-	//		middle.x + cosf(skillCheckZone.x * DEG2RAD) * radius,
-	//		middle.y - sinf(skillCheckZone.y* DEG2RAD) * radius
-	//	},
-	//	5.0f,
-	//	RED
-	//);
+}
+
+void LoadAssets(void)
+{
+	InitAudioDevice();
+	greatSkillCheck = LoadSound("../assets/src_audio_great.mp3");
+	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3");
+	failedSkillCheck = LoadSound("../assets/sc0.mp3");
+	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
+	int bruh = 1;
+}
+
+void UnloadAssets(void)
+{
+	UnloadSound(greatSkillCheck);
+	UnloadSound(skillCheckWarning);
+	UnloadSound(failedSkillCheck);
+	UnloadSound(goodSkillCheck);
+	CloseAudioDevice();
 }
