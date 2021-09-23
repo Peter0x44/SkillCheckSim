@@ -1,6 +1,5 @@
 #include <raylib.h>
 #include <cmath>
-#include <iostream>
 #define RAYGUI_IMPLEMENTATION
 #include <extras/raygui.h>
 
@@ -50,88 +49,93 @@ int main(void)
 	timer = GetTime();
 	spawnSkillcheckTimer = timer + 2;
 
-	{
-		int rand = GetRandomValue(spawnZone1, spawnZone2);
-		greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };
-		goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
-	}
+	GenerateSkillcheckZone(greatSkillCheckZone, goodSkillCheckZone);
 
 	//skillCheckZone = currentskillcheck;
 
 	while (!WindowShouldClose())
 	{
-		if (startbuttonpressed) skillcheckactive = true;
-		if (stopbuttonpressed) skillcheckactive = false;
-			
-
-		timer = GetTime();
-
-		middle = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
-
-		if (timer > spawnSkillcheckTimer)
+		if (startbuttonpressed)
 		{
-			rotationAngle = spawnLocation;
-			moveSkillCheck = true;
-			spawnSkillcheckTimer = timer + 2;
-			//int rand = GetRandomValue(0, 90 + 180);
-			int rand = GetRandomValue(spawnZone1, spawnZone2);
-			greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };
-			goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
-			PlaySound(skillCheckWarning);
-		}
-
-
-		if (rotationAngle < -270.0f)
-		{
-			if (moveSkillCheck)
-				++missed;
-			moveSkillCheck = false;
-			rotationAngle = spawnLocation;
-			PlaySound(failedSkillCheck);
+			skillcheckactive = true;
+			score = 0;
 			combo = 0;
-			
+			missed = 0;
+			rotationAngle = spawnLocation;
 		}
-		else if (IsKeyPressed(KEY_SPACE))
+		if (stopbuttonpressed)
 		{
-			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
+			skillcheckactive = false;
+		}
+			
+		if (skillcheckactive)
+		{
+			timer = GetTime();
+
+			middle = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+
+			if (timer > spawnSkillcheckTimer)
 			{
-				++score;
-				score += combo;
-				++combo;
-				PlaySound(greatSkillCheck);
-				moveSkillCheck = false;
+				rotationAngle = spawnLocation;
+				moveSkillCheck = true;
+				spawnSkillcheckTimer = timer + 2;
+				GenerateSkillcheckZone(greatSkillCheckZone, goodSkillCheckZone);
+				PlaySound(skillCheckWarning);
 			}
-			else if (rotationAngle > goodSkillCheckZone.x && rotationAngle < goodSkillCheckZone.y)
-			{
-				++score;
-				score += combo;
-				++combo;
-				PlaySound(goodSkillCheck);
-				moveSkillCheck = false;
-			}
-			else
+
+
+			if (rotationAngle < -270.0f)
 			{
 				if (moveSkillCheck)
-				{
 					++missed;
-					PlaySound(failedSkillCheck);
-				}
 				moveSkillCheck = false;
+				rotationAngle = spawnLocation;
+				PlaySound(failedSkillCheck);
 				combo = 0;
-		
-			}
-		}
-			
-			
-		if (moveSkillCheck)
-		{
-			rotationAngle -= GetFrameTime() * 60 * 6;
-		}
 
-		if (buttonclicked)
-		{
-			PlaySound(greatSkillCheck);
-			buttonclicked = false;
+			}
+			else if (IsKeyPressed(KEY_SPACE))
+			{
+				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
+				{
+					++score;
+					score += combo;
+					++combo;
+					PlaySound(greatSkillCheck);
+					moveSkillCheck = false;
+				}
+				else if (rotationAngle > goodSkillCheckZone.x && rotationAngle < goodSkillCheckZone.y)
+				{
+					++score;
+					score += combo;
+					++combo;
+					PlaySound(goodSkillCheck);
+					moveSkillCheck = false;
+				}
+				else
+				{
+					if (moveSkillCheck)
+					{
+						++missed;
+						PlaySound(failedSkillCheck);
+					}
+					moveSkillCheck = false;
+					combo = 0;
+
+				}
+			}
+
+
+			if (moveSkillCheck)
+			{
+				rotationAngle -= GetFrameTime() * 60 * 6;
+			}
+
+			if (buttonclicked)
+			{
+				PlaySound(greatSkillCheck);
+				buttonclicked = false;
+			}
 		}
 
 
@@ -181,6 +185,13 @@ void DrawSkillCheck(float angle, Vector2 greatSkillCheckZone, Vector2 goodSkillC
 		5.0f,
 		RED
 	);
+}
+
+void GenerateSkillcheckZone(Vector2& greatSkillCheckZone, Vector2& goodSkillCheckZone)
+{
+	int rand = GetRandomValue(spawnZone1, spawnZone2);
+	greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };
+	goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
 }
 
 void LoadAssets(void)
