@@ -16,6 +16,10 @@ add_subdirectory(libs/raylib)
 add_executable(SkillCheckSimulator
 	src/skillcheck.cpp
 	src/skillcheck.h
+	src/gamestates.cpp
+	src/gamestates.h
+	src/main.cpp
+	src/globals.h
 )
 
 target_link_libraries(SkillCheckSimulator PRIVATE raylib)
