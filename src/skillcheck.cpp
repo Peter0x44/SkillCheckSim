@@ -9,10 +9,6 @@
 skillcheckscreen::skillcheckscreen(void)
 {
 	float rotationAngle = spawnLocation;
-	timer = GetTime();
-	spawnSkillcheckTimer = timer + 2;
-	GenerateSkillcheckZone();
-
 }
 
 skillcheckscreen::~skillcheckscreen(void)
