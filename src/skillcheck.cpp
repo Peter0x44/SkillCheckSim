@@ -2,6 +2,7 @@
 #include <cmath>
 #define RAYGUI_IMPLEMENTATION
 #include <extras/raygui.h>
+#undef RAYGUI_IMPLEMENTATION
 
 #include "skillcheck.h"
 
@@ -9,7 +10,7 @@ Sound goodSkillCheck;
 Sound greatSkillCheck;
 Sound skillCheckWarning;
 Sound failedSkillCheck;
-Texture background;
+Texture2D background;
 
 Vector2 middle = { screenWidth / 2, screenHeight / 2 };
 
@@ -57,7 +58,6 @@ int main(void)
 
 	while (!WindowShouldClose())
 	{
-		Texture2D background = LoadTexture("../assets/bg.png");
 		if (startbuttonpressed)
 		{
 			skillcheckactive = true;
@@ -97,7 +97,7 @@ int main(void)
 				combo = 0;
 
 			}
-			else if (IsKeyPressed(KEY_SPACE))
+			else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
@@ -146,11 +146,8 @@ int main(void)
 		BeginDrawing();
 
 			ClearBackground(GRAY);
-			DrawTexture(background, 0, 0, LIGHTGRAY);
-			//LoadTexture()
-			//DrawTexture()
+			DrawTexture(background, 0, 0, WHITE);
 
-			//DrawText(TextFormat("score: %d", score), 10, 10, 20, BLACK);
 			DrawText("Skill Check Simulator", screenWidth-10-MeasureText("Skill Check Simulator", 14), 10, 14, WHITE);
 			DrawText(TextFormat("X: %d", GetMouseX()), 10, 160, 20, WHITE);
 			DrawText(TextFormat("y: %d", GetMouseY()), 10, 190, 20, WHITE);
@@ -202,12 +199,11 @@ void GenerateSkillcheckZone(Vector2& greatSkillCheckZone, Vector2& goodSkillChec
 void LoadAssets(void)
 {
 	InitAudioDevice();
-	Texture background = LoadTexture("../assets/bg2.png");
+	background = LoadTexture("../assets/bg.png");
 	greatSkillCheck = LoadSound("../assets/src_audio_great.mp3");
 	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3");
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
 	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
-	int bruh = 1;
 }
 
 void UnloadAssets(void)
