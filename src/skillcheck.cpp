@@ -25,17 +25,24 @@ void skillcheckscreen::GenerateSkillcheckZone(void)
 
 void skillcheckscreen::logic(void)
 {
-	if (startbuttonpressed)
+	if (startbuttonpressed && !skillcheckactive)
 	{
 		skillcheckactive = true;
 		score = 0;
 		combo = 0;
 		missed = 0;
 		rotationAngle = spawnLocation;
+		GenerateSkillcheckZone();
+		PlaySound(skillCheckWarning);
+		timer = GetTime();
+		spawnSkillcheckTimer = timer + 2;
 	}
-	if (stopbuttonpressed)
+	if (stopbuttonpressed && skillcheckactive)
 	{
 		skillcheckactive = false;
+		rotationAngle = spawnLocation;
+		greatSkillCheckZone = {0, 0};
+		goodSkillCheckZone = {0, 0};
 	}
 
 	if (skillcheckactive)
