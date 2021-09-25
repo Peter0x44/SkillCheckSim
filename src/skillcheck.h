@@ -20,10 +20,14 @@ private:
 	const Rectangle startbutton = { middle.x, 340, 100, 50 };
 	const Rectangle stopbutton = { middle.x - 100, 340, 100, 50 };
 	const Rectangle achievbutton = { 10, 224, 100, 50 };
+	const Rectangle ModesButton = { 10 , 279, 100 ,50 };
+	const Rectangle Help = { 10 , 334, 100 ,50 };
 	bool startbuttonpressed = false;
 	bool stopbuttonpressed = false;
 	bool achievementspressed = false;
 	bool skillcheckactive = false;
+	bool modesbuttonpressed = false;
+	bool helpbuttonpressed = false;
 
 	const int radius = 100;
 

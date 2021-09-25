@@ -77,9 +77,9 @@ void skillcheckscreen::logic(void)
 		{
 			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 			{
-				++score;
+				score = score + 25;
 				score += combo;
-				++combo;
+				combo = combo + 2;
 				PlaySound(greatSkillCheck);
 				moveSkillCheck = false;
 			}
@@ -136,6 +136,8 @@ void skillcheckscreen::render(void)
 	startbuttonpressed = GuiButton(startbutton, "Start");
 	stopbuttonpressed = GuiButton(stopbutton, "Stop");
 	achievementspressed = GuiButton(achievbutton, "Achievements");
+	modesbuttonpressed = GuiButton(ModesButton, "Modes");
+	helpbuttonpressed = GuiButton(Help, "help");
 }
 
 void skillcheckscreen::DrawSkillCheck(void) 
