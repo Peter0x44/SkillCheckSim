@@ -28,6 +28,7 @@ void skillcheckscreen::logic(void)
 	if (startbuttonpressed && !skillcheckactive)
 	{
 		skillcheckactive = true;
+		moveSkillCheck = true;
 		score = 0;
 		combo = 0;
 		missed = 0;
@@ -40,6 +41,7 @@ void skillcheckscreen::logic(void)
 	if (stopbuttonpressed && skillcheckactive)
 	{
 		skillcheckactive = false;
+		moveSkillCheck = false;
 		rotationAngle = spawnLocation;
 		greatSkillCheckZone = {0, 0};
 		goodSkillCheckZone = {0, 0};
