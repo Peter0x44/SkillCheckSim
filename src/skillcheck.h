@@ -35,8 +35,8 @@ private:
 	int combo = 0;
 	int missed = 0;
 
-	Vector2 greatSkillCheckZone;
-	Vector2 goodSkillCheckZone;
+	Vector2 greatSkillCheckZone = {0, 0};
+	Vector2 goodSkillCheckZone = {0, 0};
 	float rotationAngle = spawnLocation;
 	bool moveSkillCheck = true;
 	bool buttonclicked = false;
