@@ -3,7 +3,7 @@
 enum class gamestates
 {
 	skillcheckscreen, 
-	achievements,
+	achievementsscreen,
 	null
 };
 

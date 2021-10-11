@@ -20,6 +20,8 @@ add_executable(SkillCheckSimulator
 	src/gamestates.h
 	src/main.cpp
 	src/globals.h
+	src/achievements.cpp
+	src/achievements.h
 )
 
 target_link_libraries(SkillCheckSimulator PRIVATE raylib)

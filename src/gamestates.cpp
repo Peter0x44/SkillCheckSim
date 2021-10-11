@@ -1,5 +1,6 @@
 #include "gamestates.h"
 #include "skillcheck.h"
+#include "achievements.h"
 
 extern gamestate* currentstate;
 extern gamestates stateid;
@@ -15,6 +16,9 @@ void changestate(void)
 		{
 		case gamestates::skillcheckscreen:
 			currentstate = new skillcheckscreen();
+			break;
+		case gamestates::achievementsscreen:
+			currentstate = new achievementscreen();
 			break;
 		}
 

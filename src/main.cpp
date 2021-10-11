@@ -37,6 +37,7 @@ int main(void)
 		currentstate->logic();
 
 		BeginDrawing();
+
 			ClearBackground(GRAY);
 			currentstate->render();
 

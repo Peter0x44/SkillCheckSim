@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <cmath>
+#include <iostream>
 #include <extras/raygui.h>
 
 #include "globals.h"
@@ -8,7 +9,8 @@
 
 skillcheckscreen::skillcheckscreen(void)
 {
-	float rotationAngle = spawnLocation;
+	rotationAngle = spawnLocation;
+	moveSkillCheck = false;
 }
 
 skillcheckscreen::~skillcheckscreen(void)
@@ -25,6 +27,7 @@ void skillcheckscreen::GenerateSkillcheckZone(void)
 
 void skillcheckscreen::logic(void)
 {
+
 	if (startbuttonpressed && !skillcheckactive)
 	{
 		skillcheckactive = true;
@@ -38,6 +41,7 @@ void skillcheckscreen::logic(void)
 		timer = GetTime();
 		spawnSkillcheckTimer = timer + 2;
 	}
+
 	if (stopbuttonpressed && skillcheckactive)
 	{
 		skillcheckactive = false;
@@ -73,7 +77,7 @@ void skillcheckscreen::logic(void)
 			combo = 0;
 
 		}
-		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
+		else if (IsKeyPressed(KEY_SPACE) || (IsKeyPressed(KEY_LEFT) && moveSkillCheck))
 		{
 			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 			{
@@ -91,19 +95,15 @@ void skillcheckscreen::logic(void)
 				PlaySound(goodSkillCheck);
 				moveSkillCheck = false;
 			}
-			else
+			else if (moveSkillCheck)
 			{
-				if (moveSkillCheck)
-				{
-					++missed;
-					PlaySound(failedSkillCheck);
-				}
-				moveSkillCheck = false;
+				++missed;
+				PlaySound(failedSkillCheck);
 				combo = 0;
-
+				moveSkillCheck = false;
 			}
-		}
 
+		}
 
 		if (moveSkillCheck)
 		{
@@ -114,6 +114,11 @@ void skillcheckscreen::logic(void)
 		{
 			PlaySound(greatSkillCheck);
 			buttonclicked = false;
+		}
+
+		if (achievementspressed)
+		{
+			setnextstate(gamestates::achievementsscreen);
 		}
 	}
 }
