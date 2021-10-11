@@ -77,7 +77,7 @@ void skillcheckscreen::logic(void)
 			combo = 0;
 
 		}
-		else if (IsKeyPressed(KEY_SPACE) || (IsKeyPressed(KEY_LEFT) && moveSkillCheck))
+		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
 		{
 			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 			{
@@ -95,10 +95,13 @@ void skillcheckscreen::logic(void)
 				PlaySound(goodSkillCheck);
 				moveSkillCheck = false;
 			}
-			else if (moveSkillCheck)
+			else
 			{
-				++missed;
-				PlaySound(failedSkillCheck);
+				if (moveSkillCheck)
+				{
+					++missed;
+					PlaySound(failedSkillCheck);
+				}
 				combo = 0;
 				moveSkillCheck = false;
 			}
