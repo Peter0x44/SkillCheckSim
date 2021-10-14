@@ -4,6 +4,8 @@ enum class gamestates
 {
 	skillcheckscreen, 
 	achievementsscreen,
+	modesscreen,
+	helpscreen,
 	null
 };
 

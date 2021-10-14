@@ -27,6 +27,16 @@ void skillcheckscreen::GenerateSkillcheckZone(void)
 
 void skillcheckscreen::logic(void)
 {
+	if (modesbuttonpressed)
+	{
+		setnextstate(gamestates::modesscreen);
+	}
+	
+	if (achievementspressed)
+	{
+		setnextstate(gamestates::achievementsscreen);
+	}
+
 
 	if (startbuttonpressed && !skillcheckactive)
 	{
@@ -117,11 +127,6 @@ void skillcheckscreen::logic(void)
 		{
 			PlaySound(greatSkillCheck);
 			buttonclicked = false;
-		}
-
-		if (achievementspressed)
-		{
-			setnextstate(gamestates::achievementsscreen);
 		}
 	}
 }

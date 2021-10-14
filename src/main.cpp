@@ -17,6 +17,7 @@ Sound greatSkillCheck;
 Sound skillCheckWarning;
 Sound failedSkillCheck;
 Texture2D background;
+Texture2D achievementsbackground;
 
 void LoadAssets(void);
 
@@ -54,6 +55,7 @@ int main(void)
 void LoadAssets(void)
 {
 	InitAudioDevice();
+	achievementsbackground = LoadTexture("../assets/bg3.png");
 	background = LoadTexture("../assets/bg.png");
 	greatSkillCheck = LoadSound("../assets/src_audio_great.mp3");
 	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3");
@@ -68,5 +70,6 @@ void UnloadAssets(void)
 	UnloadSound(failedSkillCheck);
 	UnloadSound(goodSkillCheck);
 	UnloadTexture(background);
+	UnloadTexture(achievementsbackground);
 	CloseAudioDevice();
 }
