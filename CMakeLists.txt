@@ -24,6 +24,8 @@ add_executable(SkillCheckSimulator
 	src/achievements.h
 	src/modes.cpp
 	src/modes.h
+	src/help.cpp
+	src/help.h
 )
 
 target_link_libraries(SkillCheckSimulator PRIVATE raylib)

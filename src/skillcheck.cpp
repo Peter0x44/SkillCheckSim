@@ -37,6 +37,10 @@ void skillcheckscreen::logic(void)
 		setnextstate(gamestates::achievementsscreen);
 	}
 
+	if (helpbuttonpressed)
+	{
+		setnextstate(gamestates::helpscreen);
+	}
 
 	if (startbuttonpressed && !skillcheckactive)
 	{
