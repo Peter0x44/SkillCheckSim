@@ -18,6 +18,7 @@ Sound skillCheckWarning;
 Sound failedSkillCheck;
 Texture2D background;
 Texture2D achievementsbackground;
+Font Roboto;
 
 void LoadAssets(void);
 
@@ -61,6 +62,7 @@ void LoadAssets(void)
 	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3");
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
 	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
+	Roboto = LoadFont("../assets/Roboto-Light.ttf");
 }
 
 void UnloadAssets(void)
@@ -71,5 +73,6 @@ void UnloadAssets(void)
 	UnloadSound(goodSkillCheck);
 	UnloadTexture(background);
 	UnloadTexture(achievementsbackground);
+	UnloadFont(Roboto);
 	CloseAudioDevice();
 }

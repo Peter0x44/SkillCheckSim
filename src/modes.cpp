@@ -16,7 +16,9 @@ modesscreen::~modesscreen(void)
 
 void modesscreen::render()
 {
-	ClearBackground(PURPLE);
+	DrawRectangleRounded(Backboard, 0.1, 0, RAYWHITE);
+	DrawTextEx(Roboto, "modes", Vector2{ (float)screenWidth / 2 - MeasureTextEx(Roboto ,"modes", 20, 1).x / 2, 10 }, 20, 1, BLACK);
+	//ClearBackground(PURPLE);
 }
 
 void modesscreen::logic()

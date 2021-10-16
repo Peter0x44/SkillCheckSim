@@ -135,7 +135,7 @@ void skillcheckscreen::render(void)
 {
 	DrawTexture(background, 0, 0, WHITE);
 
-	DrawText("Skill Check Simulator", screenWidth - 10 - MeasureText("Skill Check Simulator", 14), 10, 14, WHITE);
+	DrawTextEx(Roboto, "Skill Check Simulator", Vector2{ (float)screenWidth - 120 - MeasureTextEx(Roboto, "Skill Check Simulator", 14, 1).x , 10 }, 28, 1, WHITE);
 	DrawText(TextFormat("X: %d", GetMouseX()), 10, 160, 20, WHITE);
 	DrawText(TextFormat("y: %d", GetMouseY()), 10, 190, 20, WHITE);
 	DrawText(TextFormat("rotationAngle: %.0f", rotationAngle), 10, 10, 20, WHITE);
