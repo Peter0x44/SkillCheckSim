@@ -140,13 +140,13 @@ void skillcheckscreen::render(void)
 	DrawTexture(background, 0, 0, WHITE);
 
 	DrawTextEx(Roboto, "Skill Check Simulator", Vector2{ (float)screenWidth - 120 - MeasureTextEx(Roboto, "Skill Check Simulator", 14, 1).x , 10 }, 28, 1, WHITE);
-	DrawText(TextFormat("X: %d", GetMouseX()), 10, 160, 20, WHITE);
-	DrawText(TextFormat("y: %d", GetMouseY()), 10, 190, 20, WHITE);
-	DrawText(TextFormat("rotationAngle: %.0f", rotationAngle), 10, 10, 20, WHITE);
-	DrawText(TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), 10, 40, 20, WHITE);
-	DrawText(TextFormat("Score: %d", score), 10, 70, 20, WHITE);
-	DrawText(TextFormat("Combo: %d", combo), 10, 100, 20, WHITE);
-	DrawText(TextFormat("Missed: %d", missed), 10, 130, 20, WHITE);
+	DrawTextEx(Roboto, TextFormat("X: %d", GetMouseX()), Vector2{ 10, 160 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("y: %d", GetMouseY()), Vector2{ 10, 190 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("rotationAngle: %.0f", rotationAngle), Vector2{ 10, 10 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), Vector2{ 10, 40 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("Score: %d", score), Vector2{ 10, 70 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("Combo: %d", combo), Vector2{ 10, 100 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("Missed: %d", missed), Vector2{ 10, 130 }, 20, 1, WHITE);
 
 
 	DrawSkillCheck();
