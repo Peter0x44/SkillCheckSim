@@ -4,7 +4,7 @@ enum class gamestates
 {
 	skillcheckscreen, 
 	achievementsscreen,
-	modesscreen,
+	modesscreen, //DIFFERENT STATES, EACH NEW SCREEN
 	helpscreen,
 	null
 };
@@ -12,7 +12,7 @@ enum class gamestates
 struct gamestate
 {
 	virtual void logic(void) = 0;
-	virtual void render(void) = 0;
+	virtual void render(void) = 0; 
 	virtual ~gamestate() {};
 };
 

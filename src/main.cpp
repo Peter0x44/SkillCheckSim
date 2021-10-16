@@ -1,49 +1,49 @@
 #include <raylib.h>
 #include <cmath>
 #define RAYGUI_IMPLEMENTATION
-#include <extras/raygui.h>
+#include <extras/raygui.h> 
 #undef RAYGUI_IMPLEMENTATION
 
 #include "skillcheck.h"
 #include "gamestates.h"
 
 gamestate* currentstate;
-gamestates stateid;
+gamestates stateid; //GAMESTATE VARIABLES
 gamestates nextstate;
 
 
 Sound goodSkillCheck;
 Sound greatSkillCheck;
 Sound skillCheckWarning;
-Sound failedSkillCheck;
+Sound failedSkillCheck; //MORE VARIABLES
 Texture2D background;
 Texture2D achievementsbackground;
 Font Roboto;
 
-void LoadAssets(void);
+void LoadAssets(void); //LOAD ASSET FUNCTION, FURTHER DOWN
 
-void UnloadAssets(void);
+void UnloadAssets(void); //UNLOAD ASSET FUNCTION, FURTHER DOWN
 
 int main(void)
 {
 	SetConfigFlags(FLAG_MSAA_4X_HINT);
 
-	InitWindow(screenWidth, screenHeight, "Skillcheck Simulator");
+	InitWindow(screenWidth, screenHeight, "Skillcheck Simulator"); //MAIN WINDOW
 
 	LoadAssets();
 
 	currentstate = new skillcheckscreen();
 
-	while (!WindowShouldClose())
+	while (!WindowShouldClose()) //ONLY DOES WHEN WINDOW IS OPEN
 	{
 		currentstate->logic();
 
-		BeginDrawing();
+		BeginDrawing(); //DRAWNS TO SCREEN
 
-			ClearBackground(GRAY);
+			ClearBackground(GRAY); //BACKGROUND SET TO GRAY
 			currentstate->render();
 
-		EndDrawing();
+		EndDrawing(); //FINISHES DRAWING TO SCREEN
 
 		changestate();
 
@@ -56,13 +56,13 @@ int main(void)
 void LoadAssets(void)
 {
 	InitAudioDevice();
-	achievementsbackground = LoadTexture("../assets/bg3.png");
+	achievementsbackground = LoadTexture("../assets/bg3.png"); //LOADS TEXTURES FROM ASSETS
 	background = LoadTexture("../assets/bg.png");
 	greatSkillCheck = LoadSound("../assets/src_audio_great.mp3");
-	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3");
+	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
 	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
-	Roboto = LoadFont("../assets/Roboto-Light.ttf");
+	Roboto = LoadFont("../assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
 }
 
 void UnloadAssets(void)
@@ -70,7 +70,7 @@ void UnloadAssets(void)
 	UnloadSound(greatSkillCheck);
 	UnloadSound(skillCheckWarning);
 	UnloadSound(failedSkillCheck);
-	UnloadSound(goodSkillCheck);
+	UnloadSound(goodSkillCheck); //UNLOADS EVERY SINGLE THING LOADED IN
 	UnloadTexture(background);
 	UnloadTexture(achievementsbackground);
 	UnloadFont(Roboto);

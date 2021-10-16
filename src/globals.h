@@ -4,7 +4,7 @@ extern Sound goodSkillCheck;
 extern Sound greatSkillCheck;
 extern Sound skillCheckWarning;
 extern Sound failedSkillCheck;
-extern Texture2D background;
+extern Texture2D background; //DEFINES ALL GLOBAL VARIABLES
 extern Texture2D achievementsbackground;
 extern Font Roboto;
 

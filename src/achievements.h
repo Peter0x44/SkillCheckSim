@@ -15,15 +15,15 @@ private:
 		"hit 10 great skill checks in a row",
 		"miss 50 skillchecks in a row",
 		"Hit 50 great skillchecks on veteran mode",
-		"Miss 10 skillchecks in a row",
+		"Miss 10 skillchecks in a row", //ARRAY OF ACHIEVEMENTS
 		"hit 50 greatskillchecks in a row on easy",
 		"hit 200 great skill checks in a row",
 		"hit 500 great skill checks overall",
 		"???"
 	};
 
-	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 };
-	bool backbuttonpressed = false;
+	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON IS DRAWN
+	bool backbuttonpressed = false; 
 
 public:
 	void logic(void) final override;

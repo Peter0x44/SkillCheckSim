@@ -6,7 +6,7 @@
 class helpscreen: public gamestate
 {
 private:
-	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 };
+	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON DRAWN
 	bool backbuttonpressed = false;
 
 public:

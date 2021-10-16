@@ -26,7 +26,7 @@ void modesscreen::logic()
 {
 	if (backbuttonpressed)
 	{
-		setnextstate(gamestates::skillcheckscreen);
+		setnextstate(gamestates::skillcheckscreen); //SETS SCREEN BACK TO SKILL CHECK SCREEN
 	}
 
 }

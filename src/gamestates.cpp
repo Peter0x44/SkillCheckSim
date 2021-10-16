@@ -21,7 +21,7 @@ void changestate(void)
 			break;
 		case gamestates::achievementsscreen:
 			currentstate = new achievementscreen();
-			break;
+			break; //EACH NEW SCREEN, USING OOP
 		case gamestates::modesscreen:
 			currentstate = new modesscreen();
 			break;

@@ -21,7 +21,7 @@ skillcheckscreen::~skillcheckscreen(void)
 void skillcheckscreen::GenerateSkillcheckZone(void)
 {
 	int rand = GetRandomValue(spawnZone1, spawnZone2);
-	greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };
+	greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
 	goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
 }
 
@@ -29,17 +29,17 @@ void skillcheckscreen::logic(void)
 {
 	if (modesbuttonpressed)
 	{
-		setnextstate(gamestates::modesscreen);
+		setnextstate(gamestates::modesscreen); //mode button pressed - screen changes to mode screen
 	}
 	
 	if (achievementspressed)
 	{
-		setnextstate(gamestates::achievementsscreen);
+		setnextstate(gamestates::achievementsscreen); //achievement button pressed - screen changes to achievement screen
 	}
 
 	if (helpbuttonpressed)
 	{
-		setnextstate(gamestates::helpscreen);
+		setnextstate(gamestates::helpscreen); //help button pressed - screen changes to help screen
 	}
 
 	if (startbuttonpressed && !skillcheckactive)
@@ -47,10 +47,10 @@ void skillcheckscreen::logic(void)
 		skillcheckactive = true;
 		moveSkillCheck = true;
 		score = 0;
-		combo = 0;
-		missed = 0;
+		combo = 0; // score and combo is set back to 0 and the skillcheck starts to move
+		missed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = spawnLocation;
-		GenerateSkillcheckZone();
+		GenerateSkillcheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
 		timer = GetTime();
 		spawnSkillcheckTimer = timer + 2;
@@ -60,7 +60,7 @@ void skillcheckscreen::logic(void)
 	{
 		skillcheckactive = false;
 		moveSkillCheck = false;
-		rotationAngle = spawnLocation;
+		rotationAngle = spawnLocation; //When stop button is pressed skill check stops moving and zones are set back to 0,0
 		greatSkillCheckZone = {0, 0};
 		goodSkillCheckZone = {0, 0};
 	}
@@ -75,7 +75,7 @@ void skillcheckscreen::logic(void)
 		{
 			rotationAngle = spawnLocation;
 			moveSkillCheck = true;
-			spawnSkillcheckTimer = timer + 2;
+			spawnSkillcheckTimer = timer + 2; //if statement for when user has started skillcheck and the warning effect is played
 			GenerateSkillcheckZone();
 			PlaySound(skillCheckWarning);
 		}
@@ -85,7 +85,7 @@ void skillcheckscreen::logic(void)
 		{
 			if (moveSkillCheck)
 				++missed;
-			moveSkillCheck = false;
+			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore missed goes up by 1 and rotationangle is set back to start
 			rotationAngle = spawnLocation;
 			PlaySound(failedSkillCheck);
 			combo = 0;
@@ -97,7 +97,7 @@ void skillcheckscreen::logic(void)
 			{
 				score = score + 25;
 				score += combo;
-				combo = combo + 2;
+				combo = combo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 				PlaySound(greatSkillCheck);
 				moveSkillCheck = false;
 			}
@@ -106,7 +106,7 @@ void skillcheckscreen::logic(void)
 				++score;
 				score += combo;
 				++combo;
-				PlaySound(goodSkillCheck);
+				PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
 				moveSkillCheck = false;
 			}
 			else
@@ -114,7 +114,7 @@ void skillcheckscreen::logic(void)
 				if (moveSkillCheck)
 				{
 					++missed;
-					PlaySound(failedSkillCheck);
+					PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 				}
 				combo = 0;
 				moveSkillCheck = false;
@@ -124,7 +124,7 @@ void skillcheckscreen::logic(void)
 
 		if (moveSkillCheck)
 		{
-			rotationAngle -= GetFrameTime() * 60 * 6;
+			rotationAngle -= GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
 		}
 
 		if (buttonclicked)
@@ -143,16 +143,17 @@ void skillcheckscreen::render(void)
 	DrawTextEx(Roboto, TextFormat("X: %d", GetMouseX()), Vector2{ 10, 160 }, 20, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("y: %d", GetMouseY()), Vector2{ 10, 190 }, 20, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("rotationAngle: %.0f", rotationAngle), Vector2{ 10, 10 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), Vector2{ 10, 40 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), Vector2{ 10, 40 }, 20, 1, WHITE); // Drawing all text to the screen
 	DrawTextEx(Roboto, TextFormat("Score: %d", score), Vector2{ 10, 70 }, 20, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("Combo: %d", combo), Vector2{ 10, 100 }, 20, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("Missed: %d", missed), Vector2{ 10, 130 }, 20, 1, WHITE);
 
 
-	DrawSkillCheck();
+	DrawSkillCheck(); // Draws the skill check
+
 	startbuttonpressed = GuiButton(startbutton, "Start");
 	stopbuttonpressed = GuiButton(stopbutton, "Stop");
-	achievementspressed = GuiButton(achievbutton, "Achievements");
+	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
 	modesbuttonpressed = GuiButton(ModesButton, "Modes");
 	helpbuttonpressed = GuiButton(Help, "help");
 }
@@ -161,14 +162,14 @@ void skillcheckscreen::DrawSkillCheck(void)
 {
 	DrawCircleLines(middle.x, middle.y, 100, WHITE);
 	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, WHITE);
-	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, RED);
+	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, RED); // Drawing of main circle and needle
 	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
 	DrawLineEx(
 		middle,
 		Vector2
 		{
 			middle.x + cosf(rotationAngle * DEG2RAD) * radius,
-			middle.y - sinf(rotationAngle * DEG2RAD) * radius
+			middle.y - sinf(rotationAngle * DEG2RAD) * radius //drawing correct lines
 		},
 		5.0f,
 		RED
