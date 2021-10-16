@@ -22,6 +22,9 @@ private:
 		"???"
 	};
 
+	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 };
+	bool backbuttonpressed = false;
+
 public:
 	void logic(void) final override;
 	void render(void) final override;
