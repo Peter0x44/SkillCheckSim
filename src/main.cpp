@@ -74,7 +74,7 @@ void UnloadAssets(void)
 	UnloadSound(greatSkillCheck);
 	UnloadSound(skillCheckWarning);
 	UnloadSound(failedSkillCheck);
-	UnloadSound(goodSkillCheck); //UNLOADS EVERY SINGLE THING LOADED IN
+	UnloadSound(goodSkillCheck); //UNLOADS EVERY SINGLE THING LOADED IN ASSETS FOLDER
 	UnloadTexture(background);
 	UnloadTexture(achievementsbackground);
 	UnloadTexture(helpbackground);

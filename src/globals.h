@@ -10,4 +10,4 @@ extern Texture2D helpbackground;
 extern Font Roboto;
 
 const int screenWidth = 800;
-const int screenHeight = 450;
+const int screenHeight = 450; //SCREEN SIZES

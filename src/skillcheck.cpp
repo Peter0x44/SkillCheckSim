@@ -27,6 +27,9 @@ void skillcheckscreen::GenerateSkillcheckZone(void)
 
 void skillcheckscreen::logic(void)
 {
+
+	int skillcheckrand = GetRandomValue(1, 3);
+
 	if (modesbuttonpressed)
 	{
 		setnextstate(gamestates::modesscreen); //mode button pressed - screen changes to mode screen
@@ -53,7 +56,7 @@ void skillcheckscreen::logic(void)
 		GenerateSkillcheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
 		timer = GetTime();
-		spawnSkillcheckTimer = timer + 2;
+		spawnSkillcheckTimer = timer + skillcheckrand;
 	}
 
 	if (stopbuttonpressed && skillcheckactive)
@@ -75,7 +78,7 @@ void skillcheckscreen::logic(void)
 		{
 			rotationAngle = spawnLocation;
 			moveSkillCheck = true;
-			spawnSkillcheckTimer = timer + 2; //if statement for when user has started skillcheck and the warning effect is played
+			spawnSkillcheckTimer = timer + skillcheckrand; //if statement for when user has started skillcheck and the warning effect is played
 			GenerateSkillcheckZone();
 			PlaySound(skillCheckWarning);
 		}
