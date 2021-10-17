@@ -31,6 +31,8 @@ int main(void)
 
 	InitWindow(screenWidth, screenHeight, "Skillcheck Simulator"); //MAIN WINDOW
 
+	GuiLoadStyle("../assets/candy.rgs");
+
 	LoadAssets();
 
 	currentstate = new skillcheckscreen();
