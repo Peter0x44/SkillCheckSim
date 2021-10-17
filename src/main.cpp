@@ -18,6 +18,7 @@ Sound skillCheckWarning;
 Sound failedSkillCheck; //MORE VARIABLES
 Texture2D background;
 Texture2D achievementsbackground;
+Texture2D helpbackground;
 Font Roboto;
 
 void LoadAssets(void); //LOAD ASSET FUNCTION, FURTHER DOWN
@@ -56,6 +57,7 @@ int main(void)
 void LoadAssets(void)
 {
 	InitAudioDevice();
+	helpbackground = LoadTexture("../assets/help2.png");
 	achievementsbackground = LoadTexture("../assets/bg3.png"); //LOADS TEXTURES FROM ASSETS
 	background = LoadTexture("../assets/bg.png");
 	greatSkillCheck = LoadSound("../assets/src_audio_great.mp3");
@@ -73,6 +75,7 @@ void UnloadAssets(void)
 	UnloadSound(goodSkillCheck); //UNLOADS EVERY SINGLE THING LOADED IN
 	UnloadTexture(background);
 	UnloadTexture(achievementsbackground);
+	UnloadTexture(helpbackground);
 	UnloadFont(Roboto);
 	CloseAudioDevice();
 }
