@@ -50,7 +50,7 @@ void skillcheckscreen::logic(void)
 		GenerateSkillcheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
 		timer = GetTime();
-		spawnSkillcheckTimer = timer + GetRandomValue(1, 3);
+		spawnSkillcheckTimer = DBL_MAX;
 	}
 
 	if (stopbuttonpressed && skillcheckactive)
@@ -167,7 +167,8 @@ void skillcheckscreen::render(void)
 	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
 	helpbuttonpressed = GuiButton(Help, "help");
 
-	//DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
+	DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
+	DrawText(TextFormat("Timer: %lf", timer), 20, 20, 10, WHITE);
 }
 
 void skillcheckscreen::DrawSkillCheck(void) 
