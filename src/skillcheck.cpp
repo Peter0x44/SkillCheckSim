@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <cmath>
+#include <cfloat>
 #include <iostream>
 #include <extras/raygui.h>
 
@@ -28,8 +29,6 @@ void skillcheckscreen::GenerateSkillcheckZone(void)
 void skillcheckscreen::logic(void)
 {
 
-	int skillcheckrand = GetRandomValue(1, 3);
-	
 	if (achievementspressed)
 	{
 		setnextstate(gamestates::achievementsscreen); //achievement button pressed - screen changes to achievement screen
@@ -51,7 +50,7 @@ void skillcheckscreen::logic(void)
 		GenerateSkillcheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
 		timer = GetTime();
-		spawnSkillcheckTimer = timer + skillcheckrand;
+		spawnSkillcheckTimer = timer + GetRandomValue(1, 3);
 	}
 
 	if (stopbuttonpressed && skillcheckactive)
@@ -73,7 +72,7 @@ void skillcheckscreen::logic(void)
 		{
 			rotationAngle = spawnLocation;
 			moveSkillCheck = true;
-			spawnSkillcheckTimer = timer + skillcheckrand; //if statement for when user has started skillcheck and the warning effect is played
+			spawnSkillcheckTimer = DBL_MAX;
 			GenerateSkillcheckZone();
 			PlaySound(skillCheckWarning);
 		}
@@ -117,6 +116,7 @@ void skillcheckscreen::logic(void)
 				combo = 0;
 				moveSkillCheck = false;
 			}
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 3);
 
 		}
 
@@ -166,6 +166,8 @@ void skillcheckscreen::render(void)
 
 	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
 	helpbuttonpressed = GuiButton(Help, "help");
+
+	//DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
 }
 
 void skillcheckscreen::DrawSkillCheck(void) 
