@@ -19,9 +19,8 @@ private:
 	const int spawnZone2 = -270;
 	const Rectangle startbutton = { middle.x, 340, 100, 50 };
 	const Rectangle stopbutton = { middle.x - 100, 340, 100, 50 };
-	const Rectangle achievbutton = { 10, 224, 100, 50 };
-	const Rectangle ModesButton = { 10 , 279, 100 ,50 }; //A LOT OF VARIABLES
-	const Rectangle Help = { 10 , 334, 100 ,50 };
+	const Rectangle achievbutton = { 10, 224, 100, 50 }; //A LOT OF VARIABLES
+	const Rectangle Help = { 10 , 279, 100 ,50 };
 	bool startbuttonpressed = false;
 	bool stopbuttonpressed = false;
 	bool achievementspressed = false; //VARIABLES FOR WHEN BUTTONS ARE PRESSED
@@ -34,6 +33,9 @@ private:
 	int score = 0;
 	int combo = 0; //SCORE VARIABLES
 	int missed = 0;
+
+	int guiDropdownboxActive = 0;
+	bool guiDropdownboxEditmode = false;
 
 	Vector2 greatSkillCheckZone = {0, 0};
 	Vector2 goodSkillCheckZone = {0, 0}; //VARIABLES FOR SKILL CHECK ZONES

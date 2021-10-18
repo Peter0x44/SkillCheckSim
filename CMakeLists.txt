@@ -22,8 +22,6 @@ add_executable(SkillCheckSimulator
 	src/globals.h
 	src/achievements.cpp
 	src/achievements.h
-	src/modes.cpp
-	src/modes.h
 	src/help.cpp
 	src/help.h
 )

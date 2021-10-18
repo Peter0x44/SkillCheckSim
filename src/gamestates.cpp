@@ -1,7 +1,6 @@
 #include "gamestates.h"
 #include "skillcheck.h"
 #include "achievements.h"
-#include "modes.h"
 #include "help.h"
 
 extern gamestate* currentstate;
@@ -22,9 +21,6 @@ void changestate(void)
 		case gamestates::achievementsscreen:
 			currentstate = new achievementscreen();
 			break; //EACH NEW SCREEN, USING OOP
-		case gamestates::modesscreen:
-			currentstate = new modesscreen();
-			break;
 		case gamestates::helpscreen:
 			currentstate = new helpscreen();
 			break;

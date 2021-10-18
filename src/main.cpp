@@ -31,7 +31,7 @@ int main(void)
 
 	InitWindow(screenWidth, screenHeight, "Skillcheck Simulator"); //MAIN WINDOW
 
-	GuiLoadStyle("../assets/candy.rgs");
+	//GuiLoadStyle("../assets/candy.rgs");
 
 	LoadAssets();
 
@@ -67,6 +67,8 @@ void LoadAssets(void)
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
 	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
 	Roboto = LoadFont("../assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
+	GuiSetFont(Roboto);
+	GuiSetStyle(DEFAULT, TEXT_SIZE, 15);
 }
 
 void UnloadAssets(void)

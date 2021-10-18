@@ -29,11 +29,6 @@ void skillcheckscreen::logic(void)
 {
 
 	int skillcheckrand = GetRandomValue(1, 3);
-
-	if (modesbuttonpressed)
-	{
-		setnextstate(gamestates::modesscreen); //mode button pressed - screen changes to mode screen
-	}
 	
 	if (achievementspressed)
 	{
@@ -154,10 +149,22 @@ void skillcheckscreen::render(void)
 
 	DrawSkillCheck(); // Draws the skill check
 
+	if (GuiDropdownBox(Rectangle{ 650,65,130,30 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &guiDropdownboxActive, guiDropdownboxEditmode)) 
+	{
+		guiDropdownboxEditmode = !guiDropdownboxEditmode;
+	}
+
+	//printf("%d\n", guiDropdownboxActive);
+
+	if (skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
 	startbuttonpressed = GuiButton(startbutton, "Start");
+    GuiSetState(GUI_STATE_NORMAL);
+
+	if (!skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
 	stopbuttonpressed = GuiButton(stopbutton, "Stop");
+	GuiSetState(GUI_STATE_NORMAL);
+
 	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
-	modesbuttonpressed = GuiButton(ModesButton, "Modes");
 	helpbuttonpressed = GuiButton(Help, "help");
 }
 
