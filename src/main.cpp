@@ -16,9 +16,12 @@ Sound goodSkillCheck;
 Sound greatSkillCheck;
 Sound skillCheckWarning;
 Sound failedSkillCheck; //MORE VARIABLES
+Sound Click;
+
 Texture2D background;
 Texture2D achievementsbackground;
 Texture2D helpbackground;
+
 Font Roboto;
 
 void LoadAssets(void); //LOAD ASSET FUNCTION, FURTHER DOWN
@@ -66,9 +69,15 @@ void LoadAssets(void)
 	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
 	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
+	Click = LoadSound("../assets/coin.wav");
+	
 	Roboto = LoadFont("../assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
+	GuiLoadStyle("../assets/terminal.rgs");
 	GuiSetFont(Roboto);
-	GuiSetStyle(DEFAULT, TEXT_SIZE, 15);
+	GuiSetStyle(DEFAULT, TEXT_SIZE, 22);
+
+	Image icon = LoadImage("../assets/bg.png");
+	SetWindowIcon(icon);
 }
 
 void UnloadAssets(void)
@@ -77,9 +86,12 @@ void UnloadAssets(void)
 	UnloadSound(skillCheckWarning);
 	UnloadSound(failedSkillCheck);
 	UnloadSound(goodSkillCheck); //UNLOADS EVERY SINGLE THING LOADED IN ASSETS FOLDER
+	UnloadSound(Click);
+	
 	UnloadTexture(background);
 	UnloadTexture(achievementsbackground);
 	UnloadTexture(helpbackground);
+
 	UnloadFont(Roboto);
 	CloseAudioDevice();
 }

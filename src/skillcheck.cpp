@@ -12,6 +12,7 @@ skillcheckscreen::skillcheckscreen(void)
 {
 	rotationAngle = spawnLocation;
 	moveSkillCheck = false;
+	GuiLoadStyle("../assets/terminal.rgs");
 }
 
 skillcheckscreen::~skillcheckscreen(void)
@@ -28,14 +29,17 @@ void skillcheckscreen::GenerateSkillcheckZone(void)
 
 void skillcheckscreen::logic(void)
 {
+	
 
 	if (achievementspressed)
 	{
+		PlaySound(Click);
 		setnextstate(gamestates::achievementsscreen); //achievement button pressed - screen changes to achievement screen
 	}
 
 	if (helpbuttonpressed)
 	{
+		PlaySound(Click);
 		setnextstate(gamestates::helpscreen); //help button pressed - screen changes to help screen
 	}
 
@@ -149,9 +153,10 @@ void skillcheckscreen::render(void)
 
 	DrawSkillCheck(); // Draws the skill check
 
-	if (GuiDropdownBox(Rectangle{ 650,65,130,30 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &guiDropdownboxActive, guiDropdownboxEditmode)) 
+	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &gameMode, guiDropdownboxEditmode)) 
 	{
 		guiDropdownboxEditmode = !guiDropdownboxEditmode;
+		PlaySound(Click);
 	}
 
 	//printf("%d\n", guiDropdownboxActive);

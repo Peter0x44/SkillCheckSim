@@ -22,7 +22,7 @@ void achievementscreen::render()
 	backbuttonpressed = GuiButton(backbutton, "Back"); //BACK BUTTON DRAWN
 	for (int i = 0; i < 8; ++i) //CYCLES THROUGH ARRAY
 	{
-		DrawText(achievements[i], 45, 55 + i * 25, 20, BLACK); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
+		DrawTextEx(Roboto, achievements[i], Vector2{45, float(55 + i * 35)}, 30, 1, BLACK); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 	}
 	//DrawTexture(achievementsbackground, 0, 0, WHITE);
 }
@@ -31,6 +31,7 @@ void achievementscreen::logic()
 {
 	if (backbuttonpressed) 
 	{
+		PlaySound(Click);
 		setnextstate(gamestates::skillcheckscreen); //changes screen back to skillcheckscreen
 	}
 
