@@ -72,10 +72,10 @@ void LoadAssets(void)
 	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
 	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
-	DBDClick = LoadSound("../assets/0086.mp3");
-	DBDClick2 = LoadSound("../assets/0100.mp3"); //ALL SOUNDS FOR BUTTONS
-	DBDClick3 = LoadSound("../assets/0019.mp3");
-	DBDClick4 = LoadSound("../assets/0009.mp3");
+	DBDClick = LoadSound("../assets/buttonclick1.mp3");
+	DBDClick2 = LoadSound("../assets/buttonclick2.mp3"); //ALL SOUNDS FOR BUTTONS
+	DBDClick3 = LoadSound("../assets/buttonclick3.mp3");
+	DBDClick4 = LoadSound("../assets/buttonclick4.mp3");
 
 	Roboto = LoadFont("../assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
 	GuiLoadStyle("../assets/terminal.rgs");
