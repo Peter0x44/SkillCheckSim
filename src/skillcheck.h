@@ -10,7 +10,13 @@ class skillcheckscreen: public gamestate
 private:
 	void DrawSkillCheck(void); //DRAW SKILL CHECK FUNCTION
 
+	void DrawHexRuinSkillCheck(void);
+
 	void GenerateSkillcheckZone(void); //GENERATION SKILL CHECK FUNCTION
+
+	void NormalSkillCheck(void); // NORMAL SKILL CHECK
+
+	void HexRuin(void); //HEX RUIN SKILL CHECK
 
 	Vector2 middle = { screenWidth / 2, screenHeight / 2 };
 
@@ -25,7 +31,6 @@ private:
 	bool stopbuttonpressed = false;
 	bool achievementspressed = false; //VARIABLES FOR WHEN BUTTONS ARE PRESSED
 	bool skillcheckactive = false;
-	bool modesbuttonpressed = false;
 	bool helpbuttonpressed = false;
 
 	const int radius = 100; //RADIUS OF CIRCLE

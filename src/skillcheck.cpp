@@ -29,7 +29,17 @@ void skillcheckscreen::GenerateSkillcheckZone(void)
 
 void skillcheckscreen::logic(void)
 {
-	
+
+	switch (gameMode)
+	{
+	case 0:
+		NormalSkillCheck();
+		break;
+	case 1:
+		HexRuin();
+		break;
+	}
+
 
 	if (achievementspressed)
 	{
@@ -42,6 +52,181 @@ void skillcheckscreen::logic(void)
 		PlaySound(DBDClick2);
 		setnextstate(gamestates::helpscreen); //help button pressed - screen changes to help screen
 	}
+
+}
+
+void skillcheckscreen::render(void)
+{
+	DrawTexture(background, 0, 0, WHITE);
+
+	DrawTextEx(Roboto, "Skill Check Simulator", Vector2{ (float)screenWidth - 120 - MeasureTextEx(Roboto, "Skill Check Simulator", 14, 1).x , 10 }, 28, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("X: %d", GetMouseX()), Vector2{ 10, 160 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("y: %d", GetMouseY()), Vector2{ 10, 190 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("rotationAngle: %.0f", rotationAngle), Vector2{ 10, 10 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), Vector2{ 10, 40 }, 20, 1, WHITE); // Drawing all text to the screen
+	DrawTextEx(Roboto, TextFormat("Score: %d", score), Vector2{ 10, 70 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("Combo: %d", combo), Vector2{ 10, 100 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("Missed: %d", missed), Vector2{ 10, 130 }, 20, 1, WHITE);
+	
+
+	//DrawSkillCheck(); // Draws the skill check
+
+	if (gameMode == 0) {
+		DrawSkillCheck();
+	}
+
+	if (gameMode == 1) {
+		DrawHexRuinSkillCheck();
+	}
+
+
+	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &gameMode, guiDropdownboxEditmode)) 
+	{
+		guiDropdownboxEditmode = !guiDropdownboxEditmode;
+		//PlaySound(DBDClick3);
+	}
+
+	//printf("%d\n", gameMode);
+
+	if (skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
+	startbuttonpressed = GuiButton(startbutton, "Start");
+    GuiSetState(GUI_STATE_NORMAL);
+
+	if (!skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
+	stopbuttonpressed = GuiButton(stopbutton, "Stop");
+	GuiSetState(GUI_STATE_NORMAL);
+
+	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
+	helpbuttonpressed = GuiButton(Help, "help");
+
+	//DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
+	//DrawText(TextFormat("Timer: %lf", timer), 20, 20, 10, WHITE);
+
+	DrawText(TextFormat("gameMode: %d", gameMode), 50, 387, 20, WHITE);
+}
+
+void skillcheckscreen::DrawSkillCheck(void) 
+{
+	DrawCircleLines(middle.x, middle.y, 100, WHITE);
+	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, WHITE);
+	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, RED); // Drawing of main circle and needle
+	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
+	DrawLineEx(
+		middle,
+		Vector2
+		{
+			middle.x + cosf(rotationAngle * DEG2RAD) * radius,
+			middle.y - sinf(rotationAngle * DEG2RAD) * radius //drawing correct lines
+		},
+		5.0f,
+		RED
+	);
+}
+
+void skillcheckscreen::DrawHexRuinSkillCheck(void)
+{
+	DrawCircleLines(middle.x, middle.y, 100, WHITE);
+	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, RED);
+	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
+	DrawLineEx(
+		middle,
+		Vector2
+		{
+			middle.x + cosf(rotationAngle * DEG2RAD) * radius,
+			middle.y - sinf(rotationAngle * DEG2RAD) * radius //drawing correct lines
+		},
+		5.0f,
+		RED
+	);
+}
+
+void skillcheckscreen::HexRuin(void)
+{
+	if (startbuttonpressed && !skillcheckactive)
+	{
+		skillcheckactive = true;
+		moveSkillCheck = true;
+		score = 0;
+		combo = 0; // score and combo is set back to 0 and the skillcheck starts to move
+		missed = 0; // Main IF statement for when skillcheck start button is pressed
+		rotationAngle = spawnLocation;
+		rotationAngle = spawnLocation;
+		GenerateSkillcheckZone(); //Generation Skillcheck function
+		PlaySound(skillCheckWarning);
+		timer = GetTime();
+		spawnSkillcheckTimer = DBL_MAX;
+	}
+
+	if (stopbuttonpressed && skillcheckactive)
+	{
+		skillcheckactive = false;
+		moveSkillCheck = false;
+		rotationAngle = spawnLocation; //When stop button is pressed skill check stops moving and zones are set back to 0,0
+		greatSkillCheckZone = { 0, 0 };
+		goodSkillCheckZone = { 0, 0 };
+	}
+
+	if (skillcheckactive)
+	{
+		timer = GetTime();
+
+		middle = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+
+		if (timer > spawnSkillcheckTimer)
+		{
+			rotationAngle = spawnLocation;
+			moveSkillCheck = true;
+			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
+			GenerateSkillcheckZone();
+			PlaySound(skillCheckWarning);
+		}
+
+
+		if (rotationAngle < -270.0f)
+		{
+			if (moveSkillCheck)
+				++missed;
+			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore missed goes up by 1 and rotationangle is set back to start
+			rotationAngle = spawnLocation;
+			PlaySound(failedSkillCheck);
+			combo = 0;
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+		}
+		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
+		{
+			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
+			{
+				score = score + 1;
+				score += combo;
+				combo = combo + 1; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+				PlaySound(greatSkillCheck);
+				moveSkillCheck = false;
+			}
+			else
+			{
+				if (moveSkillCheck)
+				{
+					++missed;
+					PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
+				}
+				combo = 0;
+				moveSkillCheck = false;
+			}
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+
+		}
+
+		if (moveSkillCheck)
+		{
+			rotationAngle -= GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
+		}
+	}
+
+}
+
+
+void skillcheckscreen::NormalSkillCheck(void)
+{
 
 	if (startbuttonpressed && !skillcheckactive)
 	{
@@ -62,8 +247,8 @@ void skillcheckscreen::logic(void)
 		skillcheckactive = false;
 		moveSkillCheck = false;
 		rotationAngle = spawnLocation; //When stop button is pressed skill check stops moving and zones are set back to 0,0
-		greatSkillCheckZone = {0, 0};
-		goodSkillCheckZone = {0, 0};
+		greatSkillCheckZone = { 0, 0 };
+		goodSkillCheckZone = { 0, 0 };
 	}
 
 	if (skillcheckactive)
@@ -76,7 +261,7 @@ void skillcheckscreen::logic(void)
 		{
 			rotationAngle = spawnLocation;
 			moveSkillCheck = true;
-			spawnSkillcheckTimer = DBL_MAX;
+			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
 			GenerateSkillcheckZone();
 			PlaySound(skillCheckWarning);
 		}
@@ -90,7 +275,7 @@ void skillcheckscreen::logic(void)
 			rotationAngle = spawnLocation;
 			PlaySound(failedSkillCheck);
 			combo = 0;
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 3);
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
 		{
@@ -120,7 +305,7 @@ void skillcheckscreen::logic(void)
 				combo = 0;
 				moveSkillCheck = false;
 			}
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 3);
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 
 		}
 
@@ -128,68 +313,5 @@ void skillcheckscreen::logic(void)
 		{
 			rotationAngle -= GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
 		}
-
-		if (buttonclicked)
-		{
-			PlaySound(greatSkillCheck);
-			buttonclicked = false;
-		}
 	}
-}
-
-void skillcheckscreen::render(void)
-{
-	DrawTexture(background, 0, 0, WHITE);
-
-	DrawTextEx(Roboto, "Skill Check Simulator", Vector2{ (float)screenWidth - 120 - MeasureTextEx(Roboto, "Skill Check Simulator", 14, 1).x , 10 }, 28, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("X: %d", GetMouseX()), Vector2{ 10, 160 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("y: %d", GetMouseY()), Vector2{ 10, 190 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("rotationAngle: %.0f", rotationAngle), Vector2{ 10, 10 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), Vector2{ 10, 40 }, 20, 1, WHITE); // Drawing all text to the screen
-	DrawTextEx(Roboto, TextFormat("Score: %d", score), Vector2{ 10, 70 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("Combo: %d", combo), Vector2{ 10, 100 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("Missed: %d", missed), Vector2{ 10, 130 }, 20, 1, WHITE);
-
-
-	DrawSkillCheck(); // Draws the skill check
-
-	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &gameMode, guiDropdownboxEditmode)) 
-	{
-		guiDropdownboxEditmode = !guiDropdownboxEditmode;
-		PlaySound(DBDClick3);
-	}
-
-	//printf("%d\n", guiDropdownboxActive);
-
-	if (skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
-	startbuttonpressed = GuiButton(startbutton, "Start");
-    GuiSetState(GUI_STATE_NORMAL);
-
-	if (!skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
-	stopbuttonpressed = GuiButton(stopbutton, "Stop");
-	GuiSetState(GUI_STATE_NORMAL);
-
-	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
-	helpbuttonpressed = GuiButton(Help, "help");
-
-	//DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
-	//DrawText(TextFormat("Timer: %lf", timer), 20, 20, 10, WHITE);
-}
-
-void skillcheckscreen::DrawSkillCheck(void) 
-{
-	DrawCircleLines(middle.x, middle.y, 100, WHITE);
-	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, WHITE);
-	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, RED); // Drawing of main circle and needle
-	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
-	DrawLineEx(
-		middle,
-		Vector2
-		{
-			middle.x + cosf(rotationAngle * DEG2RAD) * radius,
-			middle.y - sinf(rotationAngle * DEG2RAD) * radius //drawing correct lines
-		},
-		5.0f,
-		RED
-	);
 }
