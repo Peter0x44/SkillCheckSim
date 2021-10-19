@@ -16,7 +16,10 @@ Sound goodSkillCheck;
 Sound greatSkillCheck;
 Sound skillCheckWarning;
 Sound failedSkillCheck; //MORE VARIABLES
-Sound Click;
+Sound DBDClick;
+Sound DBDClick2;
+Sound DBDClick3;
+Sound DBDClick4;
 
 Texture2D background;
 Texture2D achievementsbackground;
@@ -69,8 +72,11 @@ void LoadAssets(void)
 	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
 	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
-	Click = LoadSound("../assets/coin.wav");
-	
+	DBDClick = LoadSound("../assets/0086.mp3");
+	DBDClick2 = LoadSound("../assets/0100.mp3"); //ALL SOUNDS FOR BUTTONS
+	DBDClick3 = LoadSound("../assets/0019.mp3");
+	DBDClick4 = LoadSound("../assets/0009.mp3");
+
 	Roboto = LoadFont("../assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
 	GuiLoadStyle("../assets/terminal.rgs");
 	GuiSetFont(Roboto);
@@ -86,7 +92,10 @@ void UnloadAssets(void)
 	UnloadSound(skillCheckWarning);
 	UnloadSound(failedSkillCheck);
 	UnloadSound(goodSkillCheck); //UNLOADS EVERY SINGLE THING LOADED IN ASSETS FOLDER
-	UnloadSound(Click);
+	UnloadSound(DBDClick);
+	UnloadSound(DBDClick2); //ALL SOUNDS FOR BUTTONS
+	UnloadSound(DBDClick3);
+	UnloadSound(DBDClick4);
 	
 	UnloadTexture(background);
 	UnloadTexture(achievementsbackground);

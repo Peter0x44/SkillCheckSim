@@ -27,7 +27,7 @@ void helpscreen::logic()
 {
 	if (backbuttonpressed)
 	{
-		PlaySound(Click);
+		PlaySound(DBDClick4);
 		setnextstate(gamestates::skillcheckscreen); //SETS SCREEN BACK TO SKILL CHECK SCREEN
 	}
 

@@ -33,13 +33,13 @@ void skillcheckscreen::logic(void)
 
 	if (achievementspressed)
 	{
-		PlaySound(Click);
+		PlaySound(DBDClick);
 		setnextstate(gamestates::achievementsscreen); //achievement button pressed - screen changes to achievement screen
 	}
 
 	if (helpbuttonpressed)
 	{
-		PlaySound(Click);
+		PlaySound(DBDClick2);
 		setnextstate(gamestates::helpscreen); //help button pressed - screen changes to help screen
 	}
 
@@ -156,7 +156,7 @@ void skillcheckscreen::render(void)
 	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &gameMode, guiDropdownboxEditmode)) 
 	{
 		guiDropdownboxEditmode = !guiDropdownboxEditmode;
-		PlaySound(Click);
+		PlaySound(DBDClick3);
 	}
 
 	//printf("%d\n", guiDropdownboxActive);

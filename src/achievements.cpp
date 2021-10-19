@@ -31,7 +31,7 @@ void achievementscreen::logic()
 {
 	if (backbuttonpressed) 
 	{
-		PlaySound(Click);
+		PlaySound(DBDClick4);
 		setnextstate(gamestates::skillcheckscreen); //changes screen back to skillcheckscreen
 	}
 
