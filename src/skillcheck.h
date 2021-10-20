@@ -8,15 +8,17 @@
 class skillcheckscreen: public gamestate
 {
 private:
-	void DrawSkillCheck(void); //DRAW SKILL CHECK FUNCTION
-
+	void DrawNormalSkillCheck(void); //DRAW SKILL CHECK FUNCTION
 	void DrawHexRuinSkillCheck(void);
+	void DrawDecisiveStrikeSkillCheck(void);
 
-	void GenerateSkillcheckZone(void); //GENERATION SKILL CHECK FUNCTION
+	void GenerateNormalSkillCheckZone(void); //GENERATION SKILL CHECK FUNCTION
+	void GenerateHexRuinSkillCheckZone(void);
+	void GenerateDecisiveStrikeSkillCheckZone(void);
 
 	void NormalSkillCheck(void); // NORMAL SKILL CHECK
-
-	void HexRuin(void); //HEX RUIN SKILL CHECK
+	void HexRuinSkillCheck(void); //HEX RUIN SKILL CHECK
+	void DecisiveStrikeSkillCheck(void);
 
 	Vector2 middle = { screenWidth / 2, screenHeight / 2 };
 
@@ -57,7 +59,6 @@ public:
 
 	skillcheckscreen(void); //SKILL CHECK SCREEN
 	~skillcheckscreen(void) final override;
-
 };
 
 extern Vector2 middle;

@@ -8,6 +8,14 @@
 #include "gamestates.h"
 #include "skillcheck.h"
 
+enum gamemodes
+{
+	Normal = 0,
+	Ruin,
+	DS,
+	Unnerving
+};
+
 skillcheckscreen::skillcheckscreen(void)
 {
 	rotationAngle = spawnLocation;
@@ -20,11 +28,24 @@ skillcheckscreen::~skillcheckscreen(void)
 
 }
 
-void skillcheckscreen::GenerateSkillcheckZone(void)
+void skillcheckscreen::GenerateNormalSkillCheckZone(void)
 {
 	int rand = GetRandomValue(spawnZone1, spawnZone2);
 	greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
 	goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+}
+
+void skillcheckscreen::GenerateHexRuinSkillCheckZone(void)
+{
+	int rand = GetRandomValue(spawnZone1, spawnZone2);
+	greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
+	goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+}
+
+void skillcheckscreen::GenerateDecisiveStrikeSkillCheckZone(void)
+{
+	int rand = GetRandomValue(spawnZone1, spawnZone2);
+	greatSkillCheckZone = { (float)rand, (float)rand + 20.0f };   //Zones for where each skillcheck can spawn
 }
 
 void skillcheckscreen::logic(void)
@@ -32,14 +53,16 @@ void skillcheckscreen::logic(void)
 
 	switch (gameMode)
 	{
-	case 0:
+	case Normal:
 		NormalSkillCheck();
 		break;
-	case 1:
-		HexRuin();
+	case Ruin:
+		HexRuinSkillCheck();
+		break;
+	case DS:
+		DecisiveStrikeSkillCheck();
 		break;
 	}
-
 
 	if (achievementspressed)
 	{
@@ -69,16 +92,20 @@ void skillcheckscreen::render(void)
 	DrawTextEx(Roboto, TextFormat("Missed: %d", missed), Vector2{ 10, 130 }, 20, 1, WHITE);
 	
 
-	//DrawSkillCheck(); // Draws the skill check
-
-	if (gameMode == 0) {
-		DrawSkillCheck();
-	}
-
-	if (gameMode == 1) {
+	switch (gameMode)
+	{
+	case Normal:
+		DrawNormalSkillCheck();
+		break;
+	case Ruin:
 		DrawHexRuinSkillCheck();
+		break;
+	case DS:
+		DrawDecisiveStrikeSkillCheck();
+		break;
 	}
 
+	if (skillcheckactive) GuiLock();
 
 	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &gameMode, guiDropdownboxEditmode)) 
 	{
@@ -86,11 +113,11 @@ void skillcheckscreen::render(void)
 		//PlaySound(DBDClick3);
 	}
 
-	//printf("%d\n", gameMode);
+	if (skillcheckactive) GuiUnlock();
 
 	if (skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
 	startbuttonpressed = GuiButton(startbutton, "Start");
-    GuiSetState(GUI_STATE_NORMAL);
+	GuiSetState(GUI_STATE_NORMAL);
 
 	if (!skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
 	stopbuttonpressed = GuiButton(stopbutton, "Stop");
@@ -101,15 +128,14 @@ void skillcheckscreen::render(void)
 
 	//DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
 	//DrawText(TextFormat("Timer: %lf", timer), 20, 20, 10, WHITE);
-
-	DrawText(TextFormat("gameMode: %d", gameMode), 50, 387, 20, WHITE);
 }
 
-void skillcheckscreen::DrawSkillCheck(void) 
+void skillcheckscreen::DrawNormalSkillCheck(void)
 {
 	DrawCircleLines(middle.x, middle.y, 100, WHITE);
 	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, WHITE);
-	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, RED); // Drawing of main circle and needle
+	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, BLACK); // Drawing of main circle and needle
+	DrawRingLines(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, WHITE); // Drawing of main circle and needle
 	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
 	DrawLineEx(
 		middle,
@@ -127,6 +153,8 @@ void skillcheckscreen::DrawHexRuinSkillCheck(void)
 {
 	DrawCircleLines(middle.x, middle.y, 100, WHITE);
 	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, RED);
+	DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, BLACK); // Drawing of main circle and needle
+	DrawRingLines(middle, radius - 5, radius + 5, goodSkillCheckZone.x - 270.0f, goodSkillCheckZone.y - 270.0f, 15, RED); // Drawing of main circle and needle
 	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
 	DrawLineEx(
 		middle,
@@ -140,94 +168,26 @@ void skillcheckscreen::DrawHexRuinSkillCheck(void)
 	);
 }
 
-void skillcheckscreen::HexRuin(void)
+void skillcheckscreen::DrawDecisiveStrikeSkillCheck(void)
 {
-	if (startbuttonpressed && !skillcheckactive)
-	{
-		skillcheckactive = true;
-		moveSkillCheck = true;
-		score = 0;
-		combo = 0; // score and combo is set back to 0 and the skillcheck starts to move
-		missed = 0; // Main IF statement for when skillcheck start button is pressed
-		rotationAngle = spawnLocation;
-		rotationAngle = spawnLocation;
-		GenerateSkillcheckZone(); //Generation Skillcheck function
-		PlaySound(skillCheckWarning);
-		timer = GetTime();
-		spawnSkillcheckTimer = DBL_MAX;
-	}
-
-	if (stopbuttonpressed && skillcheckactive)
-	{
-		skillcheckactive = false;
-		moveSkillCheck = false;
-		rotationAngle = spawnLocation; //When stop button is pressed skill check stops moving and zones are set back to 0,0
-		greatSkillCheckZone = { 0, 0 };
-		goodSkillCheckZone = { 0, 0 };
-	}
-
-	if (skillcheckactive)
-	{
-		timer = GetTime();
-
-		middle = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
-
-		if (timer > spawnSkillcheckTimer)
+	DrawCircleLines(middle.x, middle.y, 100, WHITE);
+	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, WHITE);
+	DrawRingLines(middle, radius - 5, radius + 5, greatSkillCheckZone.x - 270.0f, greatSkillCheckZone.y - 270.0f, 15, BLACK);
+	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
+	DrawLineEx(
+		middle,
+		Vector2
 		{
-			rotationAngle = spawnLocation;
-			moveSkillCheck = true;
-			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
-			GenerateSkillcheckZone();
-			PlaySound(skillCheckWarning);
-		}
-
-
-		if (rotationAngle < -270.0f)
-		{
-			if (moveSkillCheck)
-				++missed;
-			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore missed goes up by 1 and rotationangle is set back to start
-			rotationAngle = spawnLocation;
-			PlaySound(failedSkillCheck);
-			combo = 0;
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
-		}
-		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
-		{
-			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
-			{
-				score = score + 1;
-				score += combo;
-				combo = combo + 1; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
-				PlaySound(greatSkillCheck);
-				moveSkillCheck = false;
-			}
-			else
-			{
-				if (moveSkillCheck)
-				{
-					++missed;
-					PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
-				}
-				combo = 0;
-				moveSkillCheck = false;
-			}
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
-
-		}
-
-		if (moveSkillCheck)
-		{
-			rotationAngle -= GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
-		}
-	}
-
+			middle.x + cosf(rotationAngle * DEG2RAD) * radius,
+			middle.y - sinf(rotationAngle * DEG2RAD) * radius //drawing correct lines
+		},
+		5.0f,
+		RED
+	);
 }
-
 
 void skillcheckscreen::NormalSkillCheck(void)
 {
-
 	if (startbuttonpressed && !skillcheckactive)
 	{
 		skillcheckactive = true;
@@ -236,7 +196,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 		combo = 0; // score and combo is set back to 0 and the skillcheck starts to move
 		missed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = spawnLocation;
-		GenerateSkillcheckZone(); //Generation Skillcheck function
+		GenerateNormalSkillCheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
 		timer = GetTime();
 		spawnSkillcheckTimer = DBL_MAX;
@@ -262,7 +222,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 			rotationAngle = spawnLocation;
 			moveSkillCheck = true;
 			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
-			GenerateSkillcheckZone();
+			GenerateNormalSkillCheckZone();
 			PlaySound(skillCheckWarning);
 		}
 
@@ -315,3 +275,172 @@ void skillcheckscreen::NormalSkillCheck(void)
 		}
 	}
 }
+
+void skillcheckscreen::HexRuinSkillCheck(void)
+{
+	if (startbuttonpressed && !skillcheckactive)
+	{
+		skillcheckactive = true;
+		moveSkillCheck = true;
+		score = 0;
+		combo = 0; // score and combo is set back to 0 and the skillcheck starts to move
+		missed = 0; // Main IF statement for when skillcheck start button is pressed
+		rotationAngle = spawnLocation;
+		rotationAngle = spawnLocation;
+		GenerateHexRuinSkillCheckZone(); //Generation Skillcheck function
+		PlaySound(skillCheckWarning);
+		timer = GetTime();
+		spawnSkillcheckTimer = DBL_MAX;
+	}
+
+	if (stopbuttonpressed && skillcheckactive)
+	{
+		skillcheckactive = false;
+		moveSkillCheck = false;
+		rotationAngle = spawnLocation; //When stop button is pressed skill check stops moving and zones are set back to 0,0
+		greatSkillCheckZone = { 0, 0 };
+		goodSkillCheckZone = { 0, 0 };
+	}
+
+	if (skillcheckactive)
+	{
+		timer = GetTime();
+
+		middle = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+
+		if (timer > spawnSkillcheckTimer)
+		{
+			rotationAngle = spawnLocation;
+			moveSkillCheck = true;
+			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
+			GenerateHexRuinSkillCheckZone();
+			PlaySound(skillCheckWarning);
+		}
+
+
+		if (rotationAngle < -270.0f)
+		{
+			if (moveSkillCheck)
+				++missed;
+			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore missed goes up by 1 and rotationangle is set back to start
+			rotationAngle = spawnLocation;
+			PlaySound(failedSkillCheck);
+			combo = 0;
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+		}
+		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
+		{
+			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
+			{
+				score = score + 1;
+				score += combo;
+				combo = combo + 1; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+				PlaySound(greatSkillCheck);
+				moveSkillCheck = false;
+			}
+			else
+			{
+				if (moveSkillCheck)
+				{
+					++missed;
+					PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
+				}
+				combo = 0;
+				moveSkillCheck = false;
+			}
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+
+		}
+
+		if (moveSkillCheck)
+		{
+			rotationAngle -= GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
+		}
+	}
+
+}
+
+void skillcheckscreen::DecisiveStrikeSkillCheck(void)
+{
+	if (startbuttonpressed && !skillcheckactive)
+	{
+		skillcheckactive = true;
+		moveSkillCheck = true;
+		score = 0;
+		combo = 0; // score and combo is set back to 0 and the skillcheck starts to move
+		missed = 0; // Main IF statement for when skillcheck start button is pressed
+		rotationAngle = spawnLocation;
+		rotationAngle = spawnLocation;
+		GenerateDecisiveStrikeSkillCheckZone(); //Generation Skillcheck function
+		PlaySound(skillCheckWarning);
+		timer = GetTime();
+		spawnSkillcheckTimer = DBL_MAX;
+	}
+
+	if (stopbuttonpressed && skillcheckactive)
+	{
+		skillcheckactive = false;
+		moveSkillCheck = false;
+		rotationAngle = spawnLocation; //When stop button is pressed skill check stops moving and zones are set back to 0,0
+		greatSkillCheckZone = { 0, 0 };
+		goodSkillCheckZone = { 0, 0 };
+	}
+
+	if (skillcheckactive)
+	{
+		timer = GetTime();
+
+		middle = { (float)GetScreenWidth() / 2, (float)GetScreenHeight() / 2 };
+
+		if (timer > spawnSkillcheckTimer)
+		{
+			rotationAngle = spawnLocation;
+			moveSkillCheck = true;
+			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
+			GenerateDecisiveStrikeSkillCheckZone();
+			PlaySound(skillCheckWarning);
+		}
+
+
+		if (rotationAngle < -270.0f)
+		{
+			if (moveSkillCheck)
+				++missed;
+			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore missed goes up by 1 and rotationangle is set back to start
+			rotationAngle = spawnLocation;
+			PlaySound(failedSkillCheck);
+			combo = 0;
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+		}
+		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
+		{
+			if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
+			{
+				score = score + 1;
+				score += combo;
+				combo = combo + 1; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+				PlaySound(greatSkillCheck);
+				moveSkillCheck = false;
+			}
+			else
+			{
+				if (moveSkillCheck)
+				{
+					++missed;
+					PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
+				}
+				combo = 0;
+				moveSkillCheck = false;
+			}
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+
+		}
+
+		if (moveSkillCheck)
+		{
+			rotationAngle -= GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
+		}
+	}
+
+}
+
