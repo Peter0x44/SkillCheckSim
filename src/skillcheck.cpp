@@ -12,8 +12,7 @@ enum gamemodes
 {
 	Normal = 0,
 	Ruin,
-	DS,
-	Unnerving
+	DS
 };
 
 skillcheckscreen::skillcheckscreen(void)
@@ -31,21 +30,46 @@ skillcheckscreen::~skillcheckscreen(void)
 void skillcheckscreen::GenerateNormalSkillCheckZone(void)
 {
 	int rand = GetRandomValue(spawnZone1, spawnZone2);
-	greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
-	goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+	if (UnnervingPresence)
+	{
+		
+		greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
+		goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 10 + 30.0f*0.4f };
+	}
+	else
+	{
+		greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
+		goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+	}
 }
 
 void skillcheckscreen::GenerateHexRuinSkillCheckZone(void)
 {
 	int rand = GetRandomValue(spawnZone1, spawnZone2);
-	greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
-	goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+	if (UnnervingPresence)
+	{
+		
+		greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
+		goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 10 + 30.0f*0.4f };
+	}
+	else
+	{
+		greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
+		goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 40.0f };
+	}
 }
 
 void skillcheckscreen::GenerateDecisiveStrikeSkillCheckZone(void)
 {
 	int rand = GetRandomValue(spawnZone1, spawnZone2);
-	greatSkillCheckZone = { (float)rand, (float)rand + 20.0f };   //Zones for where each skillcheck can spawn
+	if (UnnervingPresence)
+	{
+		greatSkillCheckZone = { (float)rand, (float)rand + 20.0f*0.4f };   //Zones for where each skillcheck can spawn
+	}
+	else
+	{
+		greatSkillCheckZone = { (float)rand, (float)rand + 20.0f };   //Zones for where each skillcheck can spawn
+	}
 }
 
 void skillcheckscreen::logic(void)
@@ -107,11 +131,13 @@ void skillcheckscreen::render(void)
 
 	if (skillcheckactive) GuiLock();
 
-	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike;Unnerving Presence", &gameMode, guiDropdownboxEditmode)) 
+	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike", &gameMode, guiDropdownboxEditmode)) 
 	{
 		guiDropdownboxEditmode = !guiDropdownboxEditmode;
 		//PlaySound(DBDClick3);
 	}
+	
+	UnnervingPresence = GuiCheckBox(UnnervingPresenceButton, "Unnerving Presence", UnnervingPresence);
 
 	if (skillcheckactive) GuiUnlock();
 
