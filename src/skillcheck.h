@@ -26,10 +26,12 @@ private:
 	const float doctorSpawnLocation = -270.0f;
 	const float skillCheckLimits = -270.0f;
 	const float doctorSkillCheckLimits = 90.0f;
+
 	const int spawnZone1 = -30; //SPAWN ZONES FOR SKILL CHECKS
 	const int spawnZone2 = -270;
 	const int doctorSpawnZone1 = -150; //SPAWN ZONES FOR SKILL CHECKS
 	const int doctorSpawnZone2 = 90;
+
 	const Rectangle startbutton = { middle.x, 340, 100, 50 };
 	const Rectangle stopbutton = { middle.x - 100, 340, 100, 50 };
 	const Rectangle achievbutton = { 10, 224, 200, 50 }; //A LOT OF VARIABLES

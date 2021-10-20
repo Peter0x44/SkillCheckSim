@@ -255,7 +255,17 @@ void skillcheckscreen::NormalSkillCheck(void)
 		}
 
 
-		if (DoctorSkillCheck && rotationAngle < doctorSkillCheckLimits || !DoctorSkillCheck && rotationAngle > skillCheckLimits) // Player did not even attempt to hit the skill check
+		if (DoctorSkillCheck && rotationAngle > doctorSkillCheckLimits) //|| !DoctorSkillCheck && rotationAngle > skillCheckLimits) // Player did not even attempt to hit the skill check
+		{
+			if (moveSkillCheck)
+				++missed;
+			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore missed goes up by 1 and rotationangle is set back to start
+			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
+			PlaySound(failedSkillCheck);
+			combo = 0;
+			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+		}
+		else if (rotationAngle < skillCheckLimits)
 		{
 			if (moveSkillCheck)
 				++missed;
@@ -269,7 +279,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 		{
 			if (DoctorSkillCheck)
 			{
-				if (rotationAngle < greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
+				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
 					score = score + 25;
 					score += combo;
@@ -298,7 +308,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 			}
 			else
 			{
-				if (rotationAngle > greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
+				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
 					score = score + 25;
 					score += combo;
