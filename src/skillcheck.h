@@ -4,6 +4,12 @@
 #include "gamestates.h"
 #include "globals.h"
 
+struct stats
+{
+	int score = 0;
+	int combo = 0; //SCORE VARIABLES
+	int missed = 0;
+};
 
 class skillcheckscreen: public gamestate
 {
@@ -50,9 +56,7 @@ private:
 
 	const int radius = 100; //RADIUS OF CIRCLE
 
-	int score = 0;
-	int combo = 0; //SCORE VARIABLES
-	int missed = 0;
+	stats scores;
 
 	int gameMode = 0;
 	bool guiDropdownboxEditmode = false;
