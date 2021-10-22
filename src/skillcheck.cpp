@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <cmath>
+#include <fstream>
 #include <cfloat>
 #include <iostream>
 #include <extras/raygui.h>
@@ -20,11 +21,23 @@ skillcheckscreen::skillcheckscreen(void)
 	rotationAngle = spawnLocation;
 	moveSkillCheck = false;
 	GuiLoadStyle("../assets/terminal.rgs");
+
+	std::ifstream file("file.bin", std::ifstream::binary);
+
+	if (file.is_open())
+	{
+		file.read((char*)&scores, sizeof(scores));
+	}
+
 }
 
 skillcheckscreen::~skillcheckscreen(void)
 {
-
+	std::ofstream file("file.bin", std::ofstream::binary);
+	if (file.is_open())
+	{
+		file.write((char*)&scores, sizeof(scores));
+	}
 }
 
 void skillcheckscreen::GenerateNormalSkillCheckZone(void)
@@ -224,9 +237,9 @@ void skillcheckscreen::NormalSkillCheck(void)
 	{
 		skillcheckactive = true;
 		moveSkillCheck = true;
-		scores.score = 0;
-		scores.combo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
-		scores.missed = 0; // Main IF statement for when skillcheck start button is pressed
+		//scores.score = 0;
+		//scores.combo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
+		//scores.missed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 		GenerateNormalSkillCheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
@@ -288,6 +301,8 @@ void skillcheckscreen::NormalSkillCheck(void)
 					scores.score = scores.score + 25;
 					scores.score += scores.combo;
 					scores.combo = scores.combo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.greatskillcheckhit;
+					++scores.maxcombo;
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -296,6 +311,8 @@ void skillcheckscreen::NormalSkillCheck(void)
 					++scores.score;
 					scores.score += scores.combo;
 					++scores.combo;
+					++scores.goodskillcheckhit;
+					++scores.maxcombo;
 					PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
 					moveSkillCheck = false;
 				}
@@ -304,6 +321,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 					if (moveSkillCheck)
 					{
 						++scores.missed;
+						scores.maxcombo = 0;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
 					scores.combo = 0;
@@ -317,6 +335,8 @@ void skillcheckscreen::NormalSkillCheck(void)
 					scores.score = scores.score + 25;
 					scores.score += scores.combo;
 					scores.combo = scores.combo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.greatskillcheckhit;
+					++scores.maxcombo;
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -325,6 +345,8 @@ void skillcheckscreen::NormalSkillCheck(void)
 					++scores.score;
 					scores.score += scores.combo;
 					++scores.combo;
+					++scores.goodskillcheckhit;
+					++scores.maxcombo;
 					PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
 					moveSkillCheck = false;
 				}
@@ -333,6 +355,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 					if (moveSkillCheck)
 					{
 						++scores.missed;
+						scores.maxcombo = 0;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
 					scores.combo = 0;

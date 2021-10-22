@@ -1,12 +1,32 @@
+#include <fstream>
+
 #include <raylib.h>
 #include <extras/raygui.h>
 
 #include "achievements.h"
 #include "globals.h"
+#include "skillcheck.h"
 
 achievementscreen::achievementscreen(void)
 {
+	std::ifstream file("file.bin", std::ifstream::binary);
 
+	if (file.is_open())
+	{
+		file.read((char*)&scores, sizeof(scores));
+	}
+
+	printf("%d:,%d:,%d:", scores.score, scores.combo, scores.missed);
+
+	//if (scores.greatskillcheckhit == 10 && scores.maxcombo == 10) {
+	//	hit10skillchecksinarow = true;
+	//	printf("hello");
+	//}
+
+	//if (scores.goodskillcheckhit == 10 && scores.maxcombo == 10) {
+	//	hit10skillchecksinarow = true;
+	//	printf("hello");
+	//}
 }
 
 achievementscreen::~achievementscreen(void)
@@ -29,11 +49,11 @@ void achievementscreen::render()
 
 void achievementscreen::logic()
 {
+
 	if (backbuttonpressed) 
 	{
 		PlaySound(DBDClick4);
 		setnextstate(gamestates::skillcheckscreen); //changes screen back to skillcheckscreen
 	}
-
 
 }

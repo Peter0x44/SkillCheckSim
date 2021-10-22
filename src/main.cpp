@@ -55,6 +55,10 @@ int main(void)
 		changestate();
 
 	}
+
+	delete currentstate;
+	CloseWindow();
+
 }
 
 

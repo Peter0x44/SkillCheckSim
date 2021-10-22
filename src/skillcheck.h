@@ -9,6 +9,12 @@ struct stats
 	int score = 0;
 	int combo = 0; //SCORE VARIABLES
 	int missed = 0;
+
+	int greatskillcheckhit;
+	int goodskillcheckhit;
+
+	int maxcombo;
+
 };
 
 class skillcheckscreen: public gamestate
