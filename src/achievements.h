@@ -27,14 +27,19 @@ private:
 	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON IS DRAWN
 	bool backbuttonpressed = false; 
 
-	bool hit10skillchecksinarow = false;
-	bool miss50skillchecksinarow = false;
-	bool hit50greatskillchecks = false;
-	bool miss10skillchecksinarow = false;
-	bool hit50greatskillchecksinarow = false;
-	bool hit200greatskillchecksinarow = false;
-	bool hit500greatskillchecksoverall = false;
-	bool questionmark = false;
+	const bool boolforachievements[8] = {
+		false
+	};
+
+	//bool hit10skillchecksinarow = false;
+	//bool miss50skillchecksinarow = false;
+	//bool hit50greatskillchecks = false;
+	//bool miss10skillchecksinarow = false;
+	//bool hit50greatskillchecksinarow = false;
+	//bool hit200greatskillchecksinarow = false;
+	//bool hit500greatskillchecksoverall = false;
+	//bool questionmark = false;
+
 
 
 

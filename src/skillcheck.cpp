@@ -129,20 +129,26 @@ void skillcheckscreen::render(void)
 	DrawTextEx(Roboto, TextFormat("y: %d", GetMouseY()), Vector2{ 10, 190 }, 20, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("rotationAngle: %.0f", rotationAngle), Vector2{ 10, 10 }, 20, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), Vector2{ 10, 40 }, 20, 1, WHITE); // Drawing all text to the screen
-	DrawTextEx(Roboto, TextFormat("Score: %d", scores.score), Vector2{ 10, 70 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("Combo: %d", scores.combo), Vector2{ 10, 100 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("Missed: %d", scores.missed), Vector2{ 10, 130 }, 20, 1, WHITE);
 	
 
 	switch (gameMode)
 	{
 	case Normal:
+		DrawTextEx(Roboto, TextFormat("Score: %d", scores.normalscore), Vector2{ 10, 70 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Combo: %d", scores.normalcombo), Vector2{ 10, 100 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Missed: %d", scores.normalmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
 		DrawNormalSkillCheck();
 		break;
 	case Ruin:
+		DrawTextEx(Roboto, TextFormat("Score: %d", scores.hexscore), Vector2{ 10, 70 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Combo: %d", scores.hexcombo), Vector2{ 10, 100 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Missed: %d", scores.hexmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
 		DrawHexRuinSkillCheck();
 		break;
 	case DS:
+		DrawTextEx(Roboto, TextFormat("Score: %d", scores.dsscore), Vector2{ 10, 70 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Combo: %d", scores.dscombo), Vector2{ 10, 100 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Missed: %d", scores.dsmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
 		DrawDecisiveStrikeSkillCheck();
 		break;
 	}
@@ -275,21 +281,21 @@ void skillcheckscreen::NormalSkillCheck(void)
 		if (DoctorSkillCheck && rotationAngle > doctorSkillCheckLimits) //|| !DoctorSkillCheck && rotationAngle > skillCheckLimits) // Player did not even attempt to hit the skill check
 		{
 			if (moveSkillCheck)
-				++scores.missed;
+				++scores.normalmissed;
 			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore scores.missed goes up by 1 and rotationangle is set back to start
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			PlaySound(failedSkillCheck);
-			scores.combo = 0;
+			scores.normalcombo = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
 		else if (rotationAngle < skillCheckLimits)
 		{
 			if (moveSkillCheck)
-				++scores.missed;
+				++scores.normalmissed;
 			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore scores.missed goes up by 1 and rotationangle is set back to start
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			PlaySound(failedSkillCheck);
-			scores.combo = 0;
+			scores.normalcombo = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
@@ -298,21 +304,21 @@ void skillcheckscreen::NormalSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					scores.score = scores.score + 25;
-					scores.score += scores.combo;
-					scores.combo = scores.combo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					scores.normalscore = scores.normalscore + 25;
+					scores.normalscore += scores.normalcombo;
+					scores.normalcombo = scores.normalcombo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					++scores.greatskillcheckhit;
-					++scores.maxcombo;
+					++scores.normalmaxcombo;
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
 				else if (rotationAngle < goodSkillCheckZone.x && rotationAngle > goodSkillCheckZone.y)
 				{
-					++scores.score;
-					scores.score += scores.combo;
-					++scores.combo;
+					++scores.normalscore;
+					scores.normalscore += scores.normalcombo;
+					++scores.normalcombo;
 					++scores.goodskillcheckhit;
-					++scores.maxcombo;
+					++scores.normalmaxcombo;
 					PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
 					moveSkillCheck = false;
 				}
@@ -320,11 +326,11 @@ void skillcheckscreen::NormalSkillCheck(void)
 				{
 					if (moveSkillCheck)
 					{
-						++scores.missed;
-						scores.maxcombo = 0;
+						++scores.normalmissed;
+						scores.normalmaxcombo = 0;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
-					scores.combo = 0;
+					scores.normalcombo = 0;
 					moveSkillCheck = false;
 				}
 			}
@@ -332,21 +338,21 @@ void skillcheckscreen::NormalSkillCheck(void)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
-					scores.score = scores.score + 25;
-					scores.score += scores.combo;
-					scores.combo = scores.combo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					scores.normalscore = scores.normalscore + 25;
+					scores.normalscore += scores.normalcombo;
+					scores.normalcombo = scores.normalcombo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					++scores.greatskillcheckhit;
-					++scores.maxcombo;
+					++scores.normalmaxcombo;
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
 				else if (rotationAngle > goodSkillCheckZone.x && rotationAngle < goodSkillCheckZone.y)
 				{
-					++scores.score;
-					scores.score += scores.combo;
-					++scores.combo;
+					++scores.normalscore;
+					scores.normalscore += scores.normalcombo;
+					++scores.normalcombo;
 					++scores.goodskillcheckhit;
-					++scores.maxcombo;
+					++scores.normalmaxcombo;
 					PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
 					moveSkillCheck = false;
 				}
@@ -354,11 +360,10 @@ void skillcheckscreen::NormalSkillCheck(void)
 				{
 					if (moveSkillCheck)
 					{
-						++scores.missed;
-						scores.maxcombo = 0;
+						++scores.normalmissed;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
-					scores.combo = 0;
+					scores.normalcombo = 0;
 					moveSkillCheck = false;
 				}
 			}
@@ -382,9 +387,9 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 	{
 		skillcheckactive = true;
 		moveSkillCheck = true;
-		scores.score = 0;
-		scores.combo = 0; // scores.score and scores.combo is set back to 0 and the skillcheck starts to move
-		scores.missed = 0; // Main IF statement for when skillcheck start button is pressed
+		scores.hexscore = 0;
+		scores.hexcombo = 0; // scores.score and scores.combo is set back to 0 and the skillcheck starts to move
+		scores.hexmissed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 		GenerateHexRuinSkillCheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
@@ -420,21 +425,21 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 		if (DoctorSkillCheck && rotationAngle > doctorSkillCheckLimits) //|| !DoctorSkillCheck && rotationAngle > skillCheckLimits) // Player did not even attempt to hit the skill check
 		{
 			if (moveSkillCheck)
-				++scores.missed;
+				++scores.hexmissed;
 			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore scores.missed goes up by 1 and rotationangle is set back to start
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			PlaySound(failedSkillCheck);
-			scores.combo = 0;
+			scores.hexcombo = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
 		else if (rotationAngle < skillCheckLimits)
 		{
 			if (moveSkillCheck)
-				++scores.missed;
+				++scores.hexmissed;
 			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore scores.missed goes up by 1 and rotationangle is set back to start
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			PlaySound(failedSkillCheck);
-			scores.combo = 0;
+			scores.hexcombo = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
@@ -443,9 +448,9 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					++scores.score;
-					scores.score += scores.combo;
-					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.hexscore;
+					scores.hexscore += scores.hexcombo;
+					++scores.hexcombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -453,10 +458,10 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 				{
 					if (moveSkillCheck)
 					{
-						++scores.missed;
+						++scores.hexmissed;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
-					scores.combo = 0;
+					scores.hexcombo = 0;
 					moveSkillCheck = false;
 				}
 			}
@@ -464,9 +469,9 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
-					++scores.score;
-					scores.score += scores.combo;
-					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.hexscore;
+					scores.hexscore += scores.hexcombo;
+					++scores.hexcombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -474,10 +479,10 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 				{
 					if (moveSkillCheck)
 					{
-						++scores.missed;
+						++scores.hexmissed;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
-					scores.combo = 0;
+					scores.hexcombo = 0;
 					moveSkillCheck = false;
 				}
 			}
@@ -501,9 +506,9 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 	{
 		skillcheckactive = true;
 		moveSkillCheck = true;
-		scores.score = 0;
-		scores.combo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
-		scores.missed = 0; // Main IF statement for when skillcheck start button is pressed
+		scores.dsscore = 0;
+		scores.dscombo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
+		scores.dsmissed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 		GenerateDecisiveStrikeSkillCheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
@@ -539,21 +544,21 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 		if (DoctorSkillCheck && rotationAngle > doctorSkillCheckLimits) //|| !DoctorSkillCheck && rotationAngle > skillCheckLimits) // Player did not even attempt to hit the skill check
 		{
 			if (moveSkillCheck)
-				++scores.missed;
+				++scores.dsmissed;
 			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore scores.missed goes up by 1 and rotationangle is set back to start
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			PlaySound(failedSkillCheck);
-			scores.combo = 0;
+			scores.dscombo = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
 		else if (rotationAngle < skillCheckLimits)
 		{
 			if (moveSkillCheck)
-				++scores.missed;
+				++scores.dsmissed;
 			moveSkillCheck = false; //LOGIC - if rotationAngle > 270 then the skillcheck has done a full rotation therefore scores.missed goes up by 1 and rotationangle is set back to start
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			PlaySound(failedSkillCheck);
-			scores.combo = 0;
+			scores.dscombo = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
@@ -562,9 +567,9 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					++scores.score;
-					scores.score += scores.combo;
-					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.dsscore;
+					scores.dsscore += scores.dscombo;
+					++scores.dscombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -572,10 +577,10 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 				{
 					if (moveSkillCheck)
 					{
-						++scores.missed;
+						++scores.dsmissed;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
-					scores.combo = 0;
+					scores.dscombo = 0;
 					moveSkillCheck = false;
 				}
 			}
@@ -583,9 +588,9 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
-					++scores.score;
-					scores.score += scores.combo;
-					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.dsscore;
+					scores.dsscore += scores.dscombo;
+					++scores.dscombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -593,10 +598,10 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 				{
 					if (moveSkillCheck)
 					{
-						++scores.missed;
+						++scores.dsmissed;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
-					scores.combo = 0;
+					scores.dscombo = 0;
 					moveSkillCheck = false;
 				}
 			}

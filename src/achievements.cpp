@@ -7,6 +7,19 @@
 #include "globals.h"
 #include "skillcheck.h"
 
+enum achievementtitle
+{
+	hit10skillchecksinarow = 0,
+	miss50skillchecksinarow,
+	hit50greatskillchecks,
+	miss10skillchecksinarow,
+	hit50greatskillchecksinarow,
+	hit200greatskillchecksinarow,
+	hit500greatskillchecksoverall,
+	questionmark
+
+};
+
 achievementscreen::achievementscreen(void)
 {
 	std::ifstream file("file.bin", std::ifstream::binary);
@@ -14,19 +27,28 @@ achievementscreen::achievementscreen(void)
 	if (file.is_open())
 	{
 		file.read((char*)&scores, sizeof(scores));
+			
+	}
+	else 
+	{
+		scores.normalcombo = 0;
+		scores.normalscore = 0;
+		scores.normalmissed = 0;
+		scores.normalmaxcombo = 0;
+
+		scores.dscombo = 0;
+		scores.dsscore = 0;
+		scores.dsmissed = 0;
+		scores.dsmaxcombo = 0;
+
+		scores.hexcombo = 0;
+		scores.hexscore = 0;
+		scores.hexmissed = 0;
+		scores.hexmaxcombo = 0;
+
 	}
 
-	printf("%d:,%d:,%d:", scores.score, scores.combo, scores.missed);
-
-	//if (scores.greatskillcheckhit == 10 && scores.maxcombo == 10) {
-	//	hit10skillchecksinarow = true;
-	//	printf("hello");
-	//}
-
-	//if (scores.goodskillcheckhit == 10 && scores.maxcombo == 10) {
-	//	hit10skillchecksinarow = true;
-	//	printf("hello");
-	//}
+	printf("%d:,%d:,%d:,%d:", scores.normalscore, scores.normalcombo, scores.normalmissed, scores.normalmaxcombo);
 }
 
 achievementscreen::~achievementscreen(void)
@@ -55,5 +77,14 @@ void achievementscreen::logic()
 		PlaySound(DBDClick4);
 		setnextstate(gamestates::skillcheckscreen); //changes screen back to skillcheckscreen
 	}
+	
+	if (scores.greatskillcheckhit == 10 && scores.normalmaxcombo == 10) {
+		//hit10skillchecksinarow = true;
+		printf("hello");
+	}
 
+	if (scores.goodskillcheckhit == 10 && scores.normalmaxcombo == 10) {
+		//hit10skillchecksinarow = true;
+		printf("hello");
+	}
 }
