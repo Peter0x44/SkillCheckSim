@@ -28,6 +28,26 @@ skillcheckscreen::skillcheckscreen(void)
 	{
 		file.read((char*)&scores, sizeof(scores));
 	}
+	else
+	{
+		scores.normalcombo = 0;
+		scores.normalscore = 0;
+		scores.normalmissed = 0;
+		scores.normalmaxcombo = 0;
+		scores.greatskillcheckhit = 0;
+		scores.goodskillcheckhit = 0;
+
+		scores.dscombo = 0;
+		scores.dsscore = 0;
+		scores.dsmissed = 0;
+		scores.dsmaxcombo = 0;
+
+		scores.hexcombo = 0;
+		scores.hexscore = 0;
+		scores.hexmissed = 0;
+		scores.hexmaxcombo = 0;
+
+	}
 
 }
 
@@ -308,6 +328,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 					scores.normalscore += scores.normalcombo;
 					scores.normalcombo = scores.normalcombo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					++scores.greatskillcheckhit;
+					++scores.greatskillcheckhitinarow;
 					++scores.normalmaxcombo;
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
@@ -318,6 +339,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 					scores.normalscore += scores.normalcombo;
 					++scores.normalcombo;
 					++scores.goodskillcheckhit;
+					++scores.goodskillcheckhitinarow;
 					++scores.normalmaxcombo;
 					PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
 					moveSkillCheck = false;
@@ -327,6 +349,8 @@ void skillcheckscreen::NormalSkillCheck(void)
 					if (moveSkillCheck)
 					{
 						++scores.normalmissed;
+						scores.goodskillcheckhitinarow = 0;
+						scores.greatskillcheckhitinarow = 0;
 						scores.normalmaxcombo = 0;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
@@ -343,6 +367,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 					scores.normalcombo = scores.normalcombo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					++scores.greatskillcheckhit;
 					++scores.normalmaxcombo;
+					++scores.greatskillcheckhitinarow;
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -352,6 +377,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 					scores.normalscore += scores.normalcombo;
 					++scores.normalcombo;
 					++scores.goodskillcheckhit;
+					++scores.goodskillcheckhitinarow;
 					++scores.normalmaxcombo;
 					PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
 					moveSkillCheck = false;
@@ -361,6 +387,8 @@ void skillcheckscreen::NormalSkillCheck(void)
 					if (moveSkillCheck)
 					{
 						++scores.normalmissed;
+						scores.goodskillcheckhitinarow = 0;
+						scores.greatskillcheckhitinarow = 0;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
 					scores.normalcombo = 0;
@@ -376,7 +404,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 			if (DoctorSkillCheck)
 				rotationAngle += GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
 			else
-				rotationAngle -= GetFrameTime() * 60 * 6;
+				rotationAngle -= GetFrameTime() * 60 * 3;
 		}
 	}
 }

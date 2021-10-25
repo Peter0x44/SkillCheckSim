@@ -27,7 +27,7 @@ private:
 	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON IS DRAWN
 	bool backbuttonpressed = false; 
 
-	const bool boolforachievements[8] = {
+	bool boolforachievements[8] = {
 		false
 	};
 
