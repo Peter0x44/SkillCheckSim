@@ -10,13 +10,20 @@
 
 enum achievementtitle
 {
-	hit10skillchecksinarow = 0,
-	miss50skillchecksinarow,
+	get7000bp = 0,
+	get32000bp,
 	hit50greatskillchecks,
-	miss10skillchecks,
-	hit50greatskillchecksinarow,
-	hit200greatskillchecksinarow,
-	hit500skillchecksoverall,
+	hit100greatskillchecks,
+	hit500greatskillchecks,
+	fail50skillchecks,
+	fail100skillchecks,
+	fail500skillchecks,
+	fail1000skillchecks,
+	hit5greatskillchecksinarow,
+	play1000skillchecks,
+	play2000skillchecks,
+	play3000skillchecks,
+	play5000skillchecks,
 	questionmark
 
 };
@@ -38,14 +45,14 @@ achievementscreen::achievementscreen(void)
 
 	printf("%d:,%d:,%d:,%d:", scores.normalscore, scores.normalcombo, scores.normalmissed, scores.normalmaxcombo);
 
-	boolforachievements[hit10skillchecksinarow] = (scores.greatskillcheckhit <= 10 && scores.normalmaxcombo <= 10);
-	boolforachievements[miss50skillchecksinarow] = (scores.normalmissed <= 50 || scores.dsmissed <= 50 || scores.hexmissed <= 50);
+	boolforachievements[get7000bp] = (scores.normalscore <= 7000 || scores.hexscore <= 7000 || scores.dsscore <= 7000);
+	boolforachievements[get32000bp] = (scores.normalmissed <= 50 || scores.dsmissed <= 50 || scores.hexmissed <= 50);
 	boolforachievements[hit50greatskillchecks] = (scores.greatskillcheckhit <= 50);
-	boolforachievements[miss10skillchecks] = (scores.normalmissed <= 10);
-	boolforachievements[hit50greatskillchecksinarow] = (scores.greatskillcheckhitinarow <= 50);
-	boolforachievements[hit200greatskillchecksinarow] = (scores.greatskillcheckhitinarow <= 200);
-	boolforachievements[hit500skillchecksoverall] = (scores.greatskillcheckhit + scores.goodskillcheckhit <= 500);
-	boolforachievements[questionmark] = (scores.goodskillcheckhit = 500);
+	boolforachievements[hit100greatskillchecks] = (scores.normalmissed <= 10);
+	boolforachievements[hit500greatskillchecks] = (scores.greatskillcheckhitinarow <= 50);
+	boolforachievements[fail50skillchecks] = (scores.greatskillcheckhitinarow <= 200);
+	boolforachievements[fail100skillchecks] = (scores.greatskillcheckhit + scores.goodskillcheckhit <= 500);
+	boolforachievements[fail500skillchecks] = (scores.goodskillcheckhit = 500);
 
 	//if (scores.greatskillcheckhit <= 10 && scores.normalmaxcombo <= 10) {
 	//	//hit10skillchecksinarow = true;
