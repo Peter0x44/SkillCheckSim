@@ -90,19 +90,19 @@ void achievementscreen::render()
 	{
 		if (boolforachievements[i])
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE);
+			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 6) * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE);
 			//DrawTextEx(Roboto, achievements[i], Vector2{ 45, float(55 + i * 35) }, 20, 2, RED);
 		}
 		else
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
+			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 6) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 
 		}
 	}
 
 	if (achievementshoveredx > -1 && achievementshoveredy > -1)
 	{
-		DrawTextEx(Roboto, achievementTitle[achievementshoveredx * (achievementshoveredy + 1)], Vector2{ screenWidth / 2 - (float)MeasureTextEx(Roboto, achievementTitle[achievementshoveredx * (achievementshoveredy + 1)], 20, 1).x / 2 , screenHeight / 2 }, 20, 1, RED);
+		DrawTextEx(Roboto, achievementTitle[achievementshoveredx + 7*achievementshoveredy], Vector2{ screenWidth / 2 - (float)MeasureTextEx(Roboto, achievementTitle[achievementshoveredx + 7*achievementshoveredy], 20, 1).x / 2 , screenHeight / 2 }, 20, 1, RED);
 	}
 
 }
@@ -119,9 +119,8 @@ void achievementscreen::logic()
 	int CursorX = GetMouseX();
 	int CursorY = GetMouseY();
 
-	printf("%d\n", achievementshoveredx);
 
-	if (CursorX < gridOffsetX || CursorX > gridOffsetX + 68 * 7)
+	if (CursorX < gridOffsetX || CursorX > (gridOffsetX + 68 * 7) - 4)
 	{
 		achievementshoveredx = -1;
 	}
@@ -130,7 +129,7 @@ void achievementscreen::logic()
 		achievementshoveredx = (CursorX - gridOffsetX) / 68;
 	}
 
-	if (CursorY < gridOffsetY || CursorY > gridOffsetY + 68 * 2)
+	if (CursorY < gridOffsetY || CursorY > (gridOffsetY + 68 * 2) - 4)
 	{
 		achievementshoveredy = -1;
 	}
