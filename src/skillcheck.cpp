@@ -4,6 +4,7 @@
 #include <cfloat>
 #include <iostream>
 #include <extras/raygui.h>
+#include <cstring>
 
 #include "globals.h"
 #include "gamestates.h"
@@ -30,23 +31,7 @@ skillcheckscreen::skillcheckscreen(void)
 	}
 	else
 	{
-		scores.normalcombo = 0;
-		scores.normalscore = 0;
-		scores.normalmissed = 0;
-		scores.normalmaxcombo = 0;
-		scores.greatskillcheckhit = 0;
-		scores.goodskillcheckhit = 0;
-
-		scores.dscombo = 0;
-		scores.dsscore = 0;
-		scores.dsmissed = 0;
-		scores.dsmaxcombo = 0;
-
-		scores.hexcombo = 0;
-		scores.hexscore = 0;
-		scores.hexmissed = 0;
-		scores.hexmaxcombo = 0;
-
+		std::memset(&scores, 0, sizeof(scores)); //SETS ALL SCORE VARIABLES TO 0
 	}
 
 }
@@ -138,6 +123,12 @@ void skillcheckscreen::logic(void)
 		setnextstate(gamestates::helpscreen); //help button pressed - screen changes to help screen
 	}
 
+	if (deletebuttonpressed)
+	{
+		remove("file.bin");
+		std::memset(&scores, 0, sizeof(scores));
+	}
+
 }
 
 void skillcheckscreen::render(void)
@@ -154,19 +145,19 @@ void skillcheckscreen::render(void)
 	switch (gameMode)
 	{
 	case Normal:
-		DrawTextEx(Roboto, TextFormat("Score: %d", scores.normalscore), Vector2{ 10, 70 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Bloodpoints: %d", scores.normalscore), Vector2{ 10, 70 }, 20, 1, WHITE);
 		DrawTextEx(Roboto, TextFormat("Combo: %d", scores.normalcombo), Vector2{ 10, 100 }, 20, 1, WHITE);
 		DrawTextEx(Roboto, TextFormat("Missed: %d", scores.normalmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
 		DrawNormalSkillCheck();
 		break;
 	case Ruin:
-		DrawTextEx(Roboto, TextFormat("Score: %d", scores.hexscore), Vector2{ 10, 70 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Bloodpoints: %d", scores.hexscore), Vector2{ 10, 70 }, 20, 1, WHITE);
 		DrawTextEx(Roboto, TextFormat("Combo: %d", scores.hexcombo), Vector2{ 10, 100 }, 20, 1, WHITE);
 		DrawTextEx(Roboto, TextFormat("Missed: %d", scores.hexmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
 		DrawHexRuinSkillCheck();
 		break;
 	case DS:
-		DrawTextEx(Roboto, TextFormat("Score: %d", scores.dsscore), Vector2{ 10, 70 }, 20, 1, WHITE);
+		DrawTextEx(Roboto, TextFormat("Bloodpoints: %d", scores.dsscore), Vector2{ 10, 70 }, 20, 1, WHITE);
 		DrawTextEx(Roboto, TextFormat("Combo: %d", scores.dscombo), Vector2{ 10, 100 }, 20, 1, WHITE);
 		DrawTextEx(Roboto, TextFormat("Missed: %d", scores.dsmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
 		DrawDecisiveStrikeSkillCheck();
@@ -196,6 +187,7 @@ void skillcheckscreen::render(void)
 
 	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
 	helpbuttonpressed = GuiButton(Help, "help");
+	deletebuttonpressed = GuiButton(deletebutton, "Reset Stats");
 
 	//DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
 	//DrawText(TextFormat("Timer: %lf", timer), 20, 20, 10, WHITE);
@@ -324,9 +316,9 @@ void skillcheckscreen::NormalSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					scores.normalscore = scores.normalscore + 25;
+					scores.normalscore = scores.normalscore + 50;
 					scores.normalscore += scores.normalcombo;
-					scores.normalcombo = scores.normalcombo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.normalcombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					++scores.greatskillcheckhit;
 					++scores.greatskillcheckhitinarow;
 					++scores.normalmaxcombo;
@@ -335,7 +327,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 				}
 				else if (rotationAngle < goodSkillCheckZone.x && rotationAngle > goodSkillCheckZone.y)
 				{
-					++scores.normalscore;
+					scores.normalscore = scores.normalscore + 50;
 					scores.normalscore += scores.normalcombo;
 					++scores.normalcombo;
 					++scores.goodskillcheckhit;
@@ -362,9 +354,9 @@ void skillcheckscreen::NormalSkillCheck(void)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
-					scores.normalscore = scores.normalscore + 25;
+					scores.normalscore = scores.normalscore + 150;
 					scores.normalscore += scores.normalcombo;
-					scores.normalcombo = scores.normalcombo + 2; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					scores.normalcombo = scores.normalcombo + 1; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					++scores.greatskillcheckhit;
 					++scores.normalmaxcombo;
 					++scores.greatskillcheckhitinarow;
@@ -373,7 +365,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 				}
 				else if (rotationAngle > goodSkillCheckZone.x && rotationAngle < goodSkillCheckZone.y)
 				{
-					++scores.normalscore;
+					scores.normalscore = scores.normalscore + 50;
 					scores.normalscore += scores.normalcombo;
 					++scores.normalcombo;
 					++scores.goodskillcheckhit;
@@ -404,7 +396,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 			if (DoctorSkillCheck)
 				rotationAngle += GetFrameTime() * 60 * 6; //LOGIC - how fast rotationangle will move
 			else
-				rotationAngle -= GetFrameTime() * 60 * 3;
+				rotationAngle -= GetFrameTime() * 60 * 6;
 		}
 	}
 }
@@ -476,10 +468,10 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					++scores.hexscore;
+					scores.hexscore = scores.hexscore + 50;
 					scores.hexscore += scores.hexcombo;
 					++scores.hexcombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
-					PlaySound(greatSkillCheck);
+					PlaySound(goodSkillCheck);
 					moveSkillCheck = false;
 				}
 				else
@@ -497,10 +489,10 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
-					++scores.hexscore;
+					scores.hexscore = scores.hexscore + 50;
 					scores.hexscore += scores.hexcombo;
 					++scores.hexcombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
-					PlaySound(greatSkillCheck);
+					PlaySound(goodSkillCheck);
 					moveSkillCheck = false;
 				}
 				else
@@ -595,7 +587,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					++scores.dsscore;
+					scores.dsscore = scores.dsscore + 50;
 					scores.dsscore += scores.dscombo;
 					++scores.dscombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);
@@ -616,7 +608,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
-					++scores.dsscore;
+					scores.dsscore = scores.dsscore + 50;
 					scores.dsscore += scores.dscombo;
 					++scores.dscombo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);

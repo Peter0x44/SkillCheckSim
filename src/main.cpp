@@ -24,6 +24,7 @@ Sound DBDClick4;
 Texture2D background;
 Texture2D achievementsbackground;
 Texture2D helpbackground;
+Texture2D achievementsheet;
 
 Font Roboto;
 
@@ -70,6 +71,8 @@ void LoadAssets(void)
 	helpbackground = LoadTexture("../assets/help2.png");
 	achievementsbackground = LoadTexture("../assets/bg3.png"); //LOADS TEXTURES FROM ASSETS
 	background = LoadTexture("../assets/bg.png");
+	achievementsheet = LoadTexture("../assets/achievementsheet.png");
+
 	greatSkillCheck = LoadSound("../assets/src_audio_great.mp3");
 	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
 	failedSkillCheck = LoadSound("../assets/sc0.mp3");
@@ -102,6 +105,7 @@ void UnloadAssets(void)
 	UnloadTexture(background);
 	UnloadTexture(achievementsbackground);
 	UnloadTexture(helpbackground);
+	UnloadTexture(achievementsheet);
 
 	UnloadFont(Roboto);
 	CloseAudioDevice();

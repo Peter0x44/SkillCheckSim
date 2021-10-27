@@ -13,15 +13,34 @@ private:
 
 	//const int AchievementNumber = 8;
 
-	const char* achievements[8] = {
+	const char* achievements[16] = {
 		"hit 10 great skill checks in a row",
 		"miss 50 skillchecks in a row",
 		"Hit 50 great skillchecks",
 		"Miss 10 skillchecks in a row", //ARRAY OF ACHIEVEMENTS
-		"hit 50 greatskillchecks in a row on easy",
+		"hit 50 greatskillchecks in a row",
 		"hit 200 great skill checks in a row",
 		"hit 500 great skill checks overall",
 		"???"
+	};
+
+	const char* achievementTitle[16] = {
+		"You pip'd so you had fun",
+		"Farming : MAX",
+		"Level up",
+		"Trust me",
+		"I'm a engineer",
+		"Brand New Dwight",
+		"Blame the lag",
+		"Well deserved facecamp",
+		"-rep Please uninstall",
+		"Not even immersed",
+		"Best player in the world",
+		"Now play the actual game",
+		"What in tarnation ?",
+		"Infinite abuser",
+		"Esport ready",
+		"Blame Mclean"
 	};
 
 	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON IS DRAWN
@@ -39,6 +58,11 @@ private:
 	//bool hit200greatskillchecksinarow = false;
 	//bool hit500greatskillchecksoverall = false;
 	//bool questionmark = false;
+
+	const int gridOffsetX = (screenWidth - 68 * 7) / 2;
+	const int gridOffsetY = 55;
+	int achievementshoveredx;
+	int achievementshoveredy;
 
 
 

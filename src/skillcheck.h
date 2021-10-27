@@ -34,6 +34,8 @@ struct stats
 
 	int dsskillcheckhit;
 
+	int totalskillchecks;
+
 
 
 };
@@ -71,12 +73,14 @@ private:
 	const Rectangle Help = { 10 , 279, 200 ,50 };
 	const Rectangle UnnervingPresenceButton = {10, 354, 50, 20};
 	const Rectangle DoctorSkillCheckButton = { 10, 390, 50, 20 };
+	const Rectangle deletebutton = { 700, 400, 100, 50 };
 
 	bool startbuttonpressed = false;
 	bool stopbuttonpressed = false;
 	bool achievementspressed = false; //VARIABLES FOR WHEN BUTTONS ARE PRESSED
 	bool skillcheckactive = false;
 	bool helpbuttonpressed = false;
+	bool deletebuttonpressed = false;
 
 	bool UnnervingPresence = false;
 	bool DoctorSkillCheck = false;
