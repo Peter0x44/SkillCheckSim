@@ -40,10 +40,7 @@ achievementscreen::achievementscreen(void)
 	else
 	{
 		std::memset(&scores, 0, sizeof(scores));
-
 	}
-
-	printf("%d:,%d:,%d:,%d:", scores.normalscore, scores.normalcombo, scores.normalmissed, scores.normalmaxcombo);
 
 	boolforachievements[get7000bp] = (scores.normalscore <= 7000 || scores.hexscore <= 7000 || scores.dsscore <= 7000);
 	boolforachievements[get32000bp] = (scores.normalmissed <= 50 || scores.dsmissed <= 50 || scores.hexmissed <= 50);
@@ -53,16 +50,6 @@ achievementscreen::achievementscreen(void)
 	boolforachievements[fail50skillchecks] = (scores.greatskillcheckhitinarow <= 200);
 	boolforachievements[fail100skillchecks] = (scores.greatskillcheckhit + scores.goodskillcheckhit <= 500);
 	boolforachievements[fail500skillchecks] = (scores.goodskillcheckhit = 500);
-
-	//if (scores.greatskillcheckhit <= 10 && scores.normalmaxcombo <= 10) {
-	//	//hit10skillchecksinarow = true;
-	//	printf("hello");
-	//}
-
-	//if (scores.goodskillcheckhit <= 10 && scores.normalmaxcombo <= 10) {
-	//	//hit10skillchecksinarow = true;
-	//	printf("hello");
-	//}
 }
 
 
@@ -82,13 +69,12 @@ void achievementscreen::render()
 	{
 		if (boolforachievements[i])
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{0, 0}, 0, WHITE);
+			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 			//DrawTextEx(Roboto, achievements[i], Vector2{ 45, float(55 + i * 35) }, 20, 2, RED);
 		}
 		else 
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
-
+			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{0, 0}, 0, WHITE);
 		}
 	}
 	//DrawTexture(achievementsbackground, 0, 0, WHITE);
@@ -97,12 +83,12 @@ void achievementscreen::render()
 	{
 		if (boolforachievements[i])
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 6) * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE);
+			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 			//DrawTextEx(Roboto, achievements[i], Vector2{ 45, float(55 + i * 35) }, 20, 2, RED);
 		}
 		else
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 6) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
+			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE);
 
 		}
 	}
