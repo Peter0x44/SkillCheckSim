@@ -20,8 +20,8 @@ enum achievementtitle
 	fail500skillchecks,
 	fail1000skillchecks,
 	hit5greatskillchecksinarow,
+	hit10greatskillchecksinarow,
 	play1000skillchecks,
-	play2000skillchecks,
 	play3000skillchecks,
 	play5000skillchecks,
 	questionmark
@@ -42,14 +42,21 @@ achievementscreen::achievementscreen(void)
 		std::memset(&scores, 0, sizeof(scores));
 	}
 
-	boolforachievements[get7000bp] = (scores.normalscore <= 7000 || scores.hexscore <= 7000 || scores.dsscore <= 7000);
-	boolforachievements[get32000bp] = (scores.normalmissed <= 50 || scores.dsmissed <= 50 || scores.hexmissed <= 50);
-	boolforachievements[hit50greatskillchecks] = (scores.greatskillcheckhit <= 50);
-	boolforachievements[hit100greatskillchecks] = (scores.normalmissed <= 10);
-	boolforachievements[hit500greatskillchecks] = (scores.greatskillcheckhitinarow <= 50);
-	boolforachievements[fail50skillchecks] = (scores.greatskillcheckhitinarow <= 200);
-	boolforachievements[fail100skillchecks] = (scores.greatskillcheckhit + scores.goodskillcheckhit <= 500);
-	boolforachievements[fail500skillchecks] = (scores.goodskillcheckhit = 500);
+	boolforachievements[get7000bp] = (scores.bloodpoints >= 7000);
+	boolforachievements[get32000bp] = (scores.bloodpoints >= 32000);
+	boolforachievements[hit50greatskillchecks] = (scores.greatskillcheckhit >= 50);
+	boolforachievements[hit100greatskillchecks] = (scores.greatskillcheckhit >= 100);
+	boolforachievements[hit500greatskillchecks] = (scores.greatskillcheckhit >= 5000);
+	boolforachievements[fail50skillchecks] = (scores.skillchecksmissed >= 50);
+	boolforachievements[fail100skillchecks] = (scores.skillchecksmissed >= 100);
+	boolforachievements[fail500skillchecks] = (scores.skillchecksmissed >= 500);
+	boolforachievements[fail1000skillchecks] = (scores.skillchecksmissed >= 1000);
+	boolforachievements[hit5greatskillchecksinarow] = (scores.maxgreatskillcheckshitinarow >= 5);
+	boolforachievements[hit10greatskillchecksinarow] = (scores.maxgreatskillcheckshitinarow >= 10);
+	boolforachievements[play1000skillchecks] = (scores.totalskillchecks >= 1000);
+	boolforachievements[play3000skillchecks] = (scores.totalskillchecks >= 3000);
+	boolforachievements[play5000skillchecks] = (scores.totalskillchecks >= 5000);
+	boolforachievements[questionmark] = (scores.totalskillchecks >= 10000);
 }
 
 
@@ -69,27 +76,26 @@ void achievementscreen::render()
 	{
 		if (boolforachievements[i])
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
+			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE);
 			//DrawTextEx(Roboto, achievements[i], Vector2{ 45, float(55 + i * 35) }, 20, 2, RED);
 		}
 		else 
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{0, 0}, 0, WHITE);
+			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 		}
 	}
 	//DrawTexture(achievementsbackground, 0, 0, WHITE);
 
 	for (int i = 0; i < 7; ++i)
 	{
-		if (boolforachievements[i])
+		if (boolforachievements[i+7])
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
+			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE);
 			//DrawTextEx(Roboto, achievements[i], Vector2{ 45, float(55 + i * 35) }, 20, 2, RED);
 		}
 		else
 		{
-			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 0, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE);
-
+			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 		}
 	}
 

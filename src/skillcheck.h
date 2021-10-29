@@ -6,35 +6,19 @@
 
 struct stats
 {
-	int normalscore;
-	int normalcombo; //SCORE VARIABLES
-	int normalmissed;
-	int normalmaxcombo;
-	int normalmissedinarow;
-
-	int hexscore;
-	int hexcombo;
-	int hexmissed;
-	int hexmaxcombo;
-	int hexmissedinarow;
-
-	int dsscore;
-	int dscombo;
-	int dsmissed;
-	int dsmaxcombo;
-	int dsmissedinarow;
-
+	int bloodpoints;
+	int skillchecksmissed;
+	int maxcombo;
+	int skillchecksmissedinarow;
+	int combo;
 
 	int greatskillcheckhit;
 	int goodskillcheckhit;
 	int greatskillcheckhitinarow;
 	int goodskillcheckhitinarow;
 
-	int hexruinskillcheckhit;
-
-	int dsskillcheckhit;
-
 	int totalskillchecks;
+	int maxgreatskillcheckshitinarow;
 
 
 
