@@ -124,12 +124,9 @@ void skillcheckscreen::logic(void)
 
 	if (deletebuttonpressed)
 	{
-		remove("file.bin");
+		std::remove("file.bin");
 		std::memset(&scores, 0, sizeof(scores));
 	}
-
-	printf("%d\n", scores.maxgreatskillcheckshitinarow);
-
 }
 
 void skillcheckscreen::render(void)
@@ -282,12 +279,6 @@ void skillcheckscreen::NormalSkillCheck(void)
 			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
 			++scores.totalskillchecks;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-			}
-
-			scores.greatskillcheckhitinarow = 0;
 			GenerateNormalSkillCheckZone();
 			PlaySound(skillCheckWarning);
 		}
@@ -302,11 +293,6 @@ void skillcheckscreen::NormalSkillCheck(void)
 			PlaySound(failedSkillCheck);
 			scores.combo = 0;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-			}
-
 			scores.greatskillcheckhitinarow = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
@@ -319,11 +305,6 @@ void skillcheckscreen::NormalSkillCheck(void)
 			PlaySound(failedSkillCheck);
 			scores.combo = 0;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-			}
-
 			scores.greatskillcheckhitinarow = 0;
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
@@ -333,18 +314,21 @@ void skillcheckscreen::NormalSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					scores.bloodpoints = scores.bloodpoints + 50;
+					scores.bloodpoints += 150;
 					scores.bloodpoints += scores.combo;
 					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					++scores.greatskillcheckhit;
 					++scores.greatskillcheckhitinarow;
-					++scores.maxcombo;
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
+					if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
+					{
+						scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
+					}
 				}
 				else if (rotationAngle < goodSkillCheckZone.x && rotationAngle > goodSkillCheckZone.y)
 				{
-					scores.bloodpoints = scores.bloodpoints + 50;
+					scores.bloodpoints += 50;
 					scores.bloodpoints += scores.combo;
 					++scores.combo;
 					++scores.goodskillcheckhit;
@@ -404,14 +388,9 @@ void skillcheckscreen::NormalSkillCheck(void)
 					if (moveSkillCheck)
 					{
 						++scores.skillchecksmissed;
-
-						if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-						{
-							scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-						}
-						scores.greatskillcheckhitinarow = 0;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
+					scores.greatskillcheckhitinarow = 0;
 					scores.combo = 0;
 					moveSkillCheck = false;
 				}
@@ -468,16 +447,6 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
 			++scores.totalskillchecks;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-				scores.greatskillcheckhitinarow = 0;
-			}
-			else
-			{
-				scores.greatskillcheckhitinarow = 0;
-			}
-
 			GenerateHexRuinSkillCheckZone();
 			PlaySound(skillCheckWarning);
 		}
@@ -491,16 +460,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			PlaySound(failedSkillCheck);
 			scores.combo = 0;
-
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-				scores.greatskillcheckhitinarow = 0;
-			}
-			else
-			{
-				scores.greatskillcheckhitinarow = 0;
-			}
+			scores.greatskillcheckhitinarow = 0;
 
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
@@ -513,15 +473,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			PlaySound(failedSkillCheck);
 			scores.combo = 0;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-				scores.greatskillcheckhitinarow = 0;
-			}
-			else
-			{
-				scores.greatskillcheckhitinarow = 0;
-			}
+			scores.greatskillcheckhitinarow = 0;
 
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
@@ -534,6 +486,11 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 					scores.bloodpoints = scores.bloodpoints + 50;
 					scores.bloodpoints += scores.combo;
 					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.greatskillcheckhitinarow;
+					if (scores.greatskillcheckhitinarow > scores.maxgreatskillcheckshitinarow)
+					{
+						scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
+					}
 					PlaySound(goodSkillCheck);
 					moveSkillCheck = false;
 				}
@@ -543,16 +500,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 					{
 						++scores.skillchecksmissed;
 
-						if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-						{
-							scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-							scores.greatskillcheckhitinarow = 0;
-						}
-						else
-						{
-							scores.greatskillcheckhitinarow = 0;
-						}
-
+						scores.greatskillcheckhitinarow = 0;
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
 					scores.combo = 0;
@@ -578,17 +526,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
 					scores.combo = 0;
-					++scores.totalskillchecks;
-
-					if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-					{
-						scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-						scores.greatskillcheckhitinarow = 0;
-					}
-					else
-					{
-						scores.greatskillcheckhitinarow = 0;
-					}
+					scores.greatskillcheckhitinarow = 0;
 
 					moveSkillCheck = false;
 				}
@@ -645,16 +583,6 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
 			++scores.totalskillchecks;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-				scores.greatskillcheckhitinarow = 0;
-			}
-			else
-			{
-				scores.greatskillcheckhitinarow = 0;
-			}
-
 			GenerateDecisiveStrikeSkillCheckZone();
 			PlaySound(skillCheckWarning);
 		}
@@ -669,15 +597,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			PlaySound(failedSkillCheck);
 			scores.combo = 0;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-				scores.greatskillcheckhitinarow = 0;
-			}
-			else
-			{
-				scores.greatskillcheckhitinarow = 0;
-			}
+			scores.greatskillcheckhitinarow = 0;
 
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
@@ -690,15 +610,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			PlaySound(failedSkillCheck);
 			scores.combo = 0;
 
-			if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-			{
-				scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-				scores.greatskillcheckhitinarow = 0;
-			}
-			else
-			{
-				scores.greatskillcheckhitinarow = 0;
-			}
+			scores.greatskillcheckhitinarow = 0;
 
 			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
 		}
@@ -714,6 +626,10 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
+					if (scores.greatskillcheckhitinarow > scores.maxgreatskillcheckshitinarow)
+					{
+						scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
+					}
 				}
 				else
 				{
@@ -721,15 +637,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 					{
 						++scores.skillchecksmissed;
 
-						if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-						{
-							scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-							scores.greatskillcheckhitinarow = 0;
-						}
-						else
-						{
-							scores.greatskillcheckhitinarow = 0;
-						}
+						scores.greatskillcheckhitinarow = 0;
 
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
@@ -741,32 +649,26 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 			{
 				if (rotationAngle > greatSkillCheckZone.x && rotationAngle < greatSkillCheckZone.y)
 				{
-					scores.bloodpoints = scores.bloodpoints + 50;
+					scores.bloodpoints +=  50;
 					scores.bloodpoints += scores.combo;
 					++scores.greatskillcheckhitinarow;
 					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
 					PlaySound(greatSkillCheck);
 					moveSkillCheck = false;
+					if (scores.greatskillcheckhitinarow > scores.maxgreatskillcheckshitinarow)
+					{
+						scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
+					}
 				}
 				else
 				{
 					if (moveSkillCheck)
 					{
 						++scores.skillchecksmissed;
-
-						if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
-						{
-							scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
-							scores.greatskillcheckhitinarow = 0;
-						}
-						else
-						{
-							scores.greatskillcheckhitinarow = 0;
-						}
-
 						PlaySound(failedSkillCheck); //LOGIC for when you dont try and hit skill check, automatic miss
 					}
 					scores.combo = 0;
+					scores.greatskillcheckhitinarow = 0;
 					moveSkillCheck = false;
 				}
 			}
