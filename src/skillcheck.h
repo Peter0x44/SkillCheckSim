@@ -19,9 +19,6 @@ struct stats
 
 	int totalskillchecks;
 	int maxgreatskillcheckshitinarow;
-
-
-
 };
 
 class skillcheckscreen: public gamestate

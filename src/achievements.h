@@ -13,7 +13,7 @@ private:
 
 	//const int AchievementNumber = 8;
 
-	const char* achievements[16] = {
+	const char* const achievements[16] = {
 		"hit 10 great skill checks in a row",
 		"miss 50 skillchecks in a row",
 		"Hit 50 great skillchecks",
@@ -24,7 +24,7 @@ private:
 		"???"
 	};
 
-	const char* achievementTitle[16] = {
+	const char* const achievementTitle[16] = {
 		"You pip'd so you had fun: Get 7000 Bloodpoints",
 		"Farming : MAX: Get 32000 Bloodpoints",
 		"Level up: Hit 50 great skill checks",

@@ -140,7 +140,8 @@ void skillcheckscreen::render(void)
 	DrawTextEx(Roboto, TextFormat("skillCheckZone: %.0f", greatSkillCheckZone.x), Vector2{ 10, 40 }, 20, 1, WHITE); // Drawing all text to the screen
 	DrawTextEx(Roboto, TextFormat("Bloodpoints: %d", scores.bloodpoints), Vector2{ 10, 70 }, 20, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("Combo: %d", scores.combo), Vector2{ 10, 100 }, 20, 1, WHITE);
-	DrawTextEx(Roboto, TextFormat("Missed: %d", scores.skillchecksmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
+//	DrawTextEx(Roboto, TextFormat("Missed: %d", scores.skillchecksmissed), Vector2{ 10, 130 }, 20, 1, WHITE);
+	DrawTextEx(Roboto, TextFormat("streak: %d", scores.greatskillcheckhitinarow), Vector2{ 10, 130 }, 20, 1, WHITE);
 	
 
 	switch (gameMode)
@@ -515,6 +516,14 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 					scores.bloodpoints = scores.bloodpoints + 50;
 					scores.bloodpoints += scores.combo;
 					++scores.combo; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+					++scores.greatskillcheckhitinarow;
+
+					if (scores.greatskillcheckhitinarow > scores.maxgreatskillcheckshitinarow)
+					{
+						scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
+						printf("bruh");
+					}
+
 					PlaySound(goodSkillCheck);
 					moveSkillCheck = false;
 				}
