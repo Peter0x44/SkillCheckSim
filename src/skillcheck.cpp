@@ -416,9 +416,6 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 	{
 		skillcheckactive = true;
 		moveSkillCheck = true;
-		scores.bloodpoints = 0;
-		scores.combo = 0; // scores.bloodpoints and scores.combo is set back to 0 and the skillcheck starts to move
-		scores.skillchecksmissed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 		GenerateHexRuinSkillCheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
@@ -560,9 +557,6 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 	{
 		skillcheckactive = true;
 		moveSkillCheck = true;
-		scores.bloodpoints = 0;
-		scores.combo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
-		scores.skillchecksmissed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 		GenerateDecisiveStrikeSkillCheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
