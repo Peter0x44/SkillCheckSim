@@ -29,9 +29,6 @@ private:
 		"???"
 	};
 
-	const char* const achievementCondition[16] = {
-	};
-
 	const char* const achievementTitle[16] = {
 		"You pip'd so you had fun",
 		"Farming : MAX",

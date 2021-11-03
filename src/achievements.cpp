@@ -83,6 +83,7 @@ void achievementscreen::render()
 		{
 			DrawTexturePro(achievementsheet, Rectangle{ (float)i * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 		}
+		
 	}
 	//DrawTexture(achievementsbackground, 0, 0, WHITE);
 
@@ -97,13 +98,15 @@ void achievementscreen::render()
 		{
 			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 		}
+
 	}
 
 	if (achievementshoveredx > -1 && achievementshoveredy > -1)
 	{
 		DrawTextEx(Roboto, achievementTitle[achievementshoveredx + 7*achievementshoveredy], Vector2{ screenWidth / 2 - (float)MeasureTextEx(Roboto, achievementTitle[achievementshoveredx + 7*achievementshoveredy], 20, 1).x / 2 , screenHeight / 2 }, 20, 1, RED);
+		DrawTextEx(Roboto, achievementCondition[achievementshoveredx + 7*achievementshoveredy], Vector2{ screenWidth / 2 - (float)MeasureTextEx(Roboto, achievementCondition[achievementshoveredx + 7*achievementshoveredy], 20, 1).x / 2 , screenHeight / 1.5 }, 20, 1, BLACK);
 	}
-
+			
 }
 
 void achievementscreen::logic()
