@@ -24,23 +24,26 @@ private:
 		"???"
 	};
 
+	const char* const achievementCondition[16] = {
+	};
+
 	const char* const achievementTitle[16] = {
-		"You pip'd so you had fun: Get 7000 Bloodpoints",
-		"Farming : MAX: Get 32000 Bloodpoints",
-		"Level up: Hit 50 great skill checks",
-		"Trust me: Hit 100 great skill checks",
-		"I'm a engineer: Hit 500 great skill checks",
-		"Brand New Dwight: Fail 50 skill checks",
-		"Blame the lag: Fail 100 skill checks",
-		"Well deserved facecamp: Fail 500 skill checks",
-		"-rep Please uninstall: Fail 1000 skill checks",
-		"Not even immersed: Hit 5 great skill checks in a row",
-		"Best player in the world: Hit 10 great skill checks in a row ",
-		"Now play the actual game: Play 1000 skill checks",
-		"What in tarnation ?: Play 2000 skill checks",
-		"Infinite abuser: Play 3000 skill checks ",
-		"Esport ready: Play 5000 skill checks",
-		"Blame Mclean: ???"
+		"You pip'd so you had fun",
+		"Farming : MAX",
+		"Level up",
+		"Trust me",
+		"I'm a engineer",
+		"Brand New Dwight",
+		"Blame the lag",
+		"Well deserved facecamp",
+		"-rep Please uninstall",
+		"Not even immersed",
+		"Best player in the world",
+		"Now play the actual game",
+		"What in tarnation?",
+		"Infinite abuser",
+		"Esport ready",
+		"Blame Mclean",
 	};
 
 	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON IS DRAWN
