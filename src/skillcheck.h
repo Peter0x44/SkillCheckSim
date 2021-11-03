@@ -19,6 +19,7 @@ struct stats
 
 	int totalskillchecks;
 	int maxgreatskillcheckshitinarow;
+	bool secretachievement;
 };
 
 class skillcheckscreen: public gamestate

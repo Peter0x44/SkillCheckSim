@@ -56,13 +56,17 @@ achievementscreen::achievementscreen(void)
 	boolforachievements[play1000skillchecks] = (scores.totalskillchecks >= 1000);
 	boolforachievements[play3000skillchecks] = (scores.totalskillchecks >= 3000);
 	boolforachievements[play5000skillchecks] = (scores.totalskillchecks >= 5000);
-	boolforachievements[questionmark] = (scores.totalskillchecks >= 10000);
+	boolforachievements[questionmark] = (scores.secretachievement);
 }
 
 
 achievementscreen::~achievementscreen(void)
 {
-
+	std::ofstream file("file.bin", std::ofstream::binary);
+	if (file.is_open())
+	{
+		file.write((char*)&scores, sizeof(scores));
+	}
 }
 
 void achievementscreen::render()
@@ -99,6 +103,11 @@ void achievementscreen::render()
 			DrawTexturePro(achievementsheet, Rectangle{ (float)(i + 7) * 64, 64, 64, 64 }, Rectangle{ gridOffsetX + (float)i * 68, (float)gridOffsetY + 68, 64, 64 }, Vector2{ 0, 0 }, 0, WHITE); //DRAWNS ALL ACHIEVEMENTS FROM ARRAY IN #ACHIEVEMENTS.H
 		}
 
+	}
+
+	if (boolforachievements[questionmark])
+	{
+		DrawTexturePro(achievementsheet, Rectangle{ 64*14, 0, 64, 64}, Rectangle{ 50, 50, 64, 64}, Vector2 {0, 0}, 0, WHITE);
 	}
 
 	if (achievementshoveredx > -1 && achievementshoveredy > -1)
@@ -140,4 +149,26 @@ void achievementscreen::logic()
 		achievementshoveredy = (CursorY - gridOffsetY) / 68;
 	}
 
+	const char* const tyler = "tyler";
+	int key = GetCharPressed();
+
+	while (key > 0)
+	{
+		if (letterpressed == strlen(tyler)-1)
+		{
+			boolforachievements[questionmark] = true;
+			scores.secretachievement = true;
+			letterpressed = 0;
+		}
+		else if (tyler[letterpressed] == key)
+		{
+			++letterpressed;
+		}
+		else
+		{
+			letterpressed = 0;
+		}
+
+		key = GetCharPressed();
+	}
 }
