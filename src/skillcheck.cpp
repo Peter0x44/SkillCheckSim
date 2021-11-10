@@ -127,6 +127,11 @@ void skillcheckscreen::logic(void)
 		std::remove("file.bin");
 		std::memset(&scores, 0, sizeof(scores));
 	}
+	
+	if (settingsbuttonpressed)
+	{
+		setnextstate(gamestates::settingsscreen);
+	}
 }
 
 void skillcheckscreen::render(void)
@@ -181,6 +186,7 @@ void skillcheckscreen::render(void)
 	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
 	helpbuttonpressed = GuiButton(Help, "help");
 	deletebuttonpressed = GuiButton(deletebutton, "Reset Stats");
+	settingsbuttonpressed = GuiButton(settingsbutton, "Settings");
 
 	//DrawText(TextFormat("%lf seconds until next skillcheck", spawnSkillcheckTimer - timer), 10, 10, 10, WHITE);
 	//DrawText(TextFormat("Timer: %lf", timer), 20, 20, 10, WHITE);

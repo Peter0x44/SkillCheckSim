@@ -2,6 +2,7 @@
 #include "skillcheck.h"
 #include "achievements.h"
 #include "help.h"
+#include "settings.h"
 
 extern gamestate* currentstate;
 extern gamestates stateid;
@@ -24,6 +25,14 @@ void changestate(void)
 		case gamestates::helpscreen:
 			currentstate = new helpscreen();
 			break;
+		case gamestates::settingsscreen:
+			currentstate = new settingsscreen();
+			break;
+			
+			
+			
+			
+			
 		}
 
 		stateid = nextstate;
