@@ -83,11 +83,11 @@ void LoadAssets(void)
 	DBDClick4 = LoadSound("../assets/buttonclick4.mp3");
 
 	Roboto = LoadFont("../assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
-	GuiLoadStyle("../assets/terminal.rgs");
+	GuiLoadStyle("../assets/lol10.rgs");
 	GuiSetFont(Roboto);
 	GuiSetStyle(DEFAULT, TEXT_SIZE, 22);
 
-	Image icon = LoadImage("../assets/bg.png");
+	Image icon = LoadImage("../assets/icon2.png");
 	SetWindowIcon(icon);
 }
 
