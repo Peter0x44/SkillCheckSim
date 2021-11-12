@@ -189,21 +189,11 @@ void skillcheckscreen::render(void)
 
 	if (skillcheckactive) GuiLock();
 
-	if (scores.secretachievement) 
+	const char* const dropdownboxstring = scores.secretachievement ? "Normal;Hex: Ruin;Decisive Strike; Secret Mode" : "Normal;Hex: Ruin;Decisive Strike";
+
+	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, dropdownboxstring, &gameMode, guiDropdownboxEditmode))
 	{
-		if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike; Secret Mode", &gameMode, guiDropdownboxEditmode))
-		{
-			guiDropdownboxEditmode = !guiDropdownboxEditmode;
-			//PlaySound(DBDClick3);
-		}
-	}
-	else 
-	{
-		if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, "Normal;Hex: Ruin;Decisive Strike", &gameMode, guiDropdownboxEditmode))
-		{
-			guiDropdownboxEditmode = !guiDropdownboxEditmode;
-			//PlaySound(DBDClick3);
-		}
+		guiDropdownboxEditmode = !guiDropdownboxEditmode;
 	}
 	
 	UnnervingPresence = GuiCheckBox(UnnervingPresenceButton, "Unnerving Presence", UnnervingPresence);
