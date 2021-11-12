@@ -15,7 +15,7 @@ gamestates nextstate;
 Sound goodSkillCheck;
 Sound greatSkillCheck;
 Sound skillCheckWarning;
-Sound failedSkillCheck; //MORE VARIABLES
+Sound failedSkillCheck; //VARIABLES FOR THE SOUNDS PLAYED IN THE GAME
 Sound DBDClick;
 Sound DBDClick2;
 Sound DBDClick3;

@@ -28,14 +28,17 @@ private:
 	void DrawNormalSkillCheck(void); //DRAW SKILL CHECK FUNCTION
 	void DrawHexRuinSkillCheck(void);
 	void DrawDecisiveStrikeSkillCheck(void);
+	void DrawSecretSkillCheck(void);
 
 	void GenerateNormalSkillCheckZone(void); //GENERATION SKILL CHECK FUNCTION
 	void GenerateHexRuinSkillCheckZone(void);
 	void GenerateDecisiveStrikeSkillCheckZone(void);
+	void GenerateSecretSkillCheckZone(void);
 
 	void NormalSkillCheck(void); // NORMAL SKILL CHECK
 	void HexRuinSkillCheck(void); //HEX RUIN SKILL CHECK
 	void DecisiveStrikeSkillCheck(void);
+	void SecretSkillCheck(void);
 
 	Vector2 middle = { screenWidth / 2, screenHeight / 2 };
 
@@ -78,6 +81,8 @@ private:
 
 	Vector2 greatSkillCheckZone = {0, 0};
 	Vector2 goodSkillCheckZone = {0, 0}; //VARIABLES FOR SKILL CHECK ZONES
+	Vector2 secretSkillCheckZone = { 0, 0 };
+
 	float rotationAngle = spawnLocation;
 	bool moveSkillCheck = true;
 	bool buttonclicked = false;

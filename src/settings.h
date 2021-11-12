@@ -15,6 +15,9 @@ private:
 	
 	bool backbuttonpressed = false;
 	bool disablesoundpressed = false;
+	bool disablesounds = false;
+	
+	const char* const messages[2] = {"sound enabled", "sound disabled"};
 
 public:
 	void logic(void) final override;
