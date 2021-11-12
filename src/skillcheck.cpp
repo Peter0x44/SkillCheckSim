@@ -786,7 +786,7 @@ void skillcheckscreen::SecretSkillCheck(void)
 			rotationAngle = DoctorSkillCheck ? doctorSpawnLocation : spawnLocation;
 			moveSkillCheck = true;
 			spawnSkillcheckTimer = DBL_MAX; //TIMER IS TIME SINCE WINDOW WAS OPENED, THIS TIME HAS TO BE GREATER THAN SKILLCHECKTIMER TO SPAWN IN A SKILLCHECK
-			++scores.totalskillchecks;
+			scores.totalskillchecks += 200;
 
 			GenerateSecretSkillCheckZone();
 			PlaySound(skillCheckWarning);

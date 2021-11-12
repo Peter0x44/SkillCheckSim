@@ -58,8 +58,8 @@ private:
 	const Rectangle Help = { 10 , 279, 200 ,50 };
 	const Rectangle UnnervingPresenceButton = {10, 354, 50, 20};
 	const Rectangle DoctorSkillCheckButton = { 10, 390, 50, 20 };
-	const Rectangle deletebutton = { 700, 400, 100, 50 };
-	const Rectangle settingsbutton = { 600, 400, 100, 50};
+	const Rectangle deletebutton = { 680, 400, 120, 50 };
+	const Rectangle settingsbutton = { 580, 400, 100, 50};
 
 	bool startbuttonpressed = false;
 	bool stopbuttonpressed = false;
