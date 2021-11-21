@@ -25,6 +25,7 @@ void settingsscreen::render()
 	
 	backbuttonpressed = GuiButton(backbutton, "Back"); //BACK BUTTON DRAWN
 	disablesoundpressed = GuiButton(disablesoundsbutton, messages[disablesounds]);
+	changebackgroundpressed = GuiButton(changebackground, messages2[lol]);
 	DrawTextEx(Roboto, "settings", Vector2{ (float)screenWidth / 2 - MeasureTextEx(Roboto ,"achievements", 20, 1).x / 2, 10 }, 20, 1, BLACK);
 	
 	//if (disablesoundpressed) GuiSetState(GUI_STATE_FOCUSED);
@@ -71,6 +72,19 @@ void settingsscreen::logic()
 			SetSoundVolume(DBDClick4, 1);
 		}
 			
+	}
+
+	if (changebackgroundpressed)
+	{
+		lol = !lol;
+		if (lol)
+		{
+			//blablabla
+		}
+		else
+		{
+			//blablabla
+		}
 	}
 
 	
