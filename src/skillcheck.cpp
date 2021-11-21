@@ -147,6 +147,7 @@ void skillcheckscreen::logic(void)
 	{
 		std::remove("file.bin");
 		std::memset(&scores, 0, sizeof(scores));
+		gameMode = Normal;
 	}
 	
 	if (settingsbuttonpressed)

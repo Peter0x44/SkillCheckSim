@@ -89,6 +89,7 @@ void LoadAssets(void)
 
 	Image icon = LoadImage("../assets/icon2.png");
 	SetWindowIcon(icon);
+	UnloadImage(icon);
 }
 
 void UnloadAssets(void)

@@ -1,12 +1,8 @@
-#include <fstream>
-
 #include <raylib.h>
 #include <extras/raygui.h>
-#include <cstring>
 
-#include "achievements.h"
 #include "globals.h"
-#include "skillcheck.h"
+#include "gamestates.h"
 #include "settings.h"
 
 settingsscreen::settingsscreen(void)
@@ -16,7 +12,15 @@ settingsscreen::settingsscreen(void)
 
 settingsscreen::~settingsscreen(void)
 {
-
+	float volume = disablesounds ? 0.0f : 1.0f;
+	SetSoundVolume(goodSkillCheck, volume);
+	SetSoundVolume(greatSkillCheck, volume);
+	SetSoundVolume(skillCheckWarning, volume);
+	SetSoundVolume(failedSkillCheck, volume);
+	SetSoundVolume(DBDClick, volume);
+	SetSoundVolume(DBDClick2, volume);
+	SetSoundVolume(DBDClick3, volume);
+	SetSoundVolume(DBDClick4, volume);
 }
 
 void settingsscreen::render()
@@ -45,33 +49,9 @@ void settingsscreen::logic()
 		setnextstate(gamestates::skillcheckscreen); //SETS SCREEN BACK TO SKILL CHECK SCREEN
 	}
 	
-	
 	if (disablesoundpressed) 
 	{
 		disablesounds = !disablesounds;
-		if (disablesounds)
-		{
-			SetSoundVolume(goodSkillCheck, 0);
-			SetSoundVolume(greatSkillCheck, 0);
-			SetSoundVolume(skillCheckWarning, 0);
-			SetSoundVolume(failedSkillCheck, 0);
-			SetSoundVolume(DBDClick, 0);
-			SetSoundVolume(DBDClick2, 0);
-			SetSoundVolume(DBDClick3, 0);
-			SetSoundVolume(DBDClick4, 0);
-		}
-		else
-		{
-			SetSoundVolume(goodSkillCheck, 1);
-			SetSoundVolume(greatSkillCheck, 1);
-			SetSoundVolume(skillCheckWarning, 1);
-			SetSoundVolume(failedSkillCheck, 1);
-			SetSoundVolume(DBDClick, 1);
-			SetSoundVolume(DBDClick2, 1);
-			SetSoundVolume(DBDClick3, 1);
-			SetSoundVolume(DBDClick4, 1);
-		}
-			
 	}
 
 	if (changebackgroundpressed)
@@ -86,8 +66,4 @@ void settingsscreen::logic()
 			//blablabla
 		}
 	}
-
-	
-
-
 }

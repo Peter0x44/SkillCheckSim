@@ -8,7 +8,7 @@ class settingsscreen : public gamestate
 {
 	
 private:
-	Rectangle Backboard = { screenWidth / 2 - 375, screenHeight / 2 - 188, 750, 350 };
+	const Rectangle Backboard = { screenWidth / 2 - 375, screenHeight / 2 - 188, 750, 350 };
 	
 	const Rectangle disablesoundsbutton = { 44, 65, 250, 50 };
 	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON DRAWN
