@@ -346,7 +346,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 			scores.combo = 0;
 
 			scores.greatskillcheckhitinarow = 0;
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 		}
 		else if (rotationAngle < skillCheckLimits)
 		{
@@ -358,7 +358,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 			scores.combo = 0;
 
 			scores.greatskillcheckhitinarow = 0;
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
 		{
@@ -447,7 +447,7 @@ void skillcheckscreen::NormalSkillCheck(void)
 					moveSkillCheck = false;
 				}
 			}
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 
 		}
 
@@ -511,7 +511,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 			scores.combo = 0;
 			scores.greatskillcheckhitinarow = 0;
 
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 		}
 		else if (rotationAngle < skillCheckLimits)
 		{
@@ -524,7 +524,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 
 			scores.greatskillcheckhitinarow = 0;
 
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
 		{
@@ -590,7 +590,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 					moveSkillCheck = false;
 				}
 			}
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 
 		}
 
@@ -655,7 +655,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 
 			scores.greatskillcheckhitinarow = 0;
 
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 		}
 		else if (rotationAngle < skillCheckLimits)
 		{
@@ -668,7 +668,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 
 			scores.greatskillcheckhitinarow = 0;
 
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
 		{
@@ -730,7 +730,7 @@ void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 					moveSkillCheck = false;
 				}
 			}
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 2);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
 
 		}
 
@@ -795,7 +795,7 @@ void skillcheckscreen::SecretSkillCheck(void)
 
 			scores.greatskillcheckhitinarow = 0;
 
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 1.5);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 1500) / 1000.0f;
 		}
 		else if (rotationAngle < skillCheckLimits)
 		{
@@ -808,7 +808,7 @@ void skillcheckscreen::SecretSkillCheck(void)
 
 			scores.greatskillcheckhitinarow = 0;
 
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 1.5);
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 1500) / 1000.0f;
 		}
 		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
 		{
@@ -816,7 +816,7 @@ void skillcheckscreen::SecretSkillCheck(void)
 			{
 				if (rotationAngle < greatSkillCheckZone.x && rotationAngle > greatSkillCheckZone.y)
 				{
-					scores.bloodpoints = scores.bloodpoints + 20000;
+					scores.bloodpoints += 20000;
 					scores.bloodpoints += scores.combo;
 					++scores.greatskillcheckhitinarow;
 					++scores.greatskillcheckhit;
@@ -870,8 +870,7 @@ void skillcheckscreen::SecretSkillCheck(void)
 					moveSkillCheck = false;
 				}
 			}
-			spawnSkillcheckTimer = timer + GetRandomValue(1, 1.5);
-
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 1500) / 1000.0f;
 		}
 
 		if (moveSkillCheck)
