@@ -25,7 +25,7 @@ settingsscreen::~settingsscreen(void)
 
 void settingsscreen::render()
 {
-	DrawRectangleRounded(Backboard, 0.1, 0, RAYWHITE);
+	DrawRectangleRounded(Backboard, 0.1f, 0, RAYWHITE);
 	
 	backbuttonpressed = GuiButton(backbutton, "Back"); //BACK BUTTON DRAWN
 	disablesoundpressed = GuiButton(disablesoundsbutton, messages[disablesounds]);
