@@ -3,7 +3,7 @@
 #include <fstream>
 #include <cfloat>
 #include <iostream>
-#include <extras/raygui.h>
+#include <raygui.h>
 #include <cstring>
 
 #include "globals.h"
@@ -197,18 +197,18 @@ void skillcheckscreen::render(void)
 		guiDropdownboxEditmode = !guiDropdownboxEditmode;
 	}
 	
-	UnnervingPresence = GuiCheckBox(UnnervingPresenceButton, "Unnerving Presence", UnnervingPresence);
-	DoctorSkillCheck = GuiCheckBox(DoctorSkillCheckButton, "Doctor mode", DoctorSkillCheck);
+	GuiCheckBox(UnnervingPresenceButton, "Unnerving Presence", &UnnervingPresence);
+	GuiCheckBox(DoctorSkillCheckButton, "Doctor mode", &DoctorSkillCheck);
 
 	if (skillcheckactive) GuiUnlock();
 
-	if (skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
+	if (skillcheckactive) GuiSetState(STATE_FOCUSED);
 	startbuttonpressed = GuiButton(startbutton, "Start");
-	GuiSetState(GUI_STATE_NORMAL);
+	GuiSetState(STATE_NORMAL);
 
-	if (!skillcheckactive) GuiSetState(GUI_STATE_FOCUSED);
+	if (!skillcheckactive) GuiSetState(STATE_FOCUSED);
 	stopbuttonpressed = GuiButton(stopbutton, "Stop");
-	GuiSetState(GUI_STATE_NORMAL);
+	GuiSetState(STATE_NORMAL);
 
 	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
 	helpbuttonpressed = GuiButton(Help, "help");

@@ -1,5 +1,5 @@
 #include <raylib.h>
-#include <extras/raygui.h>
+#include <raygui.h>
 
 #include "globals.h"
 #include "gamestates.h"

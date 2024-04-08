@@ -1,7 +1,7 @@
 #include <raylib.h>
 #include <cmath>
 #define RAYGUI_IMPLEMENTATION
-#include <extras/raygui.h> 
+#include <raygui.h>
 #undef RAYGUI_IMPLEMENTATION
 
 #include "skillcheck.h"
