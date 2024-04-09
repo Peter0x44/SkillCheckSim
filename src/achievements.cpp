@@ -149,18 +149,18 @@ void achievementscreen::logic()
 		achievementshoveredy = (CursorY - gridOffsetY) / 68;
 	}
 
-	const char* const tyler = "tyler";
+	const char* const peter = "peter";
 	int key = GetCharPressed();
 
 	while (key > 0)
 	{
-		if (letterpressed == strlen(tyler)-1)
+		if (letterpressed == sizeof(peter)-1)
 		{
 			boolforachievements[questionmark] = true;
 			scores.secretachievement = true;
 			letterpressed = 0;
 		}
-		else if (tyler[letterpressed] == key)
+		else if (peter[letterpressed] == key)
 		{
 			++letterpressed;
 		}
