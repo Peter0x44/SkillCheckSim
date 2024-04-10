@@ -13,7 +13,7 @@ set(SUPPORT_RPRAND_GENERATOR OFF)
 
 add_subdirectory(libs/raylib)
 
-#add_compile_options(-Wall -Wextra -pedantic)
+add_compile_options(-Wall -Wextra -pedantic -Wno-missing-field-initializers)
 
 add_executable(SkillCheckSimulator
 	src/skillcheck.cpp

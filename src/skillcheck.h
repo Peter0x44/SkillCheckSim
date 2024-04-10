@@ -4,6 +4,7 @@
 #include "gamestates.h"
 #include "globals.h"
 
+
 struct stats
 {
 	int bloodpoints;
@@ -22,29 +23,38 @@ struct stats
 	bool secretachievement;
 };
 
+struct zone
+{
+	float begin;
+	float end;
+};
+
 class skillcheckscreen: public gamestate
 {
 private:
-	void DrawNormalSkillCheck(void); //DRAW SKILL CHECK FUNCTION
+	void DrawGeneratorSkillCheck(void); //DRAW SKILL CHECK FUNCTION
 	void DrawHexRuinSkillCheck(void);
 	void DrawDecisiveStrikeSkillCheck(void);
 	void DrawSecretSkillCheck(void);
 
-	void GenerateNormalSkillCheckZone(void); //GENERATION SKILL CHECK FUNCTION
+	void DrawNeedle(void);
+	void DrawCircle(void);
+
+	void GenerateGeneratorSkillCheckZone(void); //GENERATION SKILL CHECK FUNCTION
 	void GenerateHexRuinSkillCheckZone(void);
 	void GenerateDecisiveStrikeSkillCheckZone(void);
 	void GenerateSecretSkillCheckZone(void);
 
-	void NormalSkillCheck(void); // NORMAL SKILL CHECK
+	void GeneratorSkillCheck(void); // NORMAL SKILL CHECK
 	void HexRuinSkillCheck(void); //HEX RUIN SKILL CHECK
 	void DecisiveStrikeSkillCheck(void);
 	void SecretSkillCheck(void);
 
 	Vector2 middle = { screenWidth / 2, screenHeight / 2 };
 
-	const float spawnLocation = 90.0f; //STARTING LOCATION OF SKILL CHECK NEEDLE
+	const float spawnLocation = 0.0f; //STARTING LOCATION OF SKILL CHECK NEEDLE
 	const float doctorSpawnLocation = -270.0f;
-	const float skillCheckLimits = -270.0f;
+	const float skillCheckLimits = 360.0f;
 	const float doctorSkillCheckLimits = 90.0f;
 
 	const int spawnZone1 = -30; //SPAWN ZONES FOR SKILL CHECKS
@@ -54,7 +64,7 @@ private:
 
 	const Rectangle startbutton = { middle.x, 340, 100, 50 };
 	const Rectangle stopbutton = { middle.x - 100, 340, 100, 50 };
-	const Rectangle achievbutton = { 10, 224, 200, 50 }; //A LOT OF VARIABLES
+	const Rectangle achievbutton = { 10, 224, 200, 50 };
 	const Rectangle Help = { 10 , 279, 200 ,50 };
 	const Rectangle UnnervingPresenceButton = {10, 354, 50, 20};
 	const Rectangle DoctorSkillCheckButton = { 10, 390, 50, 20 };
@@ -79,9 +89,9 @@ private:
 	int gameMode = 0;
 	bool guiDropdownboxEditmode = false;
 
-	Vector2 greatSkillCheckZone = {0, 0};
-	Vector2 goodSkillCheckZone = {0, 0}; //VARIABLES FOR SKILL CHECK ZONES
-	Vector2 secretSkillCheckZone = { 0, 0 };
+	zone greatSkillCheckZone = {0, 0};
+	zone goodSkillCheckZone = {0, 0}; //VARIABLES FOR SKILL CHECK ZONES
+	zone secretSkillCheckZone = { 0, 0 };
 
 	float rotationAngle = spawnLocation;
 	bool moveSkillCheck = true;
