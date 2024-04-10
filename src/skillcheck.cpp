@@ -162,7 +162,14 @@ void skillcheckscreen::logic(void)
 
 void skillcheckscreen::render(void)
 {
-	DrawTexture(background, 0, 0, WHITE);
+	DrawTexturePro(
+			background,
+			Rectangle {0, 0, (float)background.width, (float)background.height},
+			Rectangle {0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()},
+			Vector2 {0, 0},
+			0.0f,
+			WHITE
+	);
 
 	DrawTextEx(Roboto, "Skill Check Simulator", Vector2{ (float)screenWidth - 120 - MeasureTextEx(Roboto, "Skill Check Simulator", 14, 1).x , 10 }, 28, 1, WHITE);
 	DrawTextEx(Roboto, TextFormat("X: %d", GetMouseX()), Vector2{ 10, 160 }, 20, 1, WHITE);
