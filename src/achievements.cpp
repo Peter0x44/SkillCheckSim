@@ -35,7 +35,6 @@ achievementscreen::achievementscreen(void)
 	if (file.is_open())
 	{
 		file.read((char*)&scores, sizeof(scores));
-			
 	}
 	else
 	{

@@ -33,6 +33,7 @@ class skillcheckscreen: public gamestate
 {
 private:
 	void DrawGeneratorSkillCheck(void); //DRAW SKILL CHECK FUNCTION
+	void DrawHealingSkillCheck(void);
 	void DrawHexRuinSkillCheck(void);
 	void DrawDecisiveStrikeSkillCheck(void);
 	void DrawSecretSkillCheck(void);
@@ -40,13 +41,15 @@ private:
 	void DrawNeedle(void);
 	void DrawCircle(void);
 
-	void GenerateGeneratorSkillCheckZone(void); //GENERATION SKILL CHECK FUNCTION
+	void GenerateGeneratorSkillCheckZone(void);
+	void GenerateHealingSkillCheckZone(void);
 	void GenerateHexRuinSkillCheckZone(void);
 	void GenerateDecisiveStrikeSkillCheckZone(void);
 	void GenerateSecretSkillCheckZone(void);
 
-	void GeneratorSkillCheck(void); // NORMAL SKILL CHECK
-	void HexRuinSkillCheck(void); //HEX RUIN SKILL CHECK
+	void GeneratorSkillCheck(void);
+	void HealingSkillCheck(void);
+	void HexRuinSkillCheck(void);
 	void DecisiveStrikeSkillCheck(void);
 	void SecretSkillCheck(void);
 

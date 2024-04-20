@@ -13,6 +13,7 @@
 enum gamemodes
 {
 	Generator = 0,
+	Healing,
 	Ruin,
 	DS,
 	Secret
@@ -47,10 +48,9 @@ skillcheckscreen::~skillcheckscreen(void)
 
 // https://deadbydaylight.fandom.com/wiki/Skill_Checks
 
-// "Regular" skill check (generator:
+// skill check (generator):
 // Great Success Zone Length: 3%
 // Good Success Zone Length: 13%
-// 
 
 void skillcheckscreen::GenerateGeneratorSkillCheckZone(void)
 {
@@ -60,9 +60,26 @@ void skillcheckscreen::GenerateGeneratorSkillCheckZone(void)
 
 	// Skillchecks start at 4 o'clock and end at 11 o'clock
 	int rand = GetRandomValue(360/12*4, 360/12*11-generatorSkillCheckGoodWidth);
-	
+
 	greatSkillCheckZone = { (float)rand, (float)rand + generatorSkillCheckGreatWidth };   //Zones for where each skillcheck can spawn
 	goodSkillCheckZone = { (float)rand + generatorSkillCheckGreatWidth, (float)rand + generatorSkillCheckGoodWidth };
+}
+
+// skill check (healing):
+// Great Success Zone Length: 3%
+// Good Success Zone Length: 15%
+
+void skillcheckscreen::GenerateHealingSkillCheckZone(void)
+{
+	float healingSkillCheckGreatWidth = 360.0f * 0.03f;
+	float healingSkillCheckGoodWidth = 360.0f * 0.15;
+	if (UnnervingPresence) healingSkillCheckGoodWidth *= 0.4f;
+
+	// Skillchecks start at 4 o'clock and end at 11 o'clock
+	int rand = GetRandomValue(360/12*4, 360/12*11-healingSkillCheckGoodWidth);
+
+	greatSkillCheckZone = { (float)rand, (float)rand + healingSkillCheckGreatWidth };   //Zones for where each skillcheck can spawn
+	goodSkillCheckZone = { (float)rand + healingSkillCheckGreatWidth, (float)rand + healingSkillCheckGoodWidth };
 }
 
 void skillcheckscreen::GenerateHexRuinSkillCheckZone(void)
@@ -123,6 +140,9 @@ void skillcheckscreen::logic(void)
 	case Generator:
 		GeneratorSkillCheck();
 		break;
+	case Healing:
+		HealingSkillCheck();
+		break;
 	case Ruin:
 		HexRuinSkillCheck();
 		break;
@@ -157,7 +177,6 @@ void skillcheckscreen::logic(void)
 	{
 		setnextstate(gamestates::settingsscreen);
 	}
-
 }
 
 void skillcheckscreen::render(void)
@@ -187,6 +206,9 @@ void skillcheckscreen::render(void)
 	case Generator:
 		DrawGeneratorSkillCheck();
 		break;
+	case Healing:
+		DrawHealingSkillCheck();
+		break;
 	case Ruin:
 		DrawHexRuinSkillCheck();
 		break;
@@ -200,7 +222,7 @@ void skillcheckscreen::render(void)
 
 	if (skillcheckactive) GuiLock();
 
-	const char* const dropdownboxstring = scores.secretachievement ? "Generator;Hex: Ruin;Decisive Strike; Secret Mode" : "Generator;Hex: Ruin;Decisive Strike";
+	const char* const dropdownboxstring = scores.secretachievement ? "Generator;Healing;Hex: Ruin;Decisive Strike;Secret Mode" : "Generator;Healing;Hex: Ruin;Decisive Strike";
 
 	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, dropdownboxstring, &gameMode, guiDropdownboxEditmode))
 	{
@@ -281,8 +303,36 @@ void skillcheckscreen::DrawGeneratorSkillCheck(void)
 		DrawRing(middle, radius - 5, radius + 5, doctorGreat.begin, doctorGreat.end, 15, WHITE);
 		DrawRing(middle, radius - 5, radius + 5, doctorGood.begin, doctorGood.end, 15, BLACK); // Drawing of main circle and needle
 		DrawRingLines(middle, radius - 5, radius + 5, doctorGood.begin, doctorGood.end, 15, WHITE); // Drawing of main circle and needle
+	}
+	else
+	{
+		DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.begin-90.0f, greatSkillCheckZone.end-90.0f, 15, WHITE);
+		DrawRing(middle, radius - 5, radius + 5, goodSkillCheckZone.begin-90.0f, goodSkillCheckZone.end-90.0f, 15, BLACK); // Drawing of main circle and needle
+		DrawRingLines(middle, radius - 5, radius + 5, goodSkillCheckZone.begin-90.0f, goodSkillCheckZone.end-90.0f, 15, WHITE); // Drawing of main circle and needle
+	}
+	DrawNeedle();
+}
 
+void skillcheckscreen::DrawHealingSkillCheck(void)
+{
+	DrawCircle();
 
+	if (DoctorSkillCheck)
+	{
+		zone doctorGreat
+		{
+			270.0f - greatSkillCheckZone.begin - (greatSkillCheckZone.end - greatSkillCheckZone.begin),
+			270.0f - greatSkillCheckZone.begin
+		};
+		zone doctorGood
+		{
+			270.0f - goodSkillCheckZone.begin - (goodSkillCheckZone.end - goodSkillCheckZone.begin),
+			270.0f - goodSkillCheckZone.begin
+		};
+
+		DrawRing(middle, radius - 5, radius + 5, doctorGreat.begin, doctorGreat.end, 15, WHITE);
+		DrawRing(middle, radius - 5, radius + 5, doctorGood.begin, doctorGood.end, 15, BLACK); // Drawing of main circle and needle
+		DrawRingLines(middle, radius - 5, radius + 5, doctorGood.begin, doctorGood.end, 15, WHITE); // Drawing of main circle and needle
 	}
 	else
 	{
@@ -430,6 +480,119 @@ void skillcheckscreen::GeneratorSkillCheck(void)
 			// healing skillchecks take 1.2
 			// TODO: verify
 			rotationAngle += GetFrameTime() * 360.0f/1.1f;
+		}
+	}
+}
+
+void skillcheckscreen::HealingSkillCheck(void)
+{
+	if (startbuttonpressed && !skillcheckactive)
+	{
+		skillcheckactive = true;
+		moveSkillCheck = true;
+		//scores.bloodpoints = 0;
+		//scores.combo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
+		//scores.skillchecksmissed = 0; // Main IF statement for when skillcheck start button is pressed
+		rotationAngle = 0;
+		GenerateGeneratorSkillCheckZone(); //Generation Skillcheck function
+		PlaySound(skillCheckWarning);
+		timer = GetTime();
+		spawnSkillcheckTimer = DBL_MAX;
+	}
+
+	if (stopbuttonpressed && skillcheckactive)
+	{
+		skillcheckactive = false;
+		moveSkillCheck = false;
+		rotationAngle = 0;
+		greatSkillCheckZone = { 0, 0 };
+		goodSkillCheckZone = { 0, 0 };
+	}
+
+	if (skillcheckactive)
+	{
+		timer = GetTime();
+
+		middle = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
+
+		if (timer > spawnSkillcheckTimer)
+		{
+			rotationAngle = 0;
+			moveSkillCheck = true;
+			spawnSkillcheckTimer = DBL_MAX;
+			++scores.totalskillchecks;
+
+			GenerateGeneratorSkillCheckZone();
+			PlaySound(skillCheckWarning);
+		}
+
+		if (rotationAngle > 360.0f)
+		{
+			// skillcheck has done full turn, must be missed
+			if (moveSkillCheck)
+				++scores.skillchecksmissed;
+			moveSkillCheck = false;
+			rotationAngle = 0;
+			PlaySound(failedSkillCheck);
+			scores.combo = 0;
+
+			scores.greatskillcheckhitinarow = 0;
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
+		}
+		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
+		{
+			if (rotationAngle > greatSkillCheckZone.begin && rotationAngle < greatSkillCheckZone.end)
+			{
+				scores.bloodpoints = scores.bloodpoints + 2500;
+				scores.bloodpoints += scores.combo;
+				scores.combo = scores.combo + 1; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+				++scores.greatskillcheckhit;
+				++scores.maxcombo;
+				++scores.greatskillcheckhitinarow;
+
+				if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
+				{
+					scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
+				}
+
+				PlaySound(greatSkillCheck);
+				moveSkillCheck = false;
+			}
+			else if (rotationAngle > goodSkillCheckZone.begin && rotationAngle < goodSkillCheckZone.end)
+			{
+				scores.bloodpoints = scores.bloodpoints + 50;
+				scores.bloodpoints += scores.combo;
+				++scores.combo;
+				++scores.goodskillcheckhit;
+				++scores.goodskillcheckhitinarow;
+				++scores.maxcombo;
+				scores.greatskillcheckhitinarow = 0;
+
+				PlaySound(goodSkillCheck); //LOGIC for when rotationangle is in goodskillcheck zone, score is increased and right sound effect is played
+				moveSkillCheck = false;
+			}
+			else
+			{
+				if (moveSkillCheck)
+				{
+					// Missed skill check
+					++scores.skillchecksmissed;
+					PlaySound(failedSkillCheck);
+				}
+				scores.greatskillcheckhitinarow = 0;
+				scores.combo = 0;
+				moveSkillCheck = false;
+			}
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
+
+		}
+
+		if (moveSkillCheck)
+		{
+			// Generator skillchecks apparently take 1.1 seconds
+			// healing skillchecks take 1.2
+			// TODO: verify
+			rotationAngle += GetFrameTime() * 360.0f/1.2f;
 		}
 	}
 }
