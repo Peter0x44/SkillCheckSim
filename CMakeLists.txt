@@ -8,12 +8,20 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CUSTOMIZE_BUILD ON)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # don't build the supplied examples
 set(BUILD_GAMES    OFF CACHE BOOL "" FORCE) # or games
-set(OPENGL_VERSION "1.1" CACHE STRING "" FORCE)
-set(SUPPORT_RPRAND_GENERATOR OFF)
+
+if (NOT EMSCRIPTEN)
+	set(OPENGL_VERSION "1.1" CACHE STRING "" FORCE)
+else ()
+	set(PLATFORM "Web" CACHE STRING "" FORCE)
+endif ()
 
 add_subdirectory(libs/raylib)
 
-add_compile_options(-Wall -Wextra -pedantic -Wno-missing-field-initializers)
+#add_compile_options(-Wall -Wextra -pedantic -Wno-missing-field-initializers -fsanitize=address,undefined)
+if (EMSCRIPTEN)
+	add_link_options(-sUSE_GLFW=3 --preload-file ${CMAKE_CURRENT_LIST_DIR}/assets@assets)
+	set(CMAKE_EXECUTABLE_SUFFIX ".html")
+endif ()
 
 add_executable(SkillCheckSimulator
 	src/skillcheck.cpp

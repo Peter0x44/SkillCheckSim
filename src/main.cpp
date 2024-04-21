@@ -4,6 +4,10 @@
 #include <raygui.h>
 #undef RAYGUI_IMPLEMENTATION
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#endif
+
 #include "skillcheck.h"
 #include "gamestates.h"
 
@@ -32,6 +36,19 @@ void LoadAssets(void); //LOAD ASSET FUNCTION, FURTHER DOWN
 
 void UnloadAssets(void); //UNLOAD ASSET FUNCTION, FURTHER DOWN
 
+void MainLoop(void)
+{
+		currentstate->logic();
+
+		BeginDrawing(); //DRAWNS TO SCREEN
+
+			ClearBackground(GRAY); //BACKGROUND SET TO GRAY
+			currentstate->render();
+
+		EndDrawing(); //FINISHES DRAWING TO SCREEN
+		changestate();
+}
+
 int main(void)
 {
 	SetConfigFlags(FLAG_MSAA_4X_HINT);
@@ -42,52 +59,45 @@ int main(void)
 
 	currentstate = new skillcheckscreen();
 
+#ifdef __EMSCRIPTEN__
+	emscripten_set_main_loop(MainLoop, 0, 1);
+#else
 	while (!WindowShouldClose()) //ONLY DOES WHEN WINDOW IS OPEN
 	{
-		currentstate->logic();
-
-		BeginDrawing(); //DRAWNS TO SCREEN
-
-			ClearBackground(GRAY); //BACKGROUND SET TO GRAY
-			currentstate->render();
-
-		EndDrawing(); //FINISHES DRAWING TO SCREEN
-
-		changestate();
-
+		MainLoop();
 	}
-
+#endif
 	delete currentstate;
 	CloseWindow();
-
 }
-
-
 
 
 void LoadAssets(void)
 {
+#ifndef __EMSCRIPTEN__
+	ChangeDirectory("..");
+#endif
 	InitAudioDevice();
-	helpbackground = LoadTexture("../assets/help2.png");
-	achievementsbackground = LoadTexture("../assets/bg3.png"); //LOADS TEXTURES FROM ASSETS
-	background = LoadTexture("../assets/bg.png");
-	achievementsheet = LoadTexture("../assets/achievementsheet.png");
+	helpbackground = LoadTexture("assets/help2.png");
+	achievementsbackground = LoadTexture("assets/bg3.png"); //LOADS TEXTURES FROM ASSETS
+	background = LoadTexture("assets/bg.png");
+	achievementsheet = LoadTexture("assets/achievementsheet.png");
 
-	greatSkillCheck = LoadSound("../assets/src_audio_great.mp3");
-	skillCheckWarning = LoadSound("../assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
-	failedSkillCheck = LoadSound("../assets/sc0.mp3");
-	goodSkillCheck = LoadSound("../assets/src_audio_good.mp3");
-	DBDClick = LoadSound("../assets/buttonclick1.mp3");
-	DBDClick2 = LoadSound("../assets/buttonclick2.mp3"); //ALL SOUNDS FOR BUTTONS
-	DBDClick3 = LoadSound("../assets/buttonclick3.mp3");
-	DBDClick4 = LoadSound("../assets/buttonclick4.mp3");
+	greatSkillCheck = LoadSound("assets/src_audio_great.mp3");
+	skillCheckWarning = LoadSound("assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
+	failedSkillCheck = LoadSound("assets/sc0.mp3");
+	goodSkillCheck = LoadSound("assets/src_audio_good.mp3");
+	DBDClick = LoadSound("assets/buttonclick1.mp3");
+	DBDClick2 = LoadSound("assets/buttonclick2.mp3"); //ALL SOUNDS FOR BUTTONS
+	DBDClick3 = LoadSound("assets/buttonclick3.mp3");
+	DBDClick4 = LoadSound("assets/buttonclick4.mp3");
 
-	Roboto = LoadFont("../assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
-	GuiLoadStyle("../assets/lol10.rgs");
+	Roboto = LoadFont("assets/Roboto-Light.ttf"); //LOADS FONT FROM ASSETS
+	GuiLoadStyle("assets/lol10.rgs");
 	GuiSetFont(Roboto);
 	GuiSetStyle(DEFAULT, TEXT_SIZE, 22);
 
-	Image icon = LoadImage("../assets/icon2.png");
+	Image icon = LoadImage("assets/icon2.png");
 	SetWindowIcon(icon);
 	UnloadImage(icon);
 }
