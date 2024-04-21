@@ -3,7 +3,7 @@
 #include "gamestates.h"
 #include "globals.h"
 
-class helpscreen: public gamestate
+class helpscreen final: public gamestate
 {
 private:
 	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON DRAWN

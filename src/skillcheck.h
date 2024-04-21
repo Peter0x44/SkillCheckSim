@@ -29,7 +29,7 @@ struct zone
 	float end;
 };
 
-class skillcheckscreen: public gamestate
+class skillcheckscreen final: public gamestate
 {
 private:
 	void DrawGeneratorSkillCheck(void); //DRAW SKILL CHECK FUNCTION
@@ -98,7 +98,6 @@ private:
 
 	float rotationAngle = spawnLocation;
 	bool moveSkillCheck = true;
-	bool buttonclicked = false;
 
 	double timer;
 	double spawnSkillcheckTimer; //TIMERS

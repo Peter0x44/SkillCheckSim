@@ -4,7 +4,7 @@
 #include "globals.h"
 #include "skillcheck.h"
 
-class achievementscreen : public gamestate
+class achievementscreen final : public gamestate
 {
 private:
 	stats scores;

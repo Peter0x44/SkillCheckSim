@@ -17,7 +17,7 @@ endif ()
 
 add_subdirectory(libs/raylib)
 
-#add_compile_options(-Wall -Wextra -pedantic -Wno-missing-field-initializers -fsanitize=address,undefined)
+add_compile_options(-Wall -Wextra -pedantic)
 if (EMSCRIPTEN)
 	add_link_options(-sUSE_GLFW=3 --preload-file ${CMAKE_CURRENT_LIST_DIR}/assets@assets)
 	set(CMAKE_EXECUTABLE_SUFFIX ".html")

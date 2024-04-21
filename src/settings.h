@@ -4,7 +4,7 @@
 #include "gamestates.h"
 #include "globals.h"
 
-class settingsscreen : public gamestate
+class settingsscreen final : public gamestate
 {
 	
 private:

@@ -34,7 +34,6 @@ skillcheckscreen::skillcheckscreen(void)
 	{
 		std::memset(&scores, 0, sizeof(scores)); //SETS ALL SCORE VARIABLES TO 0
 	}
-
 }
 
 skillcheckscreen::~skillcheckscreen(void)
@@ -229,7 +228,7 @@ void skillcheckscreen::render(void)
 		guiDropdownboxEditmode = !guiDropdownboxEditmode;
 	}
 	
-	GuiCheckBox(UnnervingPresenceButton, "Unnerving Presence", &UnnervingPresence);
+	GuiCheckBox(UnnervingPresenceButton, "Unnerving presence", &UnnervingPresence);
 	GuiCheckBox(DoctorSkillCheckButton, "Doctor mode", &DoctorSkillCheck);
 
 	if (skillcheckactive) GuiUnlock();
@@ -243,7 +242,7 @@ void skillcheckscreen::render(void)
 	GuiSetState(STATE_NORMAL);
 
 	achievementspressed = GuiButton(achievbutton, "Achievements");  //Creation for all buttons
-	helpbuttonpressed = GuiButton(Help, "help");
+	helpbuttonpressed = GuiButton(Help, "Help");
 	deletebuttonpressed = GuiButton(deletebutton, "Reset Stats");
 	settingsbuttonpressed = GuiButton(settingsbutton, "Settings");
 
