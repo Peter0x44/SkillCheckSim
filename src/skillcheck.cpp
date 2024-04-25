@@ -476,7 +476,6 @@ void skillcheckscreen::GeneratorSkillCheck(void)
 		if (moveSkillCheck)
 		{
 			// Generator skillchecks apparently take 1.1 seconds
-			// healing skillchecks take 1.2
 			// TODO: verify
 			rotationAngle += GetFrameTime() * 360.0f/1.1f;
 		}
@@ -493,7 +492,7 @@ void skillcheckscreen::HealingSkillCheck(void)
 		//scores.combo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
 		//scores.skillchecksmissed = 0; // Main IF statement for when skillcheck start button is pressed
 		rotationAngle = 0;
-		GenerateGeneratorSkillCheckZone(); //Generation Skillcheck function
+		GenerateHealingSkillCheckZone(); //Generation Skillcheck function
 		PlaySound(skillCheckWarning);
 		timer = GetTime();
 		spawnSkillcheckTimer = DBL_MAX;
@@ -521,7 +520,7 @@ void skillcheckscreen::HealingSkillCheck(void)
 			spawnSkillcheckTimer = DBL_MAX;
 			++scores.totalskillchecks;
 
-			GenerateGeneratorSkillCheckZone();
+			GenerateHealingSkillCheckZone();
 			PlaySound(skillCheckWarning);
 		}
 
@@ -583,13 +582,11 @@ void skillcheckscreen::HealingSkillCheck(void)
 				moveSkillCheck = false;
 			}
 			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
-
 		}
 
 		if (moveSkillCheck)
 		{
-			// Generator skillchecks apparently take 1.1 seconds
-			// healing skillchecks take 1.2
+			// healing skillchecks apparently take 1.2 seconds
 			// TODO: verify
 			rotationAngle += GetFrameTime() * 360.0f/1.2f;
 		}
