@@ -4,6 +4,7 @@ extern Sound goodSkillCheck;
 extern Sound greatSkillCheck;
 extern Sound skillCheckWarning;
 extern Sound failedSkillCheck;
+extern Sound sparks;
 extern Sound DBDClick;
 extern Sound DBDClick2;
 extern Sound DBDClick3;

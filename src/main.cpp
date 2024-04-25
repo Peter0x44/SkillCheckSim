@@ -20,6 +20,7 @@ Sound goodSkillCheck;
 Sound greatSkillCheck;
 Sound skillCheckWarning;
 Sound failedSkillCheck; //VARIABLES FOR THE SOUNDS PLAYED IN THE GAME
+Sound sparks;
 Sound DBDClick;
 Sound DBDClick2;
 Sound DBDClick3;
@@ -87,6 +88,7 @@ void LoadAssets(void)
 	skillCheckWarning = LoadSound("assets/src_audio_advertise2.mp3"); //LOADS EVERY SOUND FROM ASSETS FOLDER
 	failedSkillCheck = LoadSound("assets/sc0.mp3");
 	goodSkillCheck = LoadSound("assets/src_audio_good.mp3");
+	sparks = LoadSound("assets/sparks.ogg");
 	DBDClick = LoadSound("assets/buttonclick1.mp3");
 	DBDClick2 = LoadSound("assets/buttonclick2.mp3"); //ALL SOUNDS FOR BUTTONS
 	DBDClick3 = LoadSound("assets/buttonclick3.mp3");
@@ -108,6 +110,7 @@ void UnloadAssets(void)
 	UnloadSound(skillCheckWarning);
 	UnloadSound(failedSkillCheck);
 	UnloadSound(goodSkillCheck); //UNLOADS EVERY SINGLE THING LOADED IN ASSETS FOLDER
+	UnloadSound(sparks);
 	UnloadSound(DBDClick);
 	UnloadSound(DBDClick2); //ALL SOUNDS FOR BUTTONS
 	UnloadSound(DBDClick3);

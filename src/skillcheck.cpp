@@ -686,8 +686,7 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 				scores.greatskillcheckhitinarow = 0;
 				scores.goodskillcheckhitinarow = 0;
 
-				// TODO add the real "crackling" sound effect here
-				PlaySound(failedSkillCheck);
+				PlaySound(sparks);
 				moveSkillCheck = false;
 			}
 			else
