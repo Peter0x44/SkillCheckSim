@@ -15,8 +15,7 @@ enum gamemodes
 	Generator = 0,
 	Healing,
 	Ruin,
-	DS,
-	Secret
+	DS
 };
 
 skillcheckscreen::skillcheckscreen(void)
@@ -104,23 +103,6 @@ void skillcheckscreen::GenerateDecisiveStrikeSkillCheckZone(void)
 {
 }
 
-void skillcheckscreen::GenerateSecretSkillCheckZone(void)
-{
-	int rand = DoctorSkillCheck ? GetRandomValue(doctorSpawnZone1, doctorSpawnZone2) : GetRandomValue(spawnZone1, spawnZone2);
-	float multiplier = UnnervingPresence ? 0.4f : 1.0f;
-
-	if (DoctorSkillCheck)
-	{
-		greatSkillCheckZone = { (float)rand, (float)rand - 10.0f };   //Zones for where each skillcheck can spawn
-		goodSkillCheckZone = { (float)rand - 10.0f, (float)rand - 10 - 30.0f * multiplier };
-	}
-	else
-	{
-		greatSkillCheckZone = { (float)rand, (float)rand + 10.0f };   //Zones for where each skillcheck can spawn
-		goodSkillCheckZone = { (float)rand + 10.0f, (float)rand + 10 + 30.0f * multiplier };
-	}
-}
-
 void skillcheckscreen::logic(void)
 {
 
@@ -137,9 +119,6 @@ void skillcheckscreen::logic(void)
 		break;
 	case DS:
 		DecisiveStrikeSkillCheck();
-		break;
-	case Secret:
-		SecretSkillCheck();
 		break;
 	}
 
@@ -204,14 +183,11 @@ void skillcheckscreen::render(void)
 	case DS:
 		DrawDecisiveStrikeSkillCheck();
 		break;
-	case Secret:
-		DrawSecretSkillCheck();
-		break;
 	}
 
 	if (skillcheckactive) GuiLock();
 
-	const char* const dropdownboxstring = scores.secretachievement ? "Generator;Healing;Hex: Ruin;Decisive Strike;Secret Mode" : "Generator;Healing;Hex: Ruin;Decisive Strike";
+	const char* const dropdownboxstring = "Generator;Healing;Hex: Ruin;Decisive Strike";
 
 	if (GuiDropdownBox(Rectangle{ 550,80,210,50 }, dropdownboxstring, &gameMode, guiDropdownboxEditmode))
 	{
@@ -366,15 +342,6 @@ void skillcheckscreen::DrawDecisiveStrikeSkillCheck(void)
 {
 	DrawCircle();
 	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.begin-90.0f, greatSkillCheckZone.end-90.0f, 15, WHITE);
-	DrawNeedle();
-}
-
-void skillcheckscreen::DrawSecretSkillCheck(void)
-{
-	DrawCircle();
-	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.begin - 270.0f, greatSkillCheckZone.end - 270.0f, 15, SKYBLUE);
-	DrawRingLines(middle, radius - 5, radius + 5, greatSkillCheckZone.begin - 270.0f, greatSkillCheckZone.end - 270.0f, 15, BLACK);
-	//DrawRing(middle, radius - 5, radius + 5, 0 , 10, 15, GREEN);
 	DrawNeedle();
 }
 
@@ -716,8 +683,3 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 {
 }
-
-void skillcheckscreen::SecretSkillCheck(void)
-{
-}
-

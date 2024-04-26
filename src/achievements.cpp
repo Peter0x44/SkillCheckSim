@@ -55,7 +55,7 @@ achievementscreen::achievementscreen(void)
 	boolforachievements[play1000skillchecks] = (scores.totalskillchecks >= 1000);
 	boolforachievements[play3000skillchecks] = (scores.totalskillchecks >= 3000);
 	boolforachievements[play5000skillchecks] = (scores.totalskillchecks >= 5000);
-	boolforachievements[questionmark] = (scores.secretachievement);
+	boolforachievements[questionmark] = false; // unused easter egg - decide what to do later
 }
 
 
@@ -146,28 +146,5 @@ void achievementscreen::logic()
 	else
 	{
 		achievementshoveredy = (CursorY - gridOffsetY) / 68;
-	}
-
-	const char* const peter = "peter";
-	int key = GetCharPressed();
-
-	while (key > 0)
-	{
-		if (letterpressed == sizeof(peter)-1)
-		{
-			boolforachievements[questionmark] = true;
-			scores.secretachievement = true;
-			letterpressed = 0;
-		}
-		else if (peter[letterpressed] == key)
-		{
-			++letterpressed;
-		}
-		else
-		{
-			letterpressed = 0;
-		}
-
-		key = GetCharPressed();
 	}
 }

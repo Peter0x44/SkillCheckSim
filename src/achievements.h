@@ -60,8 +60,6 @@ private:
 	int achievementshoveredx;
 	int achievementshoveredy;
 
-	int letterpressed = 0;
-
 public:
 	void logic(void) final override;
 	void render(void) final override;

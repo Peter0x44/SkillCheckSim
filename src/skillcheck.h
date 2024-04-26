@@ -20,7 +20,8 @@ struct stats
 
 	int totalskillchecks;
 	int maxgreatskillcheckshitinarow;
-	bool secretachievement;
+	//bool secretachievement;
+	// easter egg achievement - decide what to do later
 };
 
 struct zone
@@ -36,7 +37,6 @@ private:
 	void DrawHealingSkillCheck(void);
 	void DrawHexRuinSkillCheck(void);
 	void DrawDecisiveStrikeSkillCheck(void);
-	void DrawSecretSkillCheck(void);
 
 	void DrawNeedle(void);
 	void DrawCircle(void);
@@ -45,13 +45,11 @@ private:
 	void GenerateHealingSkillCheckZone(void);
 	void GenerateHexRuinSkillCheckZone(void);
 	void GenerateDecisiveStrikeSkillCheckZone(void);
-	void GenerateSecretSkillCheckZone(void);
 
 	void GeneratorSkillCheck(void);
 	void HealingSkillCheck(void);
 	void HexRuinSkillCheck(void);
 	void DecisiveStrikeSkillCheck(void);
-	void SecretSkillCheck(void);
 
 	Vector2 middle = { screenWidth / 2, screenHeight / 2 };
 
@@ -94,7 +92,6 @@ private:
 
 	zone greatSkillCheckZone = {0, 0};
 	zone goodSkillCheckZone = {0, 0}; //VARIABLES FOR SKILL CHECK ZONES
-	zone secretSkillCheckZone = { 0, 0 };
 
 	float rotationAngle = spawnLocation;
 	bool moveSkillCheck = true;
