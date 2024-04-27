@@ -55,10 +55,13 @@ void skillcheckscreen::GenerateGeneratorSkillCheckZone(void)
 {
 	float generatorSkillCheckGreatWidth = 360.0f * 0.03f;
 	float generatorSkillCheckGoodWidth = 360.0f * 0.13f;
+
 	if (UnnervingPresence) generatorSkillCheckGoodWidth *= 0.4f;
 
+	float generatorSkillCheckTotalWidth = generatorSkillCheckGoodWidth + generatorSkillCheckGreatWidth;
+
 	// Skillchecks start at 4 o'clock and end at 11 o'clock
-	int rand = GetRandomValue(360/12*4, 360/12*11-generatorSkillCheckGoodWidth);
+	int rand = GetRandomValue(360/12*4, 360/12*11-generatorSkillCheckTotalWidth);
 
 	greatSkillCheckZone = { (float)rand, (float)rand + generatorSkillCheckGreatWidth };   //Zones for where each skillcheck can spawn
 	goodSkillCheckZone = { (float)rand + generatorSkillCheckGreatWidth, (float)rand + generatorSkillCheckGoodWidth };
@@ -72,10 +75,13 @@ void skillcheckscreen::GenerateHealingSkillCheckZone(void)
 {
 	float healingSkillCheckGreatWidth = 360.0f * 0.03f;
 	float healingSkillCheckGoodWidth = 360.0f * 0.15;
+
 	if (UnnervingPresence) healingSkillCheckGoodWidth *= 0.4f;
 
+	float healingSkillCheckTotalWidth = healingSkillCheckGoodWidth + healingSkillCheckGreatWidth;
+
 	// Skillchecks start at 4 o'clock and end at 11 o'clock
-	int rand = GetRandomValue(360/12*4, 360/12*11-healingSkillCheckGoodWidth);
+	int rand = GetRandomValue(360/12*4, 360/12*11-healingSkillCheckTotalWidth);
 
 	greatSkillCheckZone = { (float)rand, (float)rand + healingSkillCheckGreatWidth };   //Zones for where each skillcheck can spawn
 	goodSkillCheckZone = { (float)rand + healingSkillCheckGreatWidth, (float)rand + healingSkillCheckGoodWidth };
@@ -88,9 +94,9 @@ void skillcheckscreen::GenerateHealingSkillCheckZone(void)
 
 void skillcheckscreen::GenerateHexRuinSkillCheckZone(void)
 {
-	float generatorSkillCheckGreatWidth = 360.0f * 0.03f;
-	float generatorSkillCheckGoodWidth = 360.0f * 0.13f;
-	if (UnnervingPresence) generatorSkillCheckGoodWidth *= 0.4f;
+	// Same behavior as the generator skill check
+	GenerateGeneratorSkillCheckZone();
+}
 
 	// Skillchecks start at 4 o'clock and end at 11 o'clock
 	int rand = GetRandomValue(360/12*4, 360/12*11-generatorSkillCheckGoodWidth);
