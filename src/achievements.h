@@ -34,7 +34,7 @@ private:
 		"Farming : MAX",
 		"Level up",
 		"Trust me",
-		"I'm a engineer",
+		"I'm an engineer",
 		"Brand New Dwight",
 		"Blame the lag",
 		"Well deserved facecamp",
@@ -45,7 +45,7 @@ private:
 		"What in tarnation?",
 		"Infinite abuser",
 		"Esport ready",
-		"Blame Mclean",
+		"Blame Mclean"
 	};
 
 	const Rectangle backbutton = { screenWidth - 50, screenHeight - 50, 50, 50 }; //BACK BUTTON IS DRAWN
