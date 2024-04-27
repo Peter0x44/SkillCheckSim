@@ -98,15 +98,24 @@ void skillcheckscreen::GenerateHexRuinSkillCheckZone(void)
 	GenerateGeneratorSkillCheckZone();
 }
 
-	// Skillchecks start at 4 o'clock and end at 11 o'clock
-	int rand = GetRandomValue(360/12*4, 360/12*11-generatorSkillCheckGoodWidth);
 
-	greatSkillCheckZone = { (float)rand, (float)rand + generatorSkillCheckGreatWidth };   //Zones for where each skillcheck can spawn
-	goodSkillCheckZone = { (float)rand + generatorSkillCheckGreatWidth, (float)rand + generatorSkillCheckGoodWidth };
-}
+// skill check (decisive strike):
+// Great Success Zone Length: 7%
+// Good Success Zone Length: 0%
 
 void skillcheckscreen::GenerateDecisiveStrikeSkillCheckZone(void)
 {
+	float decisiveStrikeSkillCheckGreatWidth = 360.0f * 0.07f;
+
+	// In reality, Unnerving Presense doesn't actually affect this
+	// But it does here, because why not.
+	if (UnnervingPresence) decisiveStrikeSkillCheckGreatWidth *= 0.4f;
+
+	// Decisive strike skillchecks start at 8 o'clock and end at 11 o'clock
+	int rand = GetRandomValue(360/12*8, 360/12*11-decisiveStrikeSkillCheckGreatWidth);
+
+	greatSkillCheckZone = { (float)rand, (float)rand + decisiveStrikeSkillCheckGreatWidth };   //Zones for where each skillcheck can spawn
+	goodSkillCheckZone = { 0.0f, 0.0f }; // No good zone for decisive strike
 }
 
 void skillcheckscreen::logic(void)
@@ -688,4 +697,96 @@ void skillcheckscreen::HexRuinSkillCheck(void)
 
 void skillcheckscreen::DecisiveStrikeSkillCheck(void)
 {
+	if (startbuttonpressed && !skillcheckactive)
+	{
+		skillcheckactive = true;
+		moveSkillCheck = true;
+		//scores.bloodpoints = 0;
+		//scores.combo = 0; // score and scores.combo is set back to 0 and the skillcheck starts to move
+		//scores.skillchecksmissed = 0; // Main IF statement for when skillcheck start button is pressed
+		rotationAngle = 0;
+		GenerateDecisiveStrikeSkillCheckZone(); //Generation Skillcheck function
+		PlaySound(skillCheckWarning);
+		timer = GetTime();
+		spawnSkillcheckTimer = DBL_MAX;
+	}
+
+	if (stopbuttonpressed && skillcheckactive)
+	{
+		skillcheckactive = false;
+		moveSkillCheck = false;
+		rotationAngle = 0;
+		greatSkillCheckZone = { 0, 0 };
+		goodSkillCheckZone = { 0, 0 };
+	}
+
+	if (skillcheckactive)
+	{
+		timer = GetTime();
+
+		middle = { GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f };
+
+		if (timer > spawnSkillcheckTimer)
+		{
+			rotationAngle = 0;
+			moveSkillCheck = true;
+			spawnSkillcheckTimer = DBL_MAX;
+			++scores.totalskillchecks;
+
+			GenerateDecisiveStrikeSkillCheckZone();
+			PlaySound(skillCheckWarning);
+		}
+
+		if (rotationAngle > 360.0f)
+		{
+			// skillcheck has done full turn, must be missed
+			if (moveSkillCheck)
+				++scores.skillchecksmissed;
+			moveSkillCheck = false;
+			rotationAngle = 0;
+			scores.combo = 0;
+
+			scores.greatskillcheckhitinarow = 0;
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
+		}
+		else if (IsKeyPressed(KEY_SPACE) && moveSkillCheck)
+		{
+			if (rotationAngle > greatSkillCheckZone.begin && rotationAngle < greatSkillCheckZone.end)
+			{
+				scores.bloodpoints = scores.bloodpoints + 2500;
+				scores.bloodpoints += scores.combo;
+				scores.combo = scores.combo + 1; //LOGIC for when rotationangle is in the greatskillcheckzone, score is increased and right sound is played
+				++scores.greatskillcheckhit;
+				++scores.maxcombo;
+				++scores.greatskillcheckhitinarow;
+
+				if (scores.maxgreatskillcheckshitinarow < scores.greatskillcheckhitinarow)
+				{
+					scores.maxgreatskillcheckshitinarow = scores.greatskillcheckhitinarow;
+				}
+
+				PlaySound(greatSkillCheck);
+				moveSkillCheck = false;
+			}
+			else
+			{
+				if (moveSkillCheck)
+				{
+					// Missed skill check
+					++scores.skillchecksmissed;
+				}
+				scores.greatskillcheckhitinarow = 0;
+				scores.combo = 0;
+				moveSkillCheck = false;
+			}
+			spawnSkillcheckTimer = timer + GetRandomValue(1000, 2000) / 1000.0f;
+		}
+
+		if (moveSkillCheck)
+		{
+			// Decisive strike skillchecks apparently take 1.1 seconds
+			// TODO: verify
+			rotationAngle += GetFrameTime() * 360.0f/1.1f;
+		}
+	}
 }
