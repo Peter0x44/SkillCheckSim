@@ -356,7 +356,19 @@ void skillcheckscreen::DrawHexRuinSkillCheck(void)
 void skillcheckscreen::DrawDecisiveStrikeSkillCheck(void)
 {
 	DrawCircle();
-	DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.begin-90.0f, greatSkillCheckZone.end-90.0f, 15, WHITE);
+	if (DoctorSkillCheck)
+	{
+		zone doctorGreat
+		{
+			270.0f - greatSkillCheckZone.begin - (greatSkillCheckZone.end - greatSkillCheckZone.begin),
+			270.0f - greatSkillCheckZone.begin
+		};
+		DrawRing(middle, radius - 5, radius + 5, doctorGreat.begin, doctorGreat.end, 15, WHITE);
+	}
+	else
+	{
+		DrawRing(middle, radius - 5, radius + 5, greatSkillCheckZone.begin-90.0f, greatSkillCheckZone.end-90.0f, 15, WHITE);
+	}
 	DrawNeedle();
 }
 
