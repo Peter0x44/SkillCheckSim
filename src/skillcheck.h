@@ -3,6 +3,7 @@
 
 #include "gamestates.h"
 #include "globals.h"
+#include "skillcheck_behavior.h"
 
 
 struct stats
@@ -24,12 +25,6 @@ struct stats
 	// easter egg achievement - decide what to do later
 };
 
-struct zone
-{
-	float begin;
-	float end;
-};
-
 class skillcheckscreen final: public gamestate
 {
 private:
@@ -38,30 +33,9 @@ private:
 	void DrawHexRuinSkillCheck(void);
 	void DrawDecisiveStrikeSkillCheck(void);
 
-	void DrawNeedle(void);
-	void DrawCircle(void);
-
-	void GenerateGeneratorSkillCheckZone(void);
-	void GenerateHealingSkillCheckZone(void);
-	void GenerateHexRuinSkillCheckZone(void);
-	void GenerateDecisiveStrikeSkillCheckZone(void);
-
-	void GeneratorSkillCheck(void);
-	void HealingSkillCheck(void);
-	void HexRuinSkillCheck(void);
-	void DecisiveStrikeSkillCheck(void);
+	void SkillCheckLogic(void);
 
 	Vector2 middle = { screenWidth / 2, screenHeight / 2 };
-
-	const float spawnLocation = 0.0f; //STARTING LOCATION OF SKILL CHECK NEEDLE
-	const float doctorSpawnLocation = -270.0f;
-	const float skillCheckLimits = 360.0f;
-	const float doctorSkillCheckLimits = 90.0f;
-
-	const int spawnZone1 = -30; //SPAWN ZONES FOR SKILL CHECKS
-	const int spawnZone2 = -270;
-	const int doctorSpawnZone1 = -150; //SPAWN ZONES FOR SKILL CHECKS
-	const int doctorSpawnZone2 = 90;
 
 	const Rectangle startbutton = { middle.x, 340, 100, 50 };
 	const Rectangle stopbutton = { middle.x - 100, 340, 100, 50 };
@@ -80,20 +54,16 @@ private:
 	bool deletebuttonpressed = false;
 	bool settingsbuttonpressed = false;
 
-	bool UnnervingPresence = false;
-	bool DoctorSkillCheck = false;
+	int gameMode = 0;
+	SkillCheck* skillCheck;
+	SkillCheckState state; 
 
 	const int radius = 100; //RADIUS OF CIRCLE
 
 	stats scores;
 
-	int gameMode = 0;
 	bool guiDropdownboxEditmode = false;
 
-	zone greatSkillCheckZone = {0, 0};
-	zone goodSkillCheckZone = {0, 0}; //VARIABLES FOR SKILL CHECK ZONES
-
-	float rotationAngle = spawnLocation;
 	bool moveSkillCheck = true;
 
 	double timer;

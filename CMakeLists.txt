@@ -17,7 +17,7 @@ endif ()
 
 add_subdirectory(libs/raylib)
 
-add_compile_options(-Wall -Wextra -pedantic)
+add_compile_options(-Wall -Wextra -pedantic -Wno-missing-field-initializers -Wdouble-promotion)
 if (EMSCRIPTEN)
 	add_link_options(-sUSE_GLFW=3 --preload-file ${CMAKE_CURRENT_LIST_DIR}/assets@assets)
 	set(CMAKE_EXECUTABLE_SUFFIX ".html")
@@ -26,6 +26,8 @@ endif ()
 add_executable(SkillCheckSimulator
 	src/skillcheck.cpp
 	src/skillcheck.h
+	src/skillcheck_behavior.cpp
+	src/skillcheck_behavior.h
 	src/gamestates.cpp
 	src/gamestates.h
 	src/main.cpp
