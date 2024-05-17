@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(SkillCheckSimulator CXX)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 # Setting parameters for raylib
 set(CUSTOMIZE_BUILD ON)
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE) # don't build the supplied examples
@@ -17,9 +14,13 @@ endif ()
 
 add_subdirectory(libs/raylib)
 
-add_compile_options(-Wall -Wextra -pedantic -Wno-missing-field-initializers -Wdouble-promotion)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+	add_compile_options(-Wall -Wextra -pedantic -Wno-missing-field-initializers -Wdouble-promotion)
+endif ()
+
+
 if (EMSCRIPTEN)
-	add_link_options(-sUSE_GLFW=3 --preload-file ${CMAKE_CURRENT_LIST_DIR}/assets@assets)
+	add_link_options(-sUSE_GLFW=3 --preload-file "${CMAKE_CURRENT_LIST_DIR}/assets@assets")
 	set(CMAKE_EXECUTABLE_SUFFIX ".html")
 endif ()
 
